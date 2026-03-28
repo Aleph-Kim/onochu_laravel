@@ -1,0 +1,62 @@
+.login-box {
+    height: 75vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    color: var(--main-color);
+    font-size: 4em;
+    font-family: 'Eczar';
+}
+
+.logo img {
+    height: 1.5em;
+    margin-right: 7px;
+}
+
+.login-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.login-text p {
+    font-size: 1.125rem;
+    color: #666;
+    text-align: center;
+}
+
+.kakao-login-btn {
+    background-color: #FEE500;
+    padding: 10px 25px;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.kakao-login-btn:hover {
+    background-color: #FDD835;
+}
+
+.kakao-login-btn svg {
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.email-login-link {
+    color: #666;
+    text-decoration: none;
+}
+
+.email-login-link:hover {
+    text-decoration: underline;
+}

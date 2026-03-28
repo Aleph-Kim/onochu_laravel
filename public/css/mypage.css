@@ -1,0 +1,395 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-header {
+    position: relative;
+    height: 340px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.profile-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7));
+    z-index: 1;
+}
+
+.profile-background {
+    position: absolute;
+    inset: 0;
+    background-position: center;
+    background-size: cover;
+}
+
+.profile-info {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 2rem;
+}
+
+.profile-genre,
+.profile-stats {
+    color: #e6e6e6;
+    font-size: 1.125rem;
+    z-index: 1;
+}
+
+.profile-name {
+    color: white;
+    font-size: 3.75rem;
+    font-weight: bold;
+    margin-bottom: 4px;
+    z-index: 1;
+}
+
+.mypage-content,
+.skeleton-content {
+    flex-grow: 1;
+    background-color: white;
+}
+
+.stats-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    padding-bottom: 0;
+}
+
+.stats-grid {
+    display: flex;
+    gap: 2rem;
+}
+
+@media (max-width: 1350px) {
+    .stats-grid {
+        flex-direction: column;
+    }
+}
+
+.stats-column {
+    flex: 1;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.recommend-content .section-title {
+    margin: 0;
+}
+
+.recommend-content .songs-filter {
+    margin: 0 35px 15px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 20px;
+}
+
+@media (min-width: 1024px) {
+    .recommend-content .songs-filter {
+        justify-content: flex-end;
+    }
+}
+
+.toggle-sort {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toggle-label {
+    font-size: 14px;
+    color: #888;
+    transition: color 0.3s;
+}
+
+.toggle-label.active {
+    color: var(--main-color);
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: var(--main-color);
+}
+
+input:checked+.slider:before {
+    transform: translateX(20px);
+}
+
+#songSearch {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+#songSearch:focus {
+    outline: none;
+    border-color: var(--main-color);
+}
+
+.artist-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.artist-list::-webkit-scrollbar {
+    display: none;
+}
+
+.artist-card {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+    transition: box-shadow 0.3s ease;
+}
+
+.artist-card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.artist-image {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 9999px;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+.artist-info {
+    flex-grow: 1;
+}
+
+.artist-name {
+    font-weight: 500;
+    font-size: 1.125rem;
+}
+
+.artist-followers {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.chart-container {
+    width: 100%;
+    height: 400px;
+}
+
+.recommend-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 2rem;
+}
+
+.songs-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .songs-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.song-card {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+    transition: box-shadow 0.3s ease;
+    background-color: white;
+    cursor: pointer;
+}
+
+.song-card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.album-cover {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 0.25rem;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+.song-info {
+    flex-grow: 1;
+}
+
+.song-title {
+    font-weight: 500;
+    font-size: 1.125rem;
+}
+
+.song-artist {
+    color: #6b7280;
+}
+
+.recommend-date {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.song-card-btn {
+    flex: none;
+}
+
+.song-card-btn .btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s;
+}
+
+.btn-submit {
+    background-color: var(--main-color);
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #c8c8c8;
+    ;
+}
+
+.btn-submit:active,
+.btn-submit:hover {
+    background-color: var(--term-color);
+    ;
+}
+
+.no-results {
+    text-align: center;
+    padding: 70px 0;
+    font-size: 16px;
+    color: #888;
+    grid-column: 1 / span 3;
+}
+
+/* 스켈레톤 UI 스타일 */
+.skeleton-content {
+    position: relative;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.skeleton {
+    background: #e5e7eb;
+    animation: pulse 1.5s infinite;
+    border-radius: 4px;
+}
+
+.skeleton-artist-card {
+    height: 72px;
+    margin-bottom: 16px;
+}
+
+
+@media (max-width: 1350px) {
+    .skeleton-content .stats-column:nth-child(2) {
+        display: none;
+    }
+}
+
+.skeleton-chart {
+    width: 100%;
+    height: 400px;
+}
+
+.skeleton-section-title {
+    width: 150px;
+    height: 32px;
+    margin-bottom: 24px;
+}
+
+.skeleton-no-results {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5em;
+    color: #888;
+    height: 100%;
+    background-color: #afafaf55;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

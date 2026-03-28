@@ -1,0 +1,318 @@
+:root {
+    --main-color: #554DB4;
+    --term-color: #716cab;
+    --youtube-color: #FF0000;
+    --flo-color: #8B00FF;
+    --genie-color: #0F7EFF;
+    --spotify-color: #1DB954;
+    --background-color: #f5f5f5;
+    --kakao-color: #fae100;
+    --kakao-text-color: #371d1e;
+}
+
+@font-face {
+    font-family: 'Eczar';
+    src: url('../fonts/Eczar.woff2') format('woff2');
+}
+
+body {
+    word-break: keep-all;
+    background-color: var(--background-color);
+}
+
+textarea {
+    width: 90%;
+    max-width: 500px;
+    height: 150px;
+    padding: 10px;
+    border: 1px solid #afafaf;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: none;
+    transition: border-color 0.2s ease-in-out;
+    text-align: left;
+}
+
+textarea::placeholder {
+    color: #afafaf;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--term-color);
+}
+
+/* 헤더 영역 시작 */
+.header {
+    width: 100%;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+.header_inner {
+    margin: 0 auto;
+    padding: 0 200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 70px;
+}
+
+/* 로고 */
+#logo {
+    display: flex;
+    align-items: center;
+    color: var(--main-color);
+    font-size: 32px;
+    font-family: 'Eczar';
+}
+
+#logo img {
+    height: 40px;
+    margin-right: 7px;
+}
+
+#searchFormWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#searchFormHideBtn {
+    display: none;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+/* 검색 영역 */
+#searchForm {
+    position: relative;
+    width: 300px;
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 768px) {
+    #searchForm {
+        width: 80%;
+        margin: 0;
+    }
+}
+
+#searchForm input[type="text"] {
+    width: 100%;
+    padding: 10px 40px 10px 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* 검색 버튼 */
+.btn-search {
+    width: 38px;
+    padding: 7px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.btn-search svg {
+    width: 100%;
+}
+
+#searchFormHideBtn svg,
+.btn-search svg,
+.mobile-btn-search svg {
+    fill: #afafaf;
+}
+
+#rightBtnBox {
+    display: flex;
+    align-items: center;
+}
+
+/* 유저 메뉴 */
+.user-menu {
+    margin-left: 30px;
+}
+
+@media screen and (max-width: 768px) {
+    .user-menu {
+        margin-left: 0;
+    }
+}
+
+.user-menu .btn {
+    padding: 6px 12px;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.1s;
+}
+
+.user-menu .btn:hover {
+    color: #a0a0a0;
+}
+
+/* 반응형 스타일 */
+@media screen and (max-width: 1024px) {
+    .header_inner {
+        padding: 0 50px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .header_inner {
+        padding: 0 10px;
+        justify-content: space-between;
+    }
+
+    #searchForm {
+        display: none;
+    }
+
+    .mobile-btn-search {
+        height: 34px;
+        width: 34px;
+    }
+}
+
+/* 헤더 영역 끝 */
+
+/* 메인 영역 시작 */
+main {
+    width: 70%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px;
+    padding-bottom: 50px;
+    min-height: calc(100vh - 71px);
+}
+
+@media (min-width: 1024px) {
+    .main-container {
+        width: 70%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 15px;
+    }
+}
+
+.container {
+    background-color: #fff;
+    min-height: calc(100vh - 71px - 65px);
+}
+
+@media (max-width: 768px) {
+
+    main,
+    .main-container {
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .container {
+        min-height: calc(100vh - 71px);
+    }
+}
+
+@media (max-width: 480px) {
+    main {
+        padding: 0px;
+    }
+}
+
+/* 메인 영역 끝 */
+
+.between-bar {
+    display: inline-block;
+    width: 1px;
+    height: 10px;
+    margin: 0 4px;
+    background-color: #aeaeae;
+}
+
+/* 로딩 화면 */
+.loader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.loader {
+    position: absolute;
+    width: 120px;
+    height: 90px;
+    margin: 0 auto;
+}
+
+.loader:before {
+    content: "";
+    position: absolute;
+    bottom: 30px;
+    left: 50px;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background: var(--main-color);
+    animation: loading-bounce 0.5s ease-in-out infinite alternate;
+}
+
+.loader:after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 7px;
+    width: 45px;
+    border-radius: 4px;
+    box-shadow: 0 5px 0 #f2f2f2, -35px 50px 0 #f2f2f2, -70px 95px 0 #f2f2f2;
+    animation: loading-step 1s ease-in-out infinite;
+}
+
+@keyframes loading-bounce {
+    0% {
+        transform: scale(1, 0.7);
+    }
+
+    40% {
+        transform: scale(0.8, 1.2);
+    }
+
+    60% {
+        transform: scale(1, 1);
+    }
+
+    100% {
+        bottom: 140px;
+    }
+}
+
+@keyframes loading-step {
+    0% {
+        box-shadow: 0 10px 0 rgba(0, 0, 0, 0),
+            0 10px 0 #f2f2f2,
+            -35px 50px 0 #f2f2f2,
+            -70px 90px 0 #f2f2f2;
+    }
+
+    100% {
+        box-shadow: 0 10px 0 #f2f2f2,
+            -35px 50px 0 #f2f2f2,
+            -70px 90px 0 #f2f2f2,
+            -70px 90px 0 rgba(0, 0, 0, 0);
+    }
+}
