@@ -5,10 +5,7 @@
     <meta charset="UTF-8" />
     <title>Onochu - 오늘의 노래 추천</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" />
-    <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('image/favicon/apple-icon-57x57.png') }}">
-    <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('image/favicon/apple-icon-60x60.png') }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('image/favicon/apple-icon-180x180.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('image/favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('image/logo.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
@@ -17,7 +14,7 @@
     <header class="w-full bg-white border-b border-gray-200 sticky top-0 z-[999]">
         <div class="mx-auto px-[200px] lg:px-[50px] flex items-center justify-evenly max-sm:justify-between max-sm:px-[10px] h-[70px]">
             <a id="logo" href="/" class="flex items-center text-primary text-[32px] font-eczar">
-                <img src="{{ asset('image/logo.svg') }}" class="h-[40px] mr-[7px]">
+                <img src="{{ asset('image/logo.png') }}" class="h-[40px] mr-[7px]">
                 Onochu
             </a>
 
