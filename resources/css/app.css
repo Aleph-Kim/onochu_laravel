@@ -1,0 +1,748 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 커스텀 폰트 */
+@font-face {
+    font-family: 'Eczar';
+    src: url('../fonts/Eczar.woff2') format('woff2');
+}
+
+@layer base {
+    body {
+        word-break: keep-all;
+        background-color: #f5f5f5;
+    }
+
+    main {
+        width: 70%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 15px;
+        padding-bottom: 50px;
+        min-height: calc(100vh - 71px);
+    }
+
+    @media (max-width: 768px) {
+        main {
+            width: 100%;
+            padding: 0 10px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        main {
+            padding: 0;
+        }
+    }
+
+    textarea {
+        width: 90%;
+        max-width: 500px;
+        height: 150px;
+        padding: 10px;
+        border: 1px solid #afafaf;
+        border-radius: 5px;
+        font-size: 16px;
+        resize: none;
+        transition: border-color 0.2s ease-in-out;
+        text-align: left;
+    }
+
+    textarea::placeholder {
+        color: #afafaf;
+    }
+
+    textarea:focus {
+        outline: none;
+        border-color: #716cab;
+    }
+}
+
+@layer components {
+    /* ───────── 공통 유틸 ───────── */
+    .between-bar {
+        display: inline-block;
+        width: 1px;
+        height: 10px;
+        margin: 0 4px;
+        background-color: #aeaeae;
+    }
+
+    /* ───────── 스켈레톤 기본 ───────── */
+    .skeleton {
+        background-color: #f0f0f0;
+        border-radius: 4px;
+    }
+
+    .skeleton-content {
+        padding: 0.5rem;
+    }
+
+    .skeleton-title {
+        height: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .skeleton-artist,
+    .skeleton-count {
+        height: 0.8rem;
+    }
+
+    /* ───────── mypage 스켈레톤 ───────── */
+    .skeleton-chart {
+        width: 100%;
+        height: 400px;
+    }
+
+    .skeleton-section-title {
+        width: 150px;
+        height: 32px;
+        margin-bottom: 24px;
+    }
+
+    .skeleton-no-results {
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1.5em;
+        color: #888;
+        height: 100%;
+        background-color: #afafaf55;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* ───────── 드롭다운 옵션 ───────── */
+    .selected-option {
+        padding: 10px 15px;
+        background: #f5f5f5;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        text-align: center;
+        transition: 0.3s;
+    }
+
+    .selected-option:hover {
+        background: #e0e0e0;
+    }
+
+    .option {
+        padding: 10px 15px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .option:hover {
+        background: #f0f0f0;
+    }
+
+    /* ───────── 토글 라벨 ───────── */
+    .toggle-label {
+        font-size: 14px;
+        color: #888;
+        transition: color 0.3s;
+    }
+
+    .toggle-label.active {
+        color: #554DB4;
+    }
+
+    /* ───────── 로딩 스피너 ───────── */
+    .loader-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .loader {
+        position: absolute;
+        width: 120px;
+        height: 90px;
+        margin: 0 auto;
+    }
+
+    .loader:before {
+        content: "";
+        position: absolute;
+        bottom: 30px;
+        left: 50px;
+        height: 30px;
+        width: 30px;
+        border-radius: 50%;
+        background: #554DB4;
+        animation: loading-bounce 0.5s ease-in-out infinite alternate;
+    }
+
+    .loader:after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 7px;
+        width: 45px;
+        border-radius: 4px;
+        box-shadow: 0 5px 0 #f2f2f2, -35px 50px 0 #f2f2f2, -70px 95px 0 #f2f2f2;
+        animation: loading-step 1s ease-in-out infinite;
+    }
+
+    /* ───────── 모바일 검색 버튼 ───────── */
+    .mobile-btn-search {
+        display: none;
+        height: 34px;
+        width: 34px;
+    }
+
+    @media screen and (max-width: 768px) {
+        .mobile-btn-search {
+            display: block;
+        }
+    }
+
+    /* ───────── 음악 슬라이더 (Flickity) ───────── */
+    .slide-container {
+        overflow: hidden;
+    }
+
+    .music-slider {
+        padding: 60px 0;
+        overflow: visible;
+    }
+
+    .music-slider .is-selected {
+        z-index: 10;
+    }
+
+    .music-slider .is-selected .music-card-wrap {
+        transform: scale(1.3);
+        transition: transform 0.3s;
+    }
+
+    @media (max-width: 480px) {
+        .music-slider .is-selected .music-card-wrap {
+            transform: scale(1.1);
+        }
+    }
+
+    .music-card-wrap {
+        padding: 15px;
+    }
+
+    .music-card-box {
+        width: 300px;
+        overflow: hidden;
+        box-shadow: 0 10px 20px 0 rgba(0, 0, 35, .25);
+        border-radius: 8px;
+        transition: .4s;
+    }
+
+    .music-card-body {
+        display: block;
+        height: 300px;
+        width: 300px;
+        background-position: 50%;
+        background-size: cover;
+        overflow: hidden;
+        transition: .4s;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .music-card-bg {
+        height: 100%;
+        width: 100%;
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        transition: .2s;
+    }
+
+    .music-slider .is-selected .music-card-body:hover .music-card-bg {
+        filter: brightness(50%);
+    }
+
+    .music-card-artist-img {
+        height: 100px;
+        width: 100px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        z-index: 10;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    .music-slider .is-selected .music-card-body:hover .music-card-artist-img {
+        opacity: 1;
+    }
+
+    .music-card-artist-img img {
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .music-card-footer {
+        padding: 15px 30px;
+        border: 0;
+        background-color: #FFF;
+        position: relative;
+        display: flex;
+    }
+
+    .music-card-title {
+        display: block;
+        line-height: 1.3;
+        font-weight: 700;
+        font-size: 14px;
+        color: #554DB4;
+    }
+
+    .music-card-artist-name {
+        display: block;
+        line-height: 1.3;
+        font-size: 12px;
+    }
+
+    /* ───────── 스켈레톤 ───────── */
+    .skeleton-container {
+        display: flex;
+        gap: 1rem;
+        padding: 10px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .skeleton-container::before {
+        content: attr(data-text);
+        white-space: pre-wrap;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        background-color: #00000030;
+        color: #fff;
+        font-size: 20px;
+        border-radius: 8px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        text-align: center;
+    }
+
+    .skeleton-scroll {
+        display: flex;
+        animation: scroll 10s linear infinite;
+        gap: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .skeleton-slide {
+        width: 300px;
+        padding: 15px;
+        flex-shrink: 0;
+    }
+
+    .skeleton-slide .skeleton-card {
+        width: 300px;
+        height: 300px;
+        border-radius: 8px;
+    }
+
+    .skeleton-slide .skeleton-footer {
+        padding: 15px 30px;
+        background-color: #FFF;
+    }
+
+    .skeleton-album-card {
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .skeleton-album-card .skeleton-image {
+        width: 12rem;
+        height: 12rem;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+    }
+
+    .skeleton-artist-card .skeleton-image {
+        width: 12rem;
+        height: 12rem;
+        border-radius: 50%;
+        margin: 0 auto;
+    }
+
+    .skeleton-artist-card .skeleton-name {
+        width: 70%;
+        margin: 0 auto 0.5rem;
+    }
+
+    .skeleton-artist-card .skeleton-count {
+        width: 40%;
+        margin: 0 auto;
+    }
+
+    /* ───────── 아이콘 박스 호버 ───────── */
+    .song-box:hover .icon-box {
+        display: flex;
+    }
+
+    @media (max-width: 480px) {
+        .song-box.visible .icon-box {
+            display: flex;
+        }
+    }
+
+    /* ───────── 토글 스위치 ───────── */
+    .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+    }
+
+    .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.3s;
+        border-radius: 10px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: 0.3s;
+        border-radius: 50%;
+    }
+
+    input:checked + .slider {
+        background-color: #554DB4;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(20px);
+    }
+
+    /* ───────── 커스텀 셀렉터 ───────── */
+    .custom-selector {
+        position: relative;
+        width: 120px;
+    }
+
+    .options {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+    }
+
+    .options.show {
+        display: block;
+    }
+
+    /* ───────── 가사 오버레이 ───────── */
+    .lyrics-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #17171799;
+        color: white;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        text-align: center;
+        padding: 20px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        border-radius: 8px;
+        white-space: pre-wrap;
+        line-height: 22px;
+    }
+
+    .lyrics-overlay.none {
+        align-items: center;
+    }
+
+    .lyrics-overlay::-webkit-scrollbar {
+        width: 6px;
+        height: 0px;
+    }
+
+    .lyrics-overlay::-webkit-scrollbar-track {
+        background: #171717;
+        border-radius: 8px;
+    }
+
+    .lyrics-overlay::-webkit-scrollbar-thumb {
+        background: #646464;
+        border-radius: 8px;
+    }
+
+    .lyrics-overlay::-webkit-scrollbar-thumb:hover {
+        background: #ababab;
+    }
+
+    @media (min-width: 1023px) {
+        .album-container:hover .lyrics-overlay {
+            display: flex;
+            opacity: 1;
+            overflow-y: auto;
+        }
+    }
+
+    @media (max-width: 1024px) {
+        .album-container.lyrics-active .lyrics-overlay {
+            display: flex;
+            opacity: 1;
+            overflow-y: auto;
+        }
+    }
+
+    /* ───────── 별점 (RTL) ───────── */
+    .recommends-rating {
+        direction: rtl;
+        font-size: 40px;
+        margin: 16px 0;
+    }
+
+    .recommends-rating input {
+        display: none;
+    }
+
+    .recommends-rating label {
+        color: #ddd;
+        cursor: pointer;
+    }
+
+    .recommends-rating label:hover,
+    .recommends-rating label:hover ~ label,
+    .recommends-rating input:checked ~ label {
+        color: #554DB4;
+    }
+
+    .recommends-rating.readonly label {
+        cursor: default;
+    }
+
+    /* ───────── 마이페이지 프로필 헤더 그라디언트 ───────── */
+    .profile-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7));
+        z-index: 1;
+    }
+
+    /* ───────── 공유 버튼 (카카오) ───────── */
+    .share-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: #fff;
+        border-radius: 50%;
+        margin: 10px;
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .share-btn .tooltip {
+        position: absolute;
+        top: 0;
+        font-size: 14px;
+        background: #fff;
+        color: #fff;
+        padding: 5px 8px;
+        border-radius: 5px;
+        box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .share-btn .tooltip::before {
+        position: absolute;
+        content: "";
+        height: 8px;
+        width: 8px;
+        background: #fff;
+        top: -3px;
+        left: 50%;
+        transform: translate(-50%) rotate(45deg);
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .share-btn:hover .tooltip {
+        top: 58px;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    .share-btn:hover,
+    .share-btn:hover .tooltip,
+    .share-btn:hover .tooltip::before {
+        background: #fae100;
+        color: #371d1e;
+    }
+
+    /* ───────── 에러 페이지 애니메이션 ───────── */
+    .error-container {
+        text-align: center;
+        font-size: 180px;
+        font-weight: 800;
+        margin: 20px 15px;
+    }
+
+    @media (max-width: 480px) {
+        .error-container {
+            font-size: 5.3em;
+        }
+    }
+
+    .error-container > span {
+        display: inline-block;
+        line-height: 0.7;
+        position: relative;
+        color: #554DB4;
+    }
+
+    .error-container > span > span {
+        display: inline-block;
+        position: relative;
+    }
+
+    .error-container > span:nth-of-type(1) {
+        perspective: 1000px;
+        perspective-origin: 500% 50%;
+    }
+
+    .error-container > span:nth-of-type(1) > span {
+        transform-origin: 50% 100% 0px;
+        transform: rotateX(0);
+        animation: easyoutelastic 8s infinite;
+    }
+
+    .error-container > span:nth-of-type(3) {
+        perspective: none;
+        perspective-origin: 50% 50%;
+    }
+
+    .error-container > span:nth-of-type(3) > span {
+        transform-origin: 100% 100% 0px;
+        transform: rotate(0deg);
+        animation: rotatedrop 8s infinite;
+    }
+}
+
+@layer utilities {
+    .scrollbar-hide {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* ───────── Keyframes ───────── */
+@keyframes loading-bounce {
+    0%   { transform: scale(1, 0.7); }
+    40%  { transform: scale(0.8, 1.2); }
+    60%  { transform: scale(1, 1); }
+    100% { bottom: 140px; }
+}
+
+@keyframes loading-step {
+    0% {
+        box-shadow:
+            0 10px 0 rgba(0, 0, 0, 0),
+            0 10px 0 #f2f2f2,
+            -35px 50px 0 #f2f2f2,
+            -70px 90px 0 #f2f2f2;
+    }
+    100% {
+        box-shadow:
+            0 10px 0 #f2f2f2,
+            -35px 50px 0 #f2f2f2,
+            -70px 90px 0 #f2f2f2,
+            -70px 90px 0 rgba(0, 0, 0, 0);
+    }
+}
+
+@keyframes scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@keyframes easyoutelastic {
+    0%   { transform: rotateX(0); }
+    9%   { transform: rotateX(210deg); }
+    13%  { transform: rotateX(150deg); }
+    16%  { transform: rotateX(200deg); }
+    18%  { transform: rotateX(170deg); }
+    20%  { transform: rotateX(180deg); }
+    60%  { transform: rotateX(180deg); }
+    80%  { transform: rotateX(0); }
+    100% { transform: rotateX(0); }
+}
+
+@keyframes rotatedrop {
+    0%   { transform: rotate(0); }
+    10%  { transform: rotate(30deg); }
+    15%  { transform: rotate(90deg); }
+    70%  { transform: rotate(90deg); }
+    80%  { transform: rotate(0); }
+    100% { transform: rotateX(0); }
+}

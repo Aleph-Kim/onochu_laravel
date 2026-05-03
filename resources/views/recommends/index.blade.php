@@ -1,27 +1,26 @@
 @extends('layouts.app')
 
-@push('styles')
-<link rel="stylesheet" type="text/css" href="{{ asset('css/recommends.css') }}">
-@endpush
-
 @section('content')
-<div class="container">
-    <form class="recommends-form" action="/recommends/post" method="post">
+<div class="p-5 max-w-[500px] mx-auto">
+    <form class="flex flex-col items-center" action="/recommends/post" method="post">
         @csrf
-        <div class="artist-info">
-            <img src="{{ $songInfo['artists'][0]['img_url'] }}?/dims/resize/200x200/quality/90" onclick="window.location.href = '/artist/detail?id={{ $songInfo['artists'][0]['flo_id'] }}'">
+        <div class="flex w-full items-center gap-2 mb-5">
+            <img src="{{ $songInfo['artists'][0]['img_url'] }}?/dims/resize/200x200/quality/90"
+                 class="w-10 h-10 rounded object-cover cursor-pointer transition hover:opacity-80"
+                 onclick="window.location.href = '/artist/detail?id={{ $songInfo['artists'][0]['flo_id'] }}'">
             <span>
                 @foreach($songInfo['artists'] as $artist)
-                    <span class="artist-name" onclick="window.location.href = '/artist/detail?id={{ $artist['flo_id'] }}'">{{ $artist['name'] }}</span>
+                    <span class="text-sm text-[#333] cursor-pointer transition hover:text-primary artist-name"
+                          onclick="window.location.href = '/artist/detail?id={{ $artist['flo_id'] }}'">{{ $artist['name'] }}</span>
                 @endforeach
             </span>
         </div>
-        <div class="song-img">
-            <img src="{{ $songInfo['album']['img_url'] }}?/dims/resize/350x350/quality/90">
+        <div class="w-full aspect-square mb-4 overflow-hidden">
+            <img src="{{ $songInfo['album']['img_url'] }}?/dims/resize/350x350/quality/90" class="w-full h-full object-cover">
         </div>
-        <div class="song-info">
-            <h2>{{ $songInfo['song']['title'] }}</h2>
-            <p>
+        <div class="w-full text-left mb-4">
+            <h2 class="text-[20px] font-bold mb-2 text-[#333]">{{ $songInfo['song']['title'] }}</h2>
+            <p class="text-[13px] text-[#666] flex items-center gap-2">
                 {{ $songInfo['album']['release_date'] ?? '발매일 미상' }}
                 <span class="between-bar"></span>
                 {{ $songInfo['song']['genre'] }}
@@ -41,10 +40,12 @@
             <input type="radio" id="star1" name="score" value="1">
             <label for="star1">★</label>
         </div>
-        <textarea name="comment" class="recommends-comment" placeholder="코멘트를 남겨주세요!"></textarea>
-        <div class="buttons">
-            <button type="button" class="btn btn-cancel" onclick="confirmBack()">뒤로가기</button>
-            <button type="submit" class="btn btn-submit">추천</button>
+        <textarea name="comment" placeholder="코멘트를 남겨주세요!"
+                  class="w-full h-[120px] p-4 border-0 rounded-lg bg-[#f8f9fa] resize-none text-sm mb-4 placeholder:text-[#adb5bd] focus:outline-none"></textarea>
+        <div class="w-full flex justify-end gap-2">
+            <button type="button" class="py-2 px-4 rounded text-sm font-medium cursor-pointer bg-[#e9ecef] text-[#495057] hover:bg-[#c8c8c8] transition"
+                    onclick="confirmBack()">뒤로가기</button>
+            <button type="submit" class="py-2 px-4 rounded text-sm font-medium cursor-pointer bg-primary text-white hover:bg-primary-light transition">추천</button>
         </div>
     </form>
 </div>

@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@push('styles')
-<link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
-@endpush
-
 @section('content')
 @php
     $newAlbumSectionTitle = session('user') ? session('user.nickname') . '님이 추천한 아티스트의 신규 앨범' : '추천 많은 아티스트의 신규 앨범';
@@ -40,7 +36,7 @@
                 @for($i = 0; $i < 10; $i++)
                     <div class="skeleton-slide">
                         <div class="skeleton skeleton-card"></div>
-                        <div class="skeleton-footer">
+                        <div class="py-[15px] px-[30px] bg-white">
                             <div class="skeleton skeleton-title"></div>
                             <div class="skeleton skeleton-artist"></div>
                         </div>
@@ -51,18 +47,18 @@
     @endif
 </div>
 
-<div class="main-container">
-    <div class="new-album-section">
-        <h2>{{ $newAlbumSectionTitle }}</h2>
+<div class="md:w-[70%] md:max-w-[1200px] md:mx-auto md:px-[15px]">
+    <div class="mt-[30px]">
+        <h2 class="text-2xl font-bold mb-5">{{ $newAlbumSectionTitle }}</h2>
         @if(!empty($newAlbums))
-            <div class="new-album-container">
+            <div class="flex gap-4 py-4 overflow-x-auto scrollbar-hide">
                 @foreach($newAlbums as $newAlbum)
                     @php $artistName = implode(' & ', array_column($newAlbum['artists'], 'name')); @endphp
-                    <a class="album-card" href="/album/detail?id={{ $newAlbum['flo_id'] }}&new_album=true">
-                        <img src="{{ $newAlbum['img_url'] }}?size=350x350" loading="lazy" />
-                        <div class="album-card-content">
-                            <h3 class="album-card-title">{{ $newAlbum['title'] }}</h3>
-                            <p class="album-card-artist">{{ $artistName }}</p>
+                    <a class="w-[200px] flex-none rounded-lg shadow-md" href="/album/detail?id={{ $newAlbum['flo_id'] }}&new_album=true">
+                        <img src="{{ $newAlbum['img_url'] }}?size=350x350" loading="lazy" class="rounded-tl-lg rounded-tr-lg w-full" />
+                        <div class="w-[200px] p-2">
+                            <h3 class="font-semibold truncate">{{ $newAlbum['title'] }}</h3>
+                            <p class="truncate text-sm text-gray-500">{{ $artistName }}</p>
                         </div>
                     </a>
                 @endforeach
@@ -71,8 +67,8 @@
             <div class="skeleton-container" data-text="새로 나온 앨범이 있다면 이 곳에서 알려드릴게요!">
                 <div class="skeleton-scroll">
                     @for($i = 0; $i < 10; $i++)
-                        <div class="skeleton-album-card">
-                            <div class="skeleton skeleton-image"></div>
+                        <div class="rounded-lg shadow">
+                            <div class="skeleton w-48 h-48 rounded-tl-lg rounded-tr-lg"></div>
                             <div class="skeleton-content">
                                 <div class="skeleton skeleton-title"></div>
                                 <div class="skeleton skeleton-artist"></div>
@@ -84,18 +80,18 @@
         @endif
     </div>
 
-    <div class="artist-section">
-        <h2>{{ $artistSectionTitle }}</h2>
+    <div class="mt-[40px]">
+        <h2 class="text-2xl font-bold mb-5">{{ $artistSectionTitle }}</h2>
         @if(!empty($artists))
-            <div class="artist-container">
+            <div class="flex gap-4 py-4 overflow-x-auto scrollbar-hide">
                 @foreach($artists as $artist)
-                    <a class="artist-card" href="/artist/detail?id={{ $artist['flo_id'] }}">
-                        <img src="{{ $artist['img_url'] }}?size=350x350" loading="lazy" />
-                        <div class="artist-card-content">
-                            <p class="artist-card-name">{{ $artist['name'] }}</p>
-                            <div class="artist-card-recommend-count">
-                                <svg viewBox="0 0 24 24"><g class="style-scope yt-icon"><path d="M18.77,11h-4.23l1.52-4.94C16.38,5.03,15.54,4,14.38,4c-0.58,0-1.14,0.24-1.52,0.65L7,11H3v10h4h1h9.43 c1.06,0,1.98-0.67,2.19-1.61l1.34-6C21.23,12.15,20.18,11,18.77,11z M7,20H4v-8h3V20z M19.98,13.17l-1.34,6 C18.54,19.65,18.03,20,17.43,20H8v-8.61l5.6-6.06C13.79,5.12,14.08,5,14.38,5c0.26,0,0.5,0.11,0.63,0.3 c0.07,0.1,0.15,0.26,0.09,0.47l-1.52,4.94L13.18,12h1.35h4.23c0.41,0,0.8,0.17,1.03,0.46C19.92,12.61,20.05,12.86,19.98,13.17z" class="style-scope yt-icon"></path></g></svg>
-                                <span>{{ $artist['recommend_cnt'] }}</span>
+                    <a class="flex-none basis-48" href="/artist/detail?id={{ $artist['flo_id'] }}">
+                        <img src="{{ $artist['img_url'] }}?size=350x350" loading="lazy" class="aspect-square rounded-full w-full h-auto object-cover shadow-md" />
+                        <div class="p-2 text-center">
+                            <p class="font-semibold line-clamp-2">{{ $artist['name'] }}</p>
+                            <div class="flex items-center justify-center">
+                                <svg viewBox="0 0 24 24" class="h-5 w-5"><g class="style-scope yt-icon"><path d="M18.77,11h-4.23l1.52-4.94C16.38,5.03,15.54,4,14.38,4c-0.58,0-1.14,0.24-1.52,0.65L7,11H3v10h4h1h9.43 c1.06,0,1.98-0.67,2.19-1.61l1.34-6C21.23,12.15,20.18,11,18.77,11z M7,20H4v-8h3V20z M19.98,13.17l-1.34,6 C18.54,19.65,18.03,20,17.43,20H8v-8.61l5.6-6.06C13.79,5.12,14.08,5,14.38,5c0.26,0,0.5,0.11,0.63,0.3 c0.07,0.1,0.15,0.26,0.09,0.47l-1.52,4.94L13.18,12h1.35h4.23c0.41,0,0.8,0.17,1.03,0.46C19.92,12.61,20.05,12.86,19.98,13.17z" class="style-scope yt-icon"></path></g></svg>
+                                <span class="h-4 text-sm">{{ $artist['recommend_cnt'] }}</span>
                             </div>
                         </div>
                     </a>

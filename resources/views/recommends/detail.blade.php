@@ -1,26 +1,30 @@
 @extends('layouts.app')
 
-@push('styles')
-<link rel="stylesheet" type="text/css" href="{{ asset('css/recommendDetail.css') }}">
-@endpush
-
 @section('content')
-<div class="container">
-    <div class="artist-info">
-        <img src="{{ $recommendInfo['artists'][0]['img_url'] }}?size=200x200" onclick="window.location.href = '/artist/detail?id={{ $recommendInfo['artists'][0]['flo_id'] }}'">
+<div class="p-5 max-w-[500px] mx-auto flex flex-col items-center">
+    <div class="flex w-full items-center gap-2 mb-5">
+        <img src="{{ $recommendInfo['artists'][0]['img_url'] }}?size=200x200"
+             class="w-10 h-10 rounded cursor-pointer transition hover:opacity-80"
+             onclick="window.location.href = '/artist/detail?id={{ $recommendInfo['artists'][0]['flo_id'] }}'">
         <span>
             @foreach($recommendInfo['artists'] as $artist)
-                <span class="artist-name" onclick="window.location.href = '/artist/detail?id={{ $artist['flo_id'] }}'">{{ $artist['name'] }}</span>
+                <span class="text-sm text-[#333] cursor-pointer transition hover:text-primary artist-name"
+                      onclick="window.location.href = '/artist/detail?id={{ $artist['flo_id'] }}'">{{ $artist['name'] }}</span>
             @endforeach
         </span>
     </div>
-    <div class="music-platforms">
-        <a href="{{ $recommendInfo['url']['youtube'] }}" target="_blank" class="platform-btn platform-youtube">YouTube Music</a>
-        <a href="{{ $recommendInfo['url']['flo'] }}" target="_blank" class="platform-btn platform-flo">FLO</a>
-        <a href="{{ $recommendInfo['url']['spotify'] }}" target="_blank" class="platform-btn platform-spotify">Spotify</a>
+    <div class="flex justify-end w-full gap-[10px] mb-5 max-w-[600px]">
+        <a href="{{ $recommendInfo['url']['youtube'] }}" target="_blank"
+           class="flex items-center justify-center p-[10px] rounded border cursor-pointer flex-none sm:flex-1 border-youtube text-youtube">YouTube Music</a>
+        <a href="{{ $recommendInfo['url']['flo'] }}" target="_blank"
+           class="flex items-center justify-center p-[10px] rounded border cursor-pointer flex-none sm:flex-1 border-flo text-flo">FLO</a>
+        <a href="{{ $recommendInfo['url']['spotify'] }}" target="_blank"
+           class="flex items-center justify-center p-[10px] rounded border cursor-pointer flex-none sm:flex-1 border-spotify text-spotify">Spotify</a>
     </div>
-    <div class="song-img">
-        <img src="{{ $recommendInfo['album_img_url'] }}?size=500x500" onclick="window.location.href = '/song/detail?id={{ $recommendInfo['song_flo_id'] }}'">
+    <div class="w-full aspect-square mb-4 overflow-hidden relative">
+        <img src="{{ $recommendInfo['album_img_url'] }}?size=500x500"
+             class="w-full h-full object-cover cursor-pointer"
+             onclick="window.location.href = '/song/detail?id={{ $recommendInfo['song_flo_id'] }}'">
         <span class="share-btn">
             <span class="tooltip">공유하기</span>
             <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" fill="currentColor" viewBox="0 0 208 191.94">
@@ -28,11 +32,11 @@
             </svg>
         </span>
     </div>
-    <div class="song-info">
+    <div class="w-full text-left mb-4">
         <a href="/song/detail?id={{ $recommendInfo['song_flo_id'] }}">
-            <h2>{{ $recommendInfo['song_title'] }}</h2>
+            <h2 class="text-[20px] font-bold mb-2 text-[#333] hover:text-primary transition-colors">{{ $recommendInfo['song_title'] }}</h2>
         </a>
-        <p>
+        <p class="text-[13px] text-[#666] flex items-center gap-2">
             {{ $recommendInfo['release_date'] ?? '발매일 미상' }}
             <span class="between-bar"></span>
             {{ $recommendInfo['genre'] }}
@@ -40,18 +44,20 @@
             {{ $recommendInfo['play_time'] }}
         </p>
     </div>
-    <div class="recommend-info">
-        <div class="recommends-rating">
+    <div class="w-full flex flex-col items-center">
+        <div class="recommends-rating readonly">
             @foreach([5,4,3,2,1] as $star)
                 <input type="radio" id="star{{ $star }}" name="score" value="{{ $star }}" {{ $recommendInfo['score'] == $star ? 'checked' : '' }} disabled>
                 <label for="star{{ $star }}">★</label>
             @endforeach
         </div>
-        <textarea name="comment" class="recommends-comment" placeholder="작성된 코멘트가 없습니다." disabled>{{ $recommendInfo['comment'] }}</textarea>
-        <div class="recommends-user">추천인:
-            <a href="/mypage/user?id={{ $recommendInfo['user_id'] }}">{{ $recommendInfo['user_name'] }}</a>
+        <textarea name="comment" disabled
+                  class="w-full h-[120px] p-4 border-0 rounded-lg bg-[#f8f9fa] resize-none text-sm mb-4 placeholder:text-[#adb5bd] focus:outline-none"
+                  placeholder="작성된 코멘트가 없습니다.">{{ $recommendInfo['comment'] }}</textarea>
+        <div class="w-full text-sm text-[#666] text-right">추천인:
+            <a href="/mypage/user?id={{ $recommendInfo['user_id'] }}" class="hover:text-primary transition-colors">{{ $recommendInfo['user_name'] }}</a>
         </div>
-        <div class="recommend-date">추천일: {{ date('Y년 m월 d일', strtotime($recommendInfo['recommend_date'])) }}</div>
+        <div class="w-full text-sm text-[#666] text-right">추천일: {{ date('Y년 m월 d일', strtotime($recommendInfo['recommend_date'])) }}</div>
     </div>
 </div>
 @endsection
