@@ -10,7 +10,6 @@ class MainController extends Controller
 {
     public function index()
     {
-        abort(500);
         $recommends = Recommend::latestPerSong(10);
 
         $userId = session('user.id');
