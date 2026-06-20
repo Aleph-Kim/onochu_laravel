@@ -15,6 +15,12 @@ class FloApiService
     private const NEW_KPOP_ALBUM_PATH = '/api/meta/v1/album/KPOP/new';
     private const NEW_POP_ALBUM_PATH = '/api/meta/v1/album/POP/new';
     private const CACHE_TTL = 3600; // 1시간
+    private const REQUEST_HEADERS = [
+        'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+            . '(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'Accept'     => 'application/json, text/plain, */*',
+        'Referer'    => self::FLO_API_BASE . '/',
+    ];
 
     public function getSongsByKeyword(string $keyword): array
     {
@@ -84,7 +90,9 @@ class FloApiService
             return $cached;
         }
 
-        $response = Http::timeout(10)->get(self::FLO_API_BASE . $path);
+        $response = Http::withHeaders(self::REQUEST_HEADERS)
+            ->timeout(10)
+            ->get(self::FLO_API_BASE . $path);
 
         if ($response->failed()) {
             abort(500, 'FLO API 요청 실패');

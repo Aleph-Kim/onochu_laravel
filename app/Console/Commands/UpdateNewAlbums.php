@@ -47,7 +47,10 @@ class UpdateNewAlbums extends Command
 
     private function getNewAlbumData(): array
     {
+        $this->delay();
         $kpopData = $this->floApi->getNewKpopAlbum();
+
+        $this->delay();
         $popData  = $this->floApi->getNewPopAlbum();
 
         $this->info("K-POP 새 앨범 수: " . count($kpopData['albums_info']));
@@ -112,6 +115,7 @@ class UpdateNewAlbums extends Command
 
     private function updateArtistImgUrl(int $floId): void
     {
+        $this->delay();
         $floArtist = $this->floApi->getArtistByFloId($floId);
         $artist    = Artist::where('flo_id', $floId)->first();
 
@@ -121,5 +125,11 @@ class UpdateNewAlbums extends Command
                 'img_url'     => $this->imageService->uploadImage($floArtist['img_url'], 'artist'),
             ]);
         }
+    }
+
+    // API 요청 전 무작위 딜레이 추가
+    private function delay(): void
+    {
+        usleep(random_int(1_000_000, 3_000_000)); // 1~3초
     }
 }
