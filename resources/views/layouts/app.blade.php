@@ -12,7 +12,7 @@
 
 <body>
     <header class="w-full bg-white border-b border-gray-200 sticky top-0 z-[999]">
-        <div class="mx-auto px-[200px] lg:px-[50px] flex items-center justify-evenly max-sm:justify-between max-sm:px-[10px] h-[70px]">
+        <div class="mx-auto px-[10px] sm:px-[20px] md:px-[30px] lg:px-[50px] xl:px-[200px] flex items-center justify-between h-[70px]">
             <a id="logo" href="/" class="flex items-center text-primary text-[32px] font-eczar">
                 <img src="{{ asset('image/logo.png') }}" class="h-[40px] mr-[7px]">
                 Onochu
