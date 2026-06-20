@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RecommendsController;
+use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SongController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,9 @@ Route::get('/', [MainController::class, 'index']);
 Route::get('/search', [SearchController::class, 'index']);
 
 Route::get('/song/detail', [SongController::class, 'detail']);
+
+Route::get('/redirect/flo', [RedirectController::class, 'flo']);
+Route::get('/redirect/youtube', [RedirectController::class, 'youtube']);
 
 Route::get('/album/detail', [AlbumController::class, 'detail']);
 

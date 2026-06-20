@@ -31,6 +31,24 @@ class PlatformService
         ];
     }
 
+    public function getFloUrl(string $floId): string
+    {
+        return $this->isMobile()
+            ? "flomusic://view/content?type=TRACK&id={$floId}"
+            : "https://www.music-flo.com/detail/track/{$floId}/details";
+    }
+
+    public function getYoutubeUrl(string $keyword): string
+    {
+        if (! $this->isMobile()) {
+            return "https://music.youtube.com/search?q={$keyword}";
+        }
+
+        return $this->isAndroid()
+            ? "vnd.youtube.music:/search?q={$keyword}"
+            : "youtubemusic:/search?q={$keyword}";
+    }
+
     public function isMobile(): bool
     {
         $userAgent = request()->userAgent() ?? '';
