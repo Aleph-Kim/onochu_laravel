@@ -37,17 +37,17 @@
                    class="w-full p-[10px] border border-[#ddd] rounded-[10px] text-sm transition focus:outline-none focus:border-primary">
         </div>
     </div>
-    <div class="grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-6 min-h-[250px] max-sm:grid-cols-[repeat(auto-fill,minmax(140px,1fr))] max-sm:gap-5">
+    <div class="albums grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-6 min-h-[250px] max-sm:grid-cols-[repeat(auto-fill,minmax(140px,1fr))] max-sm:gap-5">
         @foreach($albumsInfo as $album)
-            <div class="flex flex-row items-start p-[15px] gap-[15px] rounded-lg transition hover:text-primary hover:bg-[#e3e3e3] cursor-pointer max-sm:flex-col max-sm:gap-[5px]"
+            <div class="album flex flex-row items-start p-[15px] gap-[15px] rounded-lg transition hover:text-primary hover:bg-[#e3e3e3] cursor-pointer max-sm:flex-col max-sm:gap-[5px]"
                  onclick="window.location.href = '/album/detail?id={{ $album['flo_id'] }}'">
                 <img src="{{ $album['img_url'] }}?/dims/resize/350x350/quality/90" class="max-w-[200px] rounded-lg max-sm:w-full max-sm:h-auto max-sm:max-w-[150px] aspect-square object-cover">
                 <div class="flex flex-col justify-center flex-1">
-                    <div class="font-bold text-[16px] mb-1">{{ $album['title'] }}</div>
+                    <div class="album-title font-bold text-[16px] mb-1">{{ $album['title'] }}</div>
                     <div class="text-sm text-[#666]">{{ implode(' & ', array_column($album['artists'], 'name')) }}</div>
                     <div class="pt-[10px] max-sm:pt-0">
-                        <div class="text-[13px] text-[#999] leading-[1.4]">{{ $album['type'] }}</div>
-                        <div class="text-[13px] text-[#999] leading-[1.4]">{{ $album['release_date'] ?? '발매일 미상' }}</div>
+                        <div class="album-type text-[13px] text-[#999] leading-[1.4]">{{ $album['type'] }}</div>
+                        <div class="album-date text-[13px] text-[#999] leading-[1.4]">{{ $album['release_date'] ?? '발매일 미상' }}</div>
                     </div>
                 </div>
             </div>

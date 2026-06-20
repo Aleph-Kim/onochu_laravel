@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="p-5 max-w-[500px] mx-auto">
-    <form class="flex flex-col items-center" action="/recommends/post" method="post">
+    <form class="recommends-form flex flex-col items-center" action="/recommends/post" method="post">
         @csrf
         <div class="flex w-full items-center gap-2 mb-5">
             <img src="{{ $songInfo['artists'][0]['img_url'] }}?/dims/resize/200x200/quality/90"
@@ -45,7 +45,7 @@
         <div class="w-full flex justify-end gap-2">
             <button type="button" class="py-2 px-4 rounded text-sm font-medium cursor-pointer bg-[#e9ecef] text-[#495057] hover:bg-[#c8c8c8] transition"
                     onclick="confirmBack()">뒤로가기</button>
-            <button type="submit" class="py-2 px-4 rounded text-sm font-medium cursor-pointer bg-primary text-white hover:bg-primary-light transition">추천</button>
+            <button type="submit" class="btn-submit py-2 px-4 rounded text-sm font-medium cursor-pointer bg-primary text-white hover:bg-primary-light transition">추천</button>
         </div>
     </form>
 </div>

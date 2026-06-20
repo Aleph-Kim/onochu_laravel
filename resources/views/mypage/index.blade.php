@@ -3,7 +3,7 @@
 @section('content')
 <div class="flex flex-col">
     <a class="profile-header relative h-[340px] overflow-hidden w-full" href="/album/detail?id={{ $userInfo['profile_album_flo_id'] }}">
-        <div class="absolute inset-0 bg-center bg-cover" style="background-image: url('{{ $userInfo['profile_img_url'] }}?size=1000x1000');"></div>
+        <div class="profile-background absolute inset-0 bg-center bg-cover" style="background-image: url('{{ $userInfo['profile_img_url'] }}?size=1000x1000');"></div>
         <div class="max-w-[1200px] mx-auto px-6 h-full flex flex-col justify-end pb-8">
             @if($genreList)
                 <p class="text-[#e6e6e6] text-lg z-[1]">{{ array_keys($genreList)[0] }} 장르를 좋아하는</p>
@@ -56,16 +56,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="songs-grid grid grid-cols-1 md:grid-cols-2 gap-4">
                     @foreach($songList as $song)
-                        <div class="flex items-center p-4 rounded-lg border border-[#e5e7eb] transition hover:shadow-md bg-white cursor-pointer">
+                        <div class="song-card flex items-center p-4 rounded-lg border border-[#e5e7eb] transition hover:shadow-md bg-white cursor-pointer">
                             <img src="{{ $song['album_img_url'] }}?/dims/resize/200x200/quality/90" alt="앨범커버"
                                  class="w-20 h-20 rounded object-cover mr-4" loading="lazy"
                                  onclick="window.location.href='/recommends/detail?id={{ $song['id'] }}'">
                             <div class="flex-grow" onclick="window.location.href='/recommends/detail?id={{ $song['id'] }}'">
-                                <h3 class="font-medium text-lg">{{ $song['song_title'] }}</h3>
+                                <h3 class="song-title font-medium text-lg">{{ $song['song_title'] }}</h3>
                                 <p class="text-[#6b7280]">{{ $song['artist_name'] }}</p>
-                                <p class="text-[#6b7280] text-sm">{{ date('Y.m.d', strtotime($song['recommend_date'])) }}</p>
+                                <p class="recommend-date text-[#6b7280] text-sm">{{ date('Y.m.d', strtotime($song['recommend_date'])) }}</p>
                             </div>
                             <div class="flex-none" onclick="setProfileAlbum('{{ $song['id'] }}')">
                                 <button class="py-2 px-4 rounded text-sm cursor-pointer bg-primary text-white hover:bg-primary-light transition">프로필 설정</button>
