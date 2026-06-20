@@ -1,23 +1,29 @@
-# Base Stage: PHP 확장 모듈 설치
-FROM php:8.3-fpm AS base
+# 확장 모듈과 Apache 설정을 담는 베이스 (builder, 최종 이미지가 공유)
+FROM php:8.3-apache AS base
 
 # 한국 시간대 설정
 ENV TZ=Asia/Seoul
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Laravel 필수 PHP 확장 모듈 설치
-# - libpng-dev: gd 빌드용 / libonig-dev: mbstring 빌드용
-#   (런타임 공유 라이브러리 libpng16, libonig5도 함께 설치됨)
+# 필요한 PHP 확장 모듈 설치 (gd, mbstring 빌드에 필요한 라이브러리 포함)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpng-dev libonig-dev \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd \
     && rm -rf /var/lib/apt/lists/*
 
+# mod_rewrite, mod_remoteip 모듈 활성화
+RUN a2enmod rewrite remoteip
 
-# Builder Stage: 의존성 설치 및 프론트엔드 빌드
+# DocumentRoot를 Laravel public 폴더로 변경
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
+    /etc/apache2/sites-available/*.conf /etc/apache2/apache2.conf
+
+
+# 의존성 설치와 프론트엔드 빌드를 담당하는 빌더
 FROM base AS builder
 
-# 빌드 전용 도구 설치 (Node.js: Vite 빌드 / git·unzip: Composer)
+# 빌드에만 쓰는 도구 설치 (Node.js, Composer 용)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl unzip git nodejs npm \
     && rm -rf /var/lib/apt/lists/*
@@ -27,35 +33,33 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 WORKDIR /var/www/html
 
-# 의존성 파일만 먼저 복사하여 레이어 캐시 활용 (소스 변경 시 재설치 방지)
-# --no-scripts: 이 시점엔 artisan 파일이 없으므로 post-autoload-dump 스크립트 비활성화
+# composer 라이브러리 설치 (의존성 파일 먼저 복사해서 캐시 활용)
 COPY composer.json composer.lock ./
 RUN composer install --no-interaction --prefer-dist --no-dev --no-scripts --no-autoloader
 
-# npm도 동일하게 락 파일 먼저 복사하여 캐시 활용
+# npm 라이브러리 설치 (락 파일 먼저 복사해서 캐시 활용)
 COPY package.json package-lock.json ./
 RUN npm ci
 
-# 소스 전체 복사
+# 애플리케이션 파일 복사
 COPY . .
 
-# 소스가 모두 있는 상태에서 최적화된 오토로더 생성 (package:discover 정상 실행)
+# 오토로더 최적화 (소스가 모두 있는 상태에서 실행)
 RUN composer dump-autoload --optimize --no-dev
 
-# Vite 프론트엔드 빌드 후 node_modules 제거
+# Vite 빌드 후 node_modules 제거
 RUN npm run build && rm -rf node_modules
 
 
-# Final Stage: 프로덕션 런타임 이미지
+# 빌드 결과물만 담은 최종 이미지 (Apache가 80포트로 서빙)
 FROM base
 
 WORKDIR /var/www/html
 
-# 빌드 스테이지에서 완성된 파일만 복사 (node_modules 미포함)
+# 빌더에서 완성된 파일만 복사
 COPY --from=builder /var/www/html .
 
-# 스토리지 및 캐시 디렉토리 권한 설정
+# 스토리지, 캐시 폴더 권한 설정
 RUN chown -R www-data:www-data storage bootstrap/cache
 
-# PHP-FPM 기본 포트
-EXPOSE 9000
+EXPOSE 80
