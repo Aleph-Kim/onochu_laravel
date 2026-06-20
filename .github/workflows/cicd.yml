@@ -1,0 +1,81 @@
+name: CI/CD Pipeline
+
+# main 브랜치 push 시 파이프라인 실행
+on:
+  push:
+    branches:
+      - main
+
+# 연속 push 시 진행 중인 이전 실행을 취소 (불필요한 빌드 시간 절약)
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Build: Docker 이미지 빌드 후 DockerHub에 push
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Docker BuildKit 활성화 (캐시 마운트 등 고급 기능 지원)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 이미지 빌드 및 push
+      # - SHA 태그: 특정 커밋으로 롤백 가능
+      # - latest 태그: 서버에서 항상 최신 이미지 pull
+      # - cache-from/to: GitHub Actions 캐시로 레이어 재사용 → 빌드 시간 단축
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/${{ secrets.PROJECT_NAME }}:${{ github.sha }}
+            ${{ secrets.DOCKER_USERNAME }}/${{ secrets.PROJECT_NAME }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # Deploy: 서버에 SSH 접속하여 최신 이미지로 컨테이너 교체
+  deploy:
+    runs-on: ubuntu-22.04
+    needs: build # build 완료 후 실행
+
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            # 최신 이미지 pull
+            docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.PROJECT_NAME }}:latest
+
+            # 기존 컨테이너 중지 및 삭제 (없을 경우 오류 무시)
+            docker stop ${{ secrets.PROJECT_NAME }} || true
+            docker rm ${{ secrets.PROJECT_NAME }} || true
+
+            # 새 컨테이너 실행
+            # - .env는 서버 파일을 볼륨으로 주입 (이미지에 포함하지 않음)
+            # - Nginx Proxy Manager와 같은 네트워크에 연결하여 컨테이너명:9000으로 FastCGI 통신
+            #   (호스트 포트 노출 불필요 → -p 생략)
+            # - --restart unless-stopped: 서버 재부팅 시 컨테이너 자동 재시작
+            docker run -d \
+              --name ${{ secrets.PROJECT_NAME }} \
+              --restart unless-stopped \
+              -v ${{ secrets.ENV_PATH }}:/var/www/html/.env \
+              --network ${{ secrets.NETWORK_NAME }} \
+              ${{ secrets.DOCKER_USERNAME }}/${{ secrets.PROJECT_NAME }}:latest
+
+            # 미사용 이미지 정리 (서버 디스크 누적 방지)
+            docker image prune -f
