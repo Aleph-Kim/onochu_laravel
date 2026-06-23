@@ -14,7 +14,7 @@
             </span>
         </section>
         <div class="text-center">
-            <a href="/" class="uppercase text-[13px] bg-[#bbb] py-[10px] px-[15px] text-white inline-block mr-[5px] mb-[5px] leading-[1.5] no-underline mt-[50px] tracking-[1px]">Home</a>
+            <a href="/" class="uppercase text-[13px] bg-primary py-[10px] px-[20px] rounded-full text-white inline-block mr-[5px] mb-[5px] leading-[1.5] no-underline mt-[50px] tracking-[1px] font-medium hover:bg-primary-light transition-colors">Home</a>
         </div>
     </div>
 @endsection

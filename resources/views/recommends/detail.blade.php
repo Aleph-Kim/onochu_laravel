@@ -2,26 +2,26 @@
 
 @section('content')
 <div class="p-5 max-w-[500px] mx-auto flex flex-col items-center">
-    <div class="flex w-full items-center gap-2 mb-5">
+    <div class="flex w-full items-center gap-3 mb-5">
         <img src="{{ $recommendInfo['artists'][0]['img_url'] }}?size=200x200"
-             class="w-10 h-10 rounded cursor-pointer transition hover:opacity-80"
+             class="w-10 h-10 rounded-full object-cover cursor-pointer transition hover:opacity-80 shadow-sm"
              onclick="window.location.href = '/artist/detail?id={{ $recommendInfo['artists'][0]['flo_id'] }}'">
         <span>
             @foreach($recommendInfo['artists'] as $artist)
-                <span class="text-sm text-[#333] cursor-pointer transition hover:text-primary artist-name"
+                <span class="text-sm text-[#333] font-medium cursor-pointer transition hover:text-primary artist-name"
                       onclick="window.location.href = '/artist/detail?id={{ $artist['flo_id'] }}'">{{ $artist['name'] }}</span>
             @endforeach
         </span>
     </div>
     <div class="flex justify-end w-full gap-[10px] mb-5 max-w-[600px]">
         <a href="{{ $recommendInfo['url']['youtube'] }}" target="_blank"
-           class="flex items-center justify-center p-[10px] rounded border cursor-pointer flex-none sm:flex-1 border-youtube text-youtube">YouTube Music</a>
+           class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-youtube text-youtube text-sm font-semibold hover:bg-youtube hover:text-white transition-colors">YouTube Music</a>
         <a href="{{ $recommendInfo['url']['flo'] }}" target="_blank"
-           class="flex items-center justify-center p-[10px] rounded border cursor-pointer flex-none sm:flex-1 border-flo text-flo">FLO</a>
+           class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-flo text-flo text-sm font-semibold hover:bg-flo hover:text-white transition-colors">FLO</a>
         <a href="{{ $recommendInfo['url']['spotify'] }}" target="_blank"
-           class="flex items-center justify-center p-[10px] rounded border cursor-pointer flex-none sm:flex-1 border-spotify text-spotify">Spotify</a>
+           class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-spotify text-spotify text-sm font-semibold hover:bg-spotify hover:text-white transition-colors">Spotify</a>
     </div>
-    <div class="w-full aspect-square mb-4 overflow-hidden relative">
+    <div class="w-full aspect-square mb-4 overflow-hidden relative rounded-2xl">
         <img src="{{ $recommendInfo['album_img_url'] }}?size=500x500"
              class="w-full h-full object-cover cursor-pointer"
              onclick="window.location.href = '/song/detail?id={{ $recommendInfo['song_flo_id'] }}'">
@@ -34,9 +34,9 @@
     </div>
     <div class="w-full text-left mb-4">
         <a href="/song/detail?id={{ $recommendInfo['song_flo_id'] }}">
-            <h2 class="text-[20px] font-bold mb-2 text-[#333] hover:text-primary transition-colors">{{ $recommendInfo['song_title'] }}</h2>
+            <h2 class="text-[20px] font-bold mb-2 text-[#111] tracking-tight hover:text-primary transition-colors">{{ $recommendInfo['song_title'] }}</h2>
         </a>
-        <p class="text-[13px] text-[#666] flex items-center gap-2">
+        <p class="text-[13px] text-[#8b8b9a] flex items-center gap-2">
             {{ $recommendInfo['release_date'] ?? '발매일 미상' }}
             <span class="between-bar"></span>
             {{ $recommendInfo['genre'] }}
@@ -52,12 +52,12 @@
             @endforeach
         </div>
         <textarea name="comment" disabled
-                  class="w-full h-[120px] p-4 border-0 rounded-lg bg-[#f8f9fa] resize-none text-sm mb-4 placeholder:text-[#adb5bd] focus:outline-none"
+                  class="w-full h-[120px] p-4 border-0 rounded-2xl bg-[#f0f0f8] resize-none text-sm mb-4 placeholder:text-[#b0b0c0] focus:outline-none"
                   placeholder="작성된 코멘트가 없습니다.">{{ $recommendInfo['comment'] }}</textarea>
-        <div class="w-full text-sm text-[#666] text-right">추천인:
-            <a href="/mypage/user?id={{ $recommendInfo['user_id'] }}" class="hover:text-primary transition-colors">{{ $recommendInfo['user_name'] }}</a>
+        <div class="w-full text-sm text-[#8b8b9a] text-right">추천인:
+            <a href="/mypage/user?id={{ $recommendInfo['user_id'] }}" class="hover:text-primary transition-colors font-medium">{{ $recommendInfo['user_name'] }}</a>
         </div>
-        <div class="w-full text-sm text-[#666] text-right">추천일: {{ date('Y년 m월 d일', strtotime($recommendInfo['recommend_date'])) }}</div>
+        <div class="w-full text-sm text-[#8b8b9a] text-right">추천일: {{ date('Y년 m월 d일', strtotime($recommendInfo['recommend_date'])) }}</div>
     </div>
 </div>
 @endsection
