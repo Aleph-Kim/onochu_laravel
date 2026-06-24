@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="flex flex-col bg-white">
-    <a class="profile-header relative h-[340px] overflow-hidden w-full rounded-b-[2rem]" @if(!empty($userInfo['profile_album_flo_id'])) href="/album/detail?id={{ $userInfo['profile_album_flo_id'] }}" @endif>
+    <a class="profile-header relative h-[340px] overflow-hidden w-full rounded-b-[2rem]" @if(!empty($userInfo['profile_album_flo_id'])) href="{{ route('album.detail', ['id' => $userInfo['profile_album_flo_id']]) }}" @endif>
         <div class="profile-background absolute inset-0 bg-center bg-cover" style="background-image: url('{{ $userInfo['profile_img_url'] }}?size=1000x1000');"></div>
         <div class="max-w-[1200px] mx-auto px-6 h-full flex flex-col justify-end pb-8">
             @if($genreList)
@@ -21,7 +21,7 @@
                         <h2 class="text-2xl font-bold mb-6 tracking-tight text-[#111]">좋아하는 아티스트</h2>
                         <div class="flex flex-col gap-3 max-h-[400px] overflow-y-auto scrollbar-hide">
                             @foreach($artistList as $artist)
-                                <a class="flex items-center p-4 rounded-2xl border border-[#ebebf0] transition-all hover:shadow-md hover:border-[#d8d8e8]" href="/artist/detail?id={{ $artist['flo_id'] }}">
+                                <a class="flex items-center p-4 rounded-2xl border border-[#ebebf0] transition-all hover:shadow-md hover:border-[#d8d8e8]" href="{{ route('artist.detail', ['id' => $artist['flo_id']]) }}">
                                     <img src="{{ $artist['img_url'] }}?/dims/resize/200x200/quality/90" alt="아티스트"
                                          class="w-16 h-16 rounded-full object-cover mr-4 shadow-sm">
                                     <div class="flex-grow">
@@ -61,8 +61,8 @@
                         <div class="song-card flex items-center p-4 rounded-2xl border border-[#ebebf0] transition-all hover:shadow-md hover:border-[#d8d8e8] bg-white cursor-pointer">
                             <img src="{{ $song['album_img_url'] }}?/dims/resize/200x200/quality/90" alt="앨범커버"
                                  class="w-20 h-20 rounded-xl object-cover mr-4" loading="lazy"
-                                 onclick="window.location.href='/recommends/detail?id={{ $song['id'] }}'">
-                            <div class="flex-grow" onclick="window.location.href='/recommends/detail?id={{ $song['id'] }}'">
+                                 onclick="window.location.href='{{ route('recommends.detail', ['id' => $song['id']]) }}'">
+                            <div class="flex-grow" onclick="window.location.href='{{ route('recommends.detail', ['id' => $song['id']]) }}'">
                                 <h3 class="song-title font-semibold text-lg text-[#111]">{{ $song['song_title'] }}</h3>
                                 <p class="text-[#8b8b9a] text-sm">{{ $song['artist_name'] }}</p>
                                 <p class="recommend-date text-[#b0b0c0] text-xs mt-1">{{ date('Y.m.d', strtotime($song['recommend_date'])) }}</p>
@@ -83,7 +83,7 @@
                 </svg>
                 <h2 class="text-2xl font-bold text-[#111] mb-2">아직 추천한 노래가 없어요</h2>
                 <p class="text-[#8b8b9a] mb-8">마음에 드는 노래를 추천하면 이 곳에 모아서 보여드릴게요.</p>
-                <a href="/" class="py-2 px-6 rounded-full text-sm font-semibold bg-primary text-white hover:bg-primary-light shadow-sm hover:shadow-md transition">노래 둘러보기</a>
+                <a href="{{ route('main') }}" class="py-2 px-6 rounded-full text-sm font-semibold bg-primary text-white hover:bg-primary-light shadow-sm hover:shadow-md transition">노래 둘러보기</a>
             </div>
         </div>
     @endif

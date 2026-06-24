@@ -11,28 +11,28 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SongController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [MainController::class, 'index']);
+Route::get('/', [MainController::class, 'index'])->name('main');
 
-Route::get('/search', [SearchController::class, 'index']);
+Route::get('/search', [SearchController::class, 'index'])->name('search');
 
-Route::get('/song/detail', [SongController::class, 'detail']);
+Route::get('/song/detail', [SongController::class, 'detail'])->name('song.detail');
 
 Route::get('/redirect/flo', [RedirectController::class, 'flo']);
 Route::get('/redirect/youtube', [RedirectController::class, 'youtube']);
 
-Route::get('/album/detail', [AlbumController::class, 'detail']);
+Route::get('/album/detail', [AlbumController::class, 'detail'])->name('album.detail');
 
-Route::get('/artist/detail', [ArtistController::class, 'detail']);
+Route::get('/artist/detail', [ArtistController::class, 'detail'])->name('artist.detail');
 
 Route::get('/auth/login', [AuthController::class, 'login'])->name('login');
 Route::get('/auth/callback', [AuthController::class, 'callback']);
-Route::get('/auth/logout', [AuthController::class, 'logout']);
+Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/login', [AuthController::class, 'login']);
 
-Route::get('/recommends', [RecommendsController::class, 'index']);
-Route::post('/recommends/post', [RecommendsController::class, 'post']);
-Route::get('/recommends/detail', [RecommendsController::class, 'detail']);
+Route::get('/recommends', [RecommendsController::class, 'index'])->name('recommends.index');
+Route::post('/recommends/post', [RecommendsController::class, 'post'])->name('recommends.post');
+Route::get('/recommends/detail', [RecommendsController::class, 'detail'])->name('recommends.detail');
 
-Route::get('/mypage', [MypageController::class, 'index']);
-Route::get('/mypage/user', [MypageController::class, 'user']);
-Route::post('/mypage/setProfileAlbum', [MypageController::class, 'setProfileAlbum']);
+Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
+Route::get('/mypage/user', [MypageController::class, 'user'])->name('mypage.user');
+Route::post('/mypage/setProfileAlbum', [MypageController::class, 'setProfileAlbum'])->name('mypage.setProfileAlbum');

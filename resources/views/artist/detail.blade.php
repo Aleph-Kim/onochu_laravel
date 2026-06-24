@@ -40,7 +40,7 @@
     <div class="albums grid grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-4 min-h-[250px] max-sm:grid-cols-[repeat(auto-fill,minmax(140px,1fr))] max-sm:gap-3">
         @foreach($albumsInfo as $album)
             <div class="album flex flex-row items-start p-[14px] gap-[14px] rounded-2xl border border-[#ebebf0] bg-white transition-all hover:shadow-md hover:border-[#d8d8e8] hover:text-primary cursor-pointer max-sm:flex-col max-sm:gap-[5px]"
-                 onclick="window.location.href = '/album/detail?id={{ $album['flo_id'] }}'">
+                 onclick="window.location.href = '{{ route('album.detail', ['id' => $album['flo_id']]) }}'">
                 <img src="{{ $album['img_url'] }}?/dims/resize/350x350/quality/90" class="max-w-[200px] rounded-xl max-sm:w-full max-sm:h-auto max-sm:max-w-[150px] aspect-square object-cover">
                 <div class="flex flex-col justify-center flex-1">
                     <div class="album-title font-bold text-[16px] mb-1 text-[#111]">{{ $album['title'] }}</div>

@@ -5,11 +5,11 @@
     <div class="flex w-full items-center gap-3 mb-5">
         <img src="{{ $recommendInfo['artists'][0]['img_url'] }}?size=200x200"
              class="w-10 h-10 rounded-full object-cover cursor-pointer transition hover:opacity-80 shadow-sm"
-             onclick="window.location.href = '/artist/detail?id={{ $recommendInfo['artists'][0]['flo_id'] }}'">
+             onclick="window.location.href = '{{ route('artist.detail', ['id' => $recommendInfo['artists'][0]['flo_id']]) }}'">
         <span>
             @foreach($recommendInfo['artists'] as $artist)
                 <span class="text-sm text-[#333] font-medium cursor-pointer transition hover:text-primary artist-name"
-                      onclick="window.location.href = '/artist/detail?id={{ $artist['flo_id'] }}'">{{ $artist['name'] }}</span>
+                      onclick="window.location.href = '{{ route('artist.detail', ['id' => $artist['flo_id']]) }}'">{{ $artist['name'] }}</span>
             @endforeach
         </span>
     </div>
@@ -24,7 +24,7 @@
     <div class="w-full aspect-square mb-4 overflow-hidden relative rounded-2xl">
         <img src="{{ $recommendInfo['album_img_url'] }}?size=500x500"
              class="w-full h-full object-cover cursor-pointer"
-             onclick="window.location.href = '/song/detail?id={{ $recommendInfo['song_flo_id'] }}'">
+             onclick="window.location.href = '{{ route('song.detail', ['id' => $recommendInfo['song_flo_id']]) }}'">
         <span class="share-btn">
             <span class="tooltip">공유하기</span>
             <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" fill="currentColor" viewBox="0 0 208 191.94">
@@ -33,7 +33,7 @@
         </span>
     </div>
     <div class="w-full text-left mb-4">
-        <a href="/song/detail?id={{ $recommendInfo['song_flo_id'] }}">
+        <a href="{{ route('song.detail', ['id' => $recommendInfo['song_flo_id']]) }}">
             <h2 class="text-[20px] font-bold mb-2 text-[#111] tracking-tight hover:text-primary transition-colors">{{ $recommendInfo['song_title'] }}</h2>
         </a>
         <p class="text-[13px] text-[#8b8b9a] flex items-center gap-2">
@@ -55,7 +55,7 @@
                   class="w-full h-[120px] p-4 border-0 rounded-2xl bg-[#f0f0f8] resize-none text-sm mb-4 placeholder:text-[#b0b0c0] focus:outline-none"
                   placeholder="작성된 코멘트가 없습니다.">{{ $recommendInfo['comment'] }}</textarea>
         <div class="w-full text-sm text-[#8b8b9a] text-right">추천인:
-            <a href="/mypage/user?id={{ $recommendInfo['user_id'] }}" class="hover:text-primary transition-colors font-medium">{{ $recommendInfo['user_name'] }}</a>
+            <a href="{{ route('mypage.user', ['id' => $recommendInfo['user_id']]) }}" class="hover:text-primary transition-colors font-medium">{{ $recommendInfo['user_name'] }}</a>
         </div>
         <div class="w-full text-sm text-[#8b8b9a] text-right">추천일: {{ date('Y년 m월 d일', strtotime($recommendInfo['recommend_date'])) }}</div>
     </div>

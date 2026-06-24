@@ -15,7 +15,7 @@
 <body>
     <header class="w-full bg-white/80 backdrop-blur-xl border-b border-[#ebebf0] sticky top-0 z-[999]">
         <div class="mx-auto px-[10px] sm:px-[20px] md:px-[30px] lg:px-[50px] xl:px-[200px] flex items-center justify-between h-[70px]">
-            <a id="logo" href="/" class="flex items-center text-primary text-[32px] font-eczar">
+            <a id="logo" href="{{ route('main') }}" class="flex items-center text-primary text-[32px] font-eczar">
                 <img src="{{ asset('image/logo.png') }}" class="h-[40px] mr-[7px]">
                 Onochu
             </a>
@@ -24,7 +24,7 @@
                 <button id="searchFormHideBtn" class="hidden w-[30px] h-[30px] mr-[10px]" onclick="hiddenSearchForm()">
                     <svg viewBox="0 0 24 24" class="fill-[#b0b0c0]"><g mirror-in-rtl=""><path d="M21,11v1H5.64l6.72,6.72l-0.71,0.71L3.72,11.5l7.92-7.92l0.71,0.71L5.64,11H21z" class="style-scope yt-icon"></path></g></svg>
                 </button>
-                <form id="searchForm" class="relative w-[300px] mx-auto max-sm:w-4/5 max-sm:mx-0 max-sm:hidden" action="/search">
+                <form id="searchForm" class="relative w-[300px] mx-auto max-sm:w-4/5 max-sm:mx-0 max-sm:hidden" action="{{ route('search') }}">
                     <input type="text" name="q" placeholder="검색어를 입력하세요" value="{{ request('q') }}" required
                         class="w-full py-[9px] pl-[16px] pr-[42px] box-border bg-[#f0f0f8] border-0 rounded-full text-sm transition-shadow focus:shadow-[0_0_0_2px_rgba(91,91,214,0.15)] focus:outline-none placeholder:text-[#b0b0c0]" />
                     <button class="w-[38px] p-[7px] absolute right-0 top-1/2 -translate-y-1/2 cursor-pointer flex items-center">
@@ -40,12 +40,12 @@
                 <div class="ml-[30px] max-sm:ml-0">
                     @if(session('user'))
                         @if(request()->is('mypage'))
-                            <a href="/auth/logout" type="button" class="px-4 py-1.5 text-[#555] text-sm font-medium cursor-pointer hover:text-primary transition-colors duration-150">로그아웃</a>
+                            <a href="{{ route('logout') }}" type="button" class="px-4 py-1.5 text-[#555] text-sm font-medium cursor-pointer hover:text-primary transition-colors duration-150">로그아웃</a>
                         @else
-                            <a href="/mypage" type="button" class="px-4 py-1.5 text-[#555] text-sm font-medium cursor-pointer hover:text-primary transition-colors duration-150">마이페이지</a>
+                            <a href="{{ route('mypage.index') }}" type="button" class="px-4 py-1.5 text-[#555] text-sm font-medium cursor-pointer hover:text-primary transition-colors duration-150">마이페이지</a>
                         @endif
                     @else
-                        <a href="/login" type="button" class="px-4 py-1.5 text-[#555] text-sm font-medium cursor-pointer hover:text-primary transition-colors duration-150">로그인</a>
+                        <a href="{{ route('login') }}" type="button" class="px-4 py-1.5 text-[#555] text-sm font-medium cursor-pointer hover:text-primary transition-colors duration-150">로그인</a>
                     @endif
                 </div>
             </div>

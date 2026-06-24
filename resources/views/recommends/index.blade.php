@@ -2,16 +2,16 @@
 
 @section('content')
 <div class="p-5 max-w-[500px] mx-auto">
-    <form class="recommends-form flex flex-col items-center" action="/recommends/post" method="post">
+    <form class="recommends-form flex flex-col items-center" action="{{ route('recommends.post') }}" method="post">
         @csrf
         <div class="flex w-full items-center gap-3 mb-5">
             <img src="{{ $songInfo['artists'][0]['img_url'] }}?/dims/resize/200x200/quality/90"
                  class="w-10 h-10 rounded-full object-cover cursor-pointer transition hover:opacity-80 shadow-sm"
-                 onclick="window.location.href = '/artist/detail?id={{ $songInfo['artists'][0]['flo_id'] }}'">
+                 onclick="window.location.href = '{{ route('artist.detail', ['id' => $songInfo['artists'][0]['flo_id']]) }}'">
             <span>
                 @foreach($songInfo['artists'] as $artist)
                     <span class="text-sm text-[#333] font-medium cursor-pointer transition hover:text-primary artist-name"
-                          onclick="window.location.href = '/artist/detail?id={{ $artist['flo_id'] }}'">{{ $artist['name'] }}</span>
+                          onclick="window.location.href = '{{ route('artist.detail', ['id' => $artist['flo_id']]) }}'">{{ $artist['name'] }}</span>
                 @endforeach
             </span>
         </div>

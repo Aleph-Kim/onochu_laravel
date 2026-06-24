@@ -7,14 +7,14 @@
             <h1 class="text-2xl font-bold mb-[10px] tracking-tight text-[#111]">{{ $songInfo['song']['title'] }}</h1>
             <div>
                 @foreach($songInfo['artists'] as $artist)
-                    <a class="text-[#8b8b9a] mb-[5px] hover:text-primary cursor-pointer transition-colors font-medium" href="/artist/detail?id={{ $artist['flo_id'] }}">{{ $artist['name'] }}</a>
+                    <a class="text-[#8b8b9a] mb-[5px] hover:text-primary cursor-pointer transition-colors font-medium" href="{{ route('artist.detail', ['id' => $artist['flo_id']]) }}">{{ $artist['name'] }}</a>
                 @endforeach
             </div>
-            <a class="text-[#b0b0c0] transition hover:text-primary cursor-pointer mt-1" href="/album/detail?id={{ $songInfo['album']['flo_id'] }}">{{ $songInfo['album']['title'] }}</a>
+            <a class="text-[#b0b0c0] transition hover:text-primary cursor-pointer mt-1" href="{{ route('album.detail', ['id' => $songInfo['album']['flo_id']]) }}">{{ $songInfo['album']['title'] }}</a>
         </div>
         @if($songInfo['artists'][0]['img_url'])
             <div class="w-[60px] h-[60px] rounded-full overflow-hidden flex-none shadow-[0_4px_12px_rgba(0,0,20,0.12)]">
-                <a href="/artist/detail?id={{ $songInfo['artists'][0]['flo_id'] }}">
+                <a href="{{ route('artist.detail', ['id' => $songInfo['artists'][0]['flo_id']]) }}">
                     <img src="{{ $songInfo['artists'][0]['img_url'] }}?/dims/resize/200x200/quality/90" alt="Artist Profile" class="w-full h-full object-cover">
                 </a>
             </div>
@@ -66,7 +66,7 @@
             @endif
         </div>
         <div class="flex justify-end my-[10px]">
-            <a class="inline-block py-[10px] px-[24px] rounded-full cursor-pointer transition-all text-white bg-primary hover:bg-primary-light font-semibold shadow-sm hover:shadow-md" href="/recommends?id={{ $songInfo['song']['flo_id'] }}">추천하기</a>
+            <a class="inline-block py-[10px] px-[24px] rounded-full cursor-pointer transition-all text-white bg-primary hover:bg-primary-light font-semibold shadow-sm hover:shadow-md" href="{{ route('recommends.index', ['id' => $songInfo['song']['flo_id']]) }}">추천하기</a>
         </div>
     </div>
 </div>

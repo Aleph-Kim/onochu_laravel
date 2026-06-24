@@ -14,7 +14,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         if (session('user')) {
-            return redirect('/');
+            return redirect()->route('main');
         }
 
         $params = [
@@ -45,13 +45,13 @@ class AuthController extends Controller
             return redirect($request->cookie('last_url'))->cookie('last_url', '', -1);
         }
 
-        return redirect('/');
+        return redirect()->route('main');
     }
 
     public function logout()
     {
         session()->forget('user');
-        return redirect('/');
+        return redirect()->route('main');
     }
 
     private function getAccessToken(string $code): string

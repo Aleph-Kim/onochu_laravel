@@ -11,7 +11,7 @@ class MypageController extends Controller
     public function index(Request $request)
     {
         if (!session('user')) {
-            return redirect('/login')->cookie('last_url', '/mypage', 3600);
+            return redirect()->route('login')->cookie('last_url', '/mypage', 3600);
         }
 
         $data = $this->getMypageInfo(session('user.id'));
@@ -24,11 +24,11 @@ class MypageController extends Controller
         $userId = (int) $request->input('id');
 
         if (!$userId) {
-            return redirect('/')->with('error', '잘못된 요청입니다.');
+            return redirect()->route('main')->with('error', '잘못된 요청입니다.');
         }
 
         if ($userId === session('user.id')) {
-            return redirect('/mypage');
+            return redirect()->route('mypage.index');
         }
 
         $data = $this->getMypageInfo($userId);

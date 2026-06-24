@@ -10,7 +10,7 @@
     @if(!empty($recommends))
         <div class="music-slider">
             @foreach($recommends as $recommend)
-                <a class="music-slide" href="/recommends/detail?id={{ $recommend['id'] }}">
+                <a class="music-slide" href="{{ route('recommends.detail', ['id' => $recommend['id']]) }}">
                     <div class="music-card-wrap">
                         <div class="music-card-box">
                             <div class="music-card-body">
@@ -56,7 +56,7 @@
             <div class="flex gap-4 py-4 overflow-x-auto scrollbar-hide">
                 @foreach($newAlbums as $newAlbum)
                     @php $artistName = implode(' & ', array_column($newAlbum['artists'], 'name')); @endphp
-                    <a class="w-[200px] flex-none rounded-2xl shadow-sm border border-[#ebebf0] bg-white overflow-hidden hover:shadow-md transition-shadow" href="/album/detail?id={{ $newAlbum['flo_id'] }}&new_album=true">
+                    <a class="w-[200px] flex-none rounded-2xl shadow-sm border border-[#ebebf0] bg-white overflow-hidden hover:shadow-md transition-shadow" href="{{ route('album.detail', ['id' => $newAlbum['flo_id'], 'new_album' => 'true']) }}">
                         <img src="{{ $newAlbum['img_url'] }}?size=350x350" loading="lazy" class="w-full" />
                         <div class="w-[200px] p-3">
                             <h3 class="font-semibold truncate text-[#111]">{{ $newAlbum['title'] }}</h3>
@@ -87,7 +87,7 @@
         @if(!empty($artists))
             <div class="flex gap-4 py-4 overflow-x-auto scrollbar-hide">
                 @foreach($artists as $artist)
-                    <a class="flex-none basis-48" href="/artist/detail?id={{ $artist['flo_id'] }}">
+                    <a class="flex-none basis-48" href="{{ route('artist.detail', ['id' => $artist['flo_id']]) }}">
                         <img src="{{ $artist['img_url'] }}?size=350x350" loading="lazy" class="aspect-square rounded-full w-full h-auto object-cover shadow-[0_4px_16px_rgba(0,0,20,0.12)]" />
                         <div class="p-2 text-center">
                             <p class="font-semibold line-clamp-2 text-[#111]">{{ $artist['name'] }}</p>

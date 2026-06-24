@@ -11,7 +11,7 @@ class CheckLogin
     public function handle(Request $request, Closure $next): Response
     {
         if (!session('user')) {
-            return redirect('/login')
+            return redirect()->route('login')
                 ->cookie('last_url', $request->getRequestUri(), 60);
         }
 

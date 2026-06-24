@@ -20,7 +20,7 @@ class RecommendsController extends Controller
     public function index(Request $request)
     {
         if (!session('user')) {
-            return redirect('/login')->cookie('last_url', $request->getRequestUri(), 3600);
+            return redirect()->route('login')->cookie('last_url', $request->getRequestUri(), 3600);
         }
 
         $songId = (int) $request->input('id');
@@ -38,7 +38,7 @@ class RecommendsController extends Controller
     public function post(Request $request)
     {
         if (!session('user')) {
-            return redirect('/login')->cookie('last_url', '/recommends', 3600);
+            return redirect()->route('login')->cookie('last_url', '/recommends', 3600);
         }
 
         $songInfo = session('song_info');
@@ -85,7 +85,7 @@ class RecommendsController extends Controller
             'comment' => $request->input('comment'),
         ]);
 
-        return redirect('/recommends/detail?id=' . $recommend->id)
+        return redirect()->route('recommends.detail', ['id' => $recommend->id])
             ->with('message', '추천이 저장되었습니다.');
     }
 
