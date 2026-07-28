@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('albums:update-new')->dailyAt('12:00');
         $schedule->command('albums:update-new')->dailyAt('18:00');
+        $schedule->command('images:retry-missing')->dailyAt('00:00');
     }
 
     /**

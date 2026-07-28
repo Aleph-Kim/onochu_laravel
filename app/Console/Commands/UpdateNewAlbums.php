@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Console\Commands\Concerns\DelaysApiRequests;
 use App\Models\Artist;
 use App\Models\NewAlbum;
 use App\Models\NewAlbumArtist;
@@ -12,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 
 class UpdateNewAlbums extends Command
 {
+    use DelaysApiRequests;
+
     protected $signature   = 'albums:update-new';
     protected $description = '추천을 1번 이상 받은 아티스트의 새 앨범을 new_albums 테이블에 저장';
 
@@ -125,11 +128,5 @@ class UpdateNewAlbums extends Command
                 'img_url'     => $this->imageService->uploadImage($floArtist['img_url'], 'artist'),
             ]);
         }
-    }
-
-    // API 요청 전 무작위 딜레이 추가
-    private function delay(): void
-    {
-        usleep(random_int(1_000_000, 3_000_000)); // 1~3초
     }
 }
