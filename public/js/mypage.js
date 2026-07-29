@@ -74,8 +74,8 @@ function bindEvents() {
     // 정렬 토글
     sortToggle.addEventListener('change', () => {
         currentSort = sortToggle.checked ? 'oldest' : 'latest';
-        latestLabel.classList.toggle('active', !sortToggle.checked);
-        oldestLabel.classList.toggle('active', sortToggle.checked);
+        setToggleLabelActive(latestLabel, !sortToggle.checked);
+        setToggleLabelActive(oldestLabel, sortToggle.checked);
         renderSongs();
     });
 

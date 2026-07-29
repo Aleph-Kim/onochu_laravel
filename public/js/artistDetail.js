@@ -54,7 +54,7 @@ function bindEvents() {
 
     // 셀렉터 토글
     selectedOption.addEventListener('click', () =>
-        optionsContainer.classList.toggle('show')
+        optionsContainer.classList.toggle('hidden')
     );
 
     // 옵션 선택
@@ -62,21 +62,21 @@ function bindEvents() {
         option.addEventListener('click', () => {
             currentType = option.dataset.type;
             selectedOption.textContent = option.textContent;
-            optionsContainer.classList.remove('show');
+            optionsContainer.classList.add('hidden');
             renderAlbums();
         })
     );
 
     // 셀렉터 외부 클릭 시 닫기
     document.addEventListener('click', e => {
-        if (!selector.contains(e.target)) optionsContainer.classList.remove('show');
+        if (!selector.contains(e.target)) optionsContainer.classList.add('hidden');
     });
 
     // 정렬 토글
     sortToggle.addEventListener('change', () => {
         currentSort = sortToggle.checked ? 'oldest' : 'latest';
-        latestLabel.classList.toggle('active', !sortToggle.checked);
-        oldestLabel.classList.toggle('active', sortToggle.checked);
+        setToggleLabelActive(latestLabel, !sortToggle.checked);
+        setToggleLabelActive(oldestLabel, sortToggle.checked);
         renderAlbums();
     });
 

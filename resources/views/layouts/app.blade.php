@@ -12,7 +12,7 @@
     @stack('styles')
 </head>
 
-<body>
+<body class="break-keep bg-bg font-sans antialiased [font-feature-settings:'calt'_1]">
     <header class="w-full bg-white/80 backdrop-blur-xl border-b border-[#ebebf0] sticky top-0 z-[999]">
         <div class="mx-auto px-[10px] sm:px-[20px] md:px-[30px] lg:px-[50px] xl:px-[200px] flex items-center justify-between h-[70px]">
             <a id="logo" href="{{ route('main') }}" class="flex items-center text-primary text-[32px] font-eczar">
@@ -34,7 +34,7 @@
             </div>
 
             <div id="rightBtnBox" class="flex items-center">
-                <button class="mobile-btn-search" onclick="showSearchForm()">
+                <button class="hidden h-[34px] w-[34px] max-md:block" onclick="showSearchForm()">
                     <svg viewBox="0 0 24 24" class="fill-[#b0b0c0]"><g><path d="M20.87,20.17l-5.59-5.59C16.35,13.35,17,11.75,17,10c0-3.87-3.13-7-7-7s-7,3.13-7,7s3.13,7,7,7c1.75,0,3.35-0.65,4.58-1.71 l5.59,5.59L20.87,20.17z M10,16c-3.31,0-6-2.69-6-6s2.69-6,6-6s6,2.69,6,6S13.31,16,10,16z"></path></g></svg>
                 </button>
                 <div class="ml-[30px] max-sm:ml-0">
@@ -52,12 +52,12 @@
         </div>
     </header>
 
-    <main>
+    <main class="w-[70%] max-w-[1200px] mx-auto my-0 pt-6 px-[15px] pb-[60px] min-h-[calc(100vh-71px)] max-md:w-full max-md:px-[10px] max-md:py-0 max-[480px]:p-0">
         @yield('content')
     </main>
 
-    <div class="loader-container">
-        <div class="loader"></div>
+    <div class="loader-container fixed top-0 left-0 w-screen h-screen hidden items-center justify-center bg-black/40 backdrop-blur-sm">
+        <div class="loader relative w-[120px] h-[90px] mx-auto my-0 before:content-[''] before:absolute before:bottom-[30px] before:left-[50px] before:h-[30px] before:w-[30px] before:rounded-full before:bg-primary before:animate-[loading-bounce_0.5s_ease-in-out_infinite_alternate] after:content-[''] after:absolute after:right-0 after:top-0 after:h-[7px] after:w-[45px] after:rounded after:shadow-[0_5px_0_#f2f2f2,-35px_50px_0_#f2f2f2,-70px_95px_0_#f2f2f2] after:animate-[loading-step_1s_ease-in-out_infinite]"></div>
     </div>
     <script src="{{ asset('js/layout.js') }}"></script>
     @stack('scripts')

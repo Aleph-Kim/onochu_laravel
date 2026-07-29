@@ -28,6 +28,38 @@ function confirmBack() {
 }
 
 /**
+ * 정렬 토글 라벨의 활성/비활성 스타일을 전환하는 함수
+ *
+ * @param {HTMLElement} label - 대상 라벨 엘리먼트
+ * @param {boolean} isActive - 활성 여부
+ */
+function setToggleLabelActive(label, isActive) {
+    if (isActive) {
+        label.classList.remove('text-[#8b8b9a]');
+        label.classList.add('text-primary', 'font-semibold');
+    } else {
+        label.classList.remove('text-primary', 'font-semibold');
+        label.classList.add('text-[#8b8b9a]');
+    }
+}
+
+/**
+ * 커버/가사 토글 버튼의 활성/비활성 스타일을 전환하는 함수
+ *
+ * @param {HTMLElement} btn - 대상 버튼 엘리먼트
+ * @param {boolean} isActive - 활성 여부
+ */
+function setToggleBtnActive(btn, isActive) {
+    if (isActive) {
+        btn.classList.remove('text-[#8b8b9a]');
+        btn.classList.add('bg-white', 'text-[#333333]', 'shadow-[0_1px_3px_rgba(0,0,0,0.1)]');
+    } else {
+        btn.classList.remove('bg-white', 'text-[#333333]', 'shadow-[0_1px_3px_rgba(0,0,0,0.1)]');
+        btn.classList.add('text-[#8b8b9a]');
+    }
+}
+
+/**
  * 한글 문자열에서 초성, 중성, 종성을 추출하는 함수
  * 
  * @param {string} str - 변환할 문자열

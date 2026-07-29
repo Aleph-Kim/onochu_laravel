@@ -4,17 +4,19 @@
  * @param {String} view 노출할 요소 (cover || lyrics)
  */
 function toggleView(view) {
-    const container = document.querySelector('.album-container');
+    const overlay = document.querySelector('.lyrics-overlay');
     const coverBtn = document.querySelector('.cover-btn');
     const lyricsBtn = document.querySelector('.lyrics-btn');
 
     if (view === 'cover') {
-        container.classList.remove('lyrics-active');
-        lyricsBtn.classList.remove('active');
-        coverBtn.classList.add('active');
+        overlay.classList.remove('opacity-100', 'overflow-y-auto');
+        overlay.classList.add('opacity-0');
+        setToggleBtnActive(lyricsBtn, false);
+        setToggleBtnActive(coverBtn, true);
     } else {
-        container.classList.add('lyrics-active');
-        lyricsBtn.classList.add('active');
-        coverBtn.classList.remove('active');
+        overlay.classList.remove('opacity-0');
+        overlay.classList.add('opacity-100', 'overflow-y-auto');
+        setToggleBtnActive(lyricsBtn, true);
+        setToggleBtnActive(coverBtn, false);
     }
 }

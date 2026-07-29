@@ -6,23 +6,23 @@
     $artistSectionTitle = session('user') ? session('user.nickname') . '님이 추천한 아티스트' : '추천 많은 아티스트';
 @endphp
 
-<div class="slide-container">
+<div class="overflow-hidden">
     @if(!empty($recommends))
-        <div class="music-slider">
+        <div class="music-slider py-[60px] overflow-visible focus:outline-none">
             @foreach($recommends as $recommend)
-                <a class="music-slide" href="{{ route('recommends.detail', ['id' => $recommend['id']]) }}">
-                    <div class="music-card-wrap">
-                        <div class="music-card-box">
-                            <div class="music-card-body">
-                                <span class="music-card-artist-img">
-                                    <img src="{{ $recommend['artist_img_url'] }}?size=350x350" loading="lazy">
+                <a class="group [&.is-selected]:z-10" href="{{ route('recommends.detail', ['id' => $recommend['id']]) }}">
+                    <div class="p-[15px] transition-transform duration-300 group-[&.is-selected]:scale-[1.3] max-[480px]:group-[&.is-selected]:scale-110">
+                        <div class="w-[300px] overflow-hidden shadow-[0_8px_24px_rgba(0,0,40,0.12)] rounded-2xl transition-all duration-[400ms] bg-white">
+                            <div class="group/body block h-[300px] w-[300px] bg-center bg-cover overflow-hidden transition-all duration-[400ms] relative cursor-pointer">
+                                <span class="h-[100px] w-[100px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 opacity-0 transition-opacity duration-200 group-[&.is-selected]:group-hover/body:opacity-100">
+                                    <img src="{{ $recommend['artist_img_url'] }}?size=350x350" loading="lazy" class="rounded-full w-full h-full object-cover">
                                 </span>
-                                <div class="music-card-bg" style="background-image: url({{ $recommend['album_img_url'] }}?size=500x500);"></div>
+                                <div class="h-full w-full bg-cover absolute top-0 transition-all duration-200 group-[&.is-selected]:group-hover/body:brightness-50" style="background-image: url({{ $recommend['album_img_url'] }}?size=500x500);"></div>
                             </div>
-                            <div class="music-card-footer">
+                            <div class="pt-3.5 px-5 pb-4 border-0 bg-white relative flex">
                                 <div>
-                                    <span class="music-card-title">{{ $recommend['song_title'] }}</span>
-                                    <span class="music-card-artist-name">{{ $recommend['artist_name'] }}</span>
+                                    <span class="block leading-[1.3] font-bold text-sm text-primary">{{ $recommend['song_title'] }}</span>
+                                    <span class="block leading-[1.3] text-xs text-[#8b8b9a]">{{ $recommend['artist_name'] }}</span>
                                 </div>
                             </div>
                         </div>
@@ -31,15 +31,15 @@
             @endforeach
         </div>
     @else
-        <div class="skeleton-container" data-text="다른 유저들의 추천 노래를 이 곳에서 보여드릴게요!">
-            <div class="skeleton-scroll">
+        <div class="flex gap-4 p-2.5 overflow-hidden relative before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-black/25 before:text-white before:text-xl before:rounded-2xl before:absolute before:top-0 before:left-0 before:z-10 before:text-center" data-text="다른 유저들의 추천 노래를 이 곳에서 보여드릴게요!">
+            <div class="flex animate-[scroll_10s_linear_infinite] gap-4 mb-2.5">
                 @for($i = 0; $i < 10; $i++)
-                    <div class="skeleton-slide">
+                    <div class="w-[330px] p-[15px] shrink-0">
                         <div class="rounded-2xl overflow-hidden shadow-[0_8px_24px_rgba(0,0,40,0.12)] bg-white">
-                            <div class="skeleton skeleton-card"></div>
+                            <div class="w-full h-[300px] animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-[#f0f0f5] from-[25%] via-[#e8e8f0] via-[50%] to-[#f0f0f5] to-[75%] bg-[length:200%_100%]"></div>
                             <div class="py-[14px] px-[20px] bg-white">
-                                <div class="skeleton skeleton-title"></div>
-                                <div class="skeleton skeleton-artist"></div>
+                                <div class="h-4 mb-2 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-[#f0f0f5] from-[25%] via-[#e8e8f0] via-[50%] to-[#f0f0f5] to-[75%] bg-[length:200%_100%]"></div>
+                                <div class="h-[0.8rem] rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-[#f0f0f5] from-[25%] via-[#e8e8f0] via-[50%] to-[#f0f0f5] to-[75%] bg-[length:200%_100%]"></div>
                             </div>
                         </div>
                     </div>
@@ -66,14 +66,14 @@
                 @endforeach
             </div>
         @else
-            <div class="skeleton-container" data-text="새로 나온 앨범이 있다면 이 곳에서 알려드릴게요!">
-                <div class="skeleton-scroll">
+            <div class="flex gap-4 p-2.5 overflow-hidden relative before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-black/25 before:text-white before:text-xl before:rounded-2xl before:absolute before:top-0 before:left-0 before:z-10 before:text-center" data-text="새로 나온 앨범이 있다면 이 곳에서 알려드릴게요!">
+                <div class="flex animate-[scroll_10s_linear_infinite] gap-4 mb-2.5">
                     @for($i = 0; $i < 10; $i++)
                         <div class="rounded-2xl shadow-sm border border-[#ebebf0] bg-white overflow-hidden">
-                            <div class="skeleton w-48 h-48"></div>
-                            <div class="skeleton-content">
-                                <div class="skeleton skeleton-title"></div>
-                                <div class="skeleton skeleton-artist"></div>
+                            <div class="w-48 h-48 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-[#f0f0f5] from-[25%] via-[#e8e8f0] via-[50%] to-[#f0f0f5] to-[75%] bg-[length:200%_100%]"></div>
+                            <div class="p-2">
+                                <div class="h-4 mb-2 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-[#f0f0f5] from-[25%] via-[#e8e8f0] via-[50%] to-[#f0f0f5] to-[75%] bg-[length:200%_100%]"></div>
+                                <div class="h-[0.8rem] rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-[#f0f0f5] from-[25%] via-[#e8e8f0] via-[50%] to-[#f0f0f5] to-[75%] bg-[length:200%_100%]"></div>
                             </div>
                         </div>
                     @endfor
@@ -100,14 +100,14 @@
                 @endforeach
             </div>
         @else
-            <div class="skeleton-container" data-text="아직 추천 아티스트가 없네요!&#10;나만의 노래를 추천해주세요!">
-                <div class="skeleton-scroll">
+            <div class="flex gap-4 p-2.5 overflow-hidden relative before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-black/25 before:text-white before:text-xl before:rounded-2xl before:absolute before:top-0 before:left-0 before:z-10 before:text-center" data-text="아직 추천 아티스트가 없네요!&#10;나만의 노래를 추천해주세요!">
+                <div class="flex animate-[scroll_10s_linear_infinite] gap-4 mb-2.5">
                     @for($i = 0; $i < 10; $i++)
-                        <div class="skeleton-artist-card">
-                            <div class="skeleton skeleton-image"></div>
-                            <div class="skeleton-content">
-                                <div class="skeleton skeleton-name"></div>
-                                <div class="skeleton skeleton-count"></div>
+                        <div>
+                            <div class="w-48 h-48 rounded-full mx-auto my-0 animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-[#f0f0f5] from-[25%] via-[#e8e8f0] via-[50%] to-[#f0f0f5] to-[75%] bg-[length:200%_100%]"></div>
+                            <div class="p-2">
+                                <div class="w-[70%] mx-auto mt-0 mb-2 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-[#f0f0f5] from-[25%] via-[#e8e8f0] via-[50%] to-[#f0f0f5] to-[75%] bg-[length:200%_100%]"></div>
+                                <div class="w-[40%] mx-auto my-0 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-[#f0f0f5] from-[25%] via-[#e8e8f0] via-[50%] to-[#f0f0f5] to-[75%] bg-[length:200%_100%]"></div>
                             </div>
                         </div>
                     @endfor

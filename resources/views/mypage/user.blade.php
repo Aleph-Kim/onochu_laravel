@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="flex flex-col bg-white">
-    <a class="profile-header relative h-[340px] overflow-hidden w-full rounded-b-[2rem]" @if(!empty($userInfo['profile_album_flo_id'])) href="{{ route('album.detail', ['id' => $userInfo['profile_album_flo_id']]) }}" @endif>
+    <a class="profile-header relative h-[340px] overflow-hidden w-full rounded-b-[2rem] before:content-[''] before:absolute before:inset-0 before:bg-gradient-to-b before:from-black/5 before:to-black/65 before:z-[1]" @if(!empty($userInfo['profile_album_flo_id'])) href="{{ route('album.detail', ['id' => $userInfo['profile_album_flo_id']]) }}" @endif>
         <div class="profile-background absolute inset-0 bg-center bg-cover" style="background-image: url('{{ $userInfo['profile_img_url'] }}?size=1000x1000');"></div>
         <div class="max-w-[1200px] mx-auto px-6 h-full flex flex-col justify-end pb-8">
             @if($genreList)
@@ -43,12 +43,12 @@
                     <h2 class="text-2xl font-bold tracking-tight text-[#111]">추천하는 노래</h2>
                     <div class="flex justify-evenly lg:justify-end items-center gap-5">
                         <div class="flex items-center gap-[10px]">
-                            <span class="toggle-label latest active">최신순</span>
-                            <label class="toggle-switch">
-                                <input type="checkbox" id="sortToggle">
-                                <span class="slider"></span>
+                            <span class="toggle-label latest text-sm text-primary font-semibold transition-colors duration-300">최신순</span>
+                            <label class="relative inline-block w-10 h-5">
+                                <input type="checkbox" id="sortToggle" class="peer opacity-0 w-0 h-0">
+                                <span class="absolute cursor-pointer inset-0 bg-[#d8d8e4] transition-all duration-300 rounded-[10px] peer-checked:bg-primary before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:transition-all before:duration-300 before:rounded-full before:shadow-[0_1px_3px_rgba(0,0,0,0.15)] peer-checked:before:translate-x-5"></span>
                             </label>
-                            <span class="toggle-label oldest">오래된순</span>
+                            <span class="toggle-label oldest text-sm text-[#8b8b9a] transition-colors duration-300">오래된순</span>
                         </div>
                         <div>
                             <input type="text" id="songSearch" placeholder="노래 검색"

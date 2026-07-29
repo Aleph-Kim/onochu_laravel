@@ -21,15 +21,15 @@
         @endif
     </div>
     <div class="toggle-buttons hidden justify-center gap-1 w-fit mx-auto mb-[15px] bg-[#f0f0f8] p-1 rounded-full">
-        <button class="toggle-btn cover-btn active text-sm py-1.5 px-5 rounded-full font-medium cursor-pointer" onclick="toggleView('cover')">커버보기</button>
-        <button class="toggle-btn lyrics-btn text-sm py-1.5 px-5 rounded-full font-medium cursor-pointer" onclick="toggleView('lyrics')">가사보기</button>
+        <button class="toggle-btn cover-btn text-sm py-1.5 px-5 rounded-full font-medium cursor-pointer transition-all duration-200 bg-white text-[#333333] shadow-[0_1px_3px_rgba(0,0,0,0.1)]" onclick="toggleView('cover')">커버보기</button>
+        <button class="toggle-btn lyrics-btn text-sm py-1.5 px-5 rounded-full font-medium cursor-pointer transition-all duration-200 text-[#8b8b9a]" onclick="toggleView('lyrics')">가사보기</button>
     </div>
-    <div class="album-container w-full rounded-2xl overflow-hidden mb-[15px] relative max-w-[600px] mx-auto">
+    <div class="album-container group w-full rounded-2xl overflow-hidden mb-[15px] relative max-w-[600px] mx-auto">
         <img src="{{ $songInfo['album']['img_url'] }}?/dims/resize/500x500/quality/90" alt="Album Cover" class="w-full h-auto block aspect-square">
         @if($songInfo['song']['lyrics'])
-            <div class="lyrics-overlay">{{ $songInfo['song']['lyrics'] }}</div>
+            <div class="lyrics-overlay absolute top-0 left-0 w-full h-full bg-[#0a0a1e]/75 text-white flex items-start justify-center text-center p-5 opacity-0 transition-opacity duration-300 ease-in-out rounded-2xl whitespace-pre-wrap leading-[22px] min-[1023px]:group-hover:opacity-100 min-[1023px]:group-hover:overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:h-0 [&::-webkit-scrollbar-track]:bg-[#171717] [&::-webkit-scrollbar-track]:rounded-lg [&::-webkit-scrollbar-thumb]:bg-[#646464] [&::-webkit-scrollbar-thumb]:rounded-lg [&::-webkit-scrollbar-thumb:hover]:bg-[#ababab]">{{ $songInfo['song']['lyrics'] }}</div>
         @else
-            <div class="lyrics-overlay none">가사가 제공되지 않는 곡입니다.</div>
+            <div class="lyrics-overlay absolute top-0 left-0 w-full h-full bg-[#0a0a1e]/75 text-white flex items-center justify-center text-center p-5 opacity-0 transition-opacity duration-300 ease-in-out rounded-2xl whitespace-pre-wrap leading-[22px] min-[1023px]:group-hover:opacity-100 min-[1023px]:group-hover:overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:h-0 [&::-webkit-scrollbar-track]:bg-[#171717] [&::-webkit-scrollbar-track]:rounded-lg [&::-webkit-scrollbar-thumb]:bg-[#646464] [&::-webkit-scrollbar-thumb]:rounded-lg [&::-webkit-scrollbar-thumb:hover]:bg-[#ababab]">가사가 제공되지 않는 곡입니다.</div>
         @endif
     </div>
     <div class="flex justify-end w-full gap-[10px] mx-auto mb-5 max-w-[600px]">
