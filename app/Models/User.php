@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -73,32 +72,23 @@ class User extends Authenticatable
 
     /**
      * 유저가 추천한 장르 통계 (MypageController)
-     * MySQL JSON_TABLE 사용으로 raw query 유지
      */
     public function likeGenres(): array
     {
-        $rows = DB::select("
-            SELECT genre_list.genre, COUNT(genre_list.genre) as count
-            FROM recommends r
-            JOIN (
-                SELECT s.id, replace(temp_table.genre, ' ', '') as genre
-                FROM songs s
-                JOIN json_table(
-                    replace(json_array(s.genre), ',', '\",\"'),
-                    '\$[*]' columns (genre varchar(50) path '\$')
-                ) temp_table
-            ) genre_list ON r.song_id = genre_list.id
-            WHERE r.user_id = ?
-            GROUP BY genre_list.genre
-            ORDER BY count DESC
-        ", [$this->id]);
+        $genreCounts = $this->recommends()
+            ->with('song')
+            ->get()
+            ->flatMap(fn ($recommend) => explode(',', str_replace(' ', '', $recommend->song->genre ?? '')))
+            ->filter()
+            ->countBy()
+            ->sortDesc();
 
         $result = [];
-        foreach ($rows as $key => $genre) {
-            if ($key < 5) {
-                $result[$genre->genre] = $genre->count;
+        foreach ($genreCounts as $genre => $count) {
+            if (count($result) < 5) {
+                $result[$genre] = $count;
             } else {
-                $result['기타'] = ($result['기타'] ?? 0) + $genre->count;
+                $result['기타'] = ($result['기타'] ?? 0) + $count;
             }
         }
 

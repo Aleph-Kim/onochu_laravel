@@ -6,13 +6,13 @@ use App\Console\Commands\Concerns\DelaysApiRequests;
 use App\Models\Artist;
 use App\Models\NewAlbum;
 use App\Models\NewAlbumArtist;
+use App\Models\Recommend;
 use App\Models\User;
 use App\Services\FloApiService;
 use App\Services\ImageService;
 use App\Services\WebPushService;
 use App\WebPush\NewAlbumPayload;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 
 class UpdateNewAlbums extends Command
 {
@@ -33,16 +33,7 @@ class UpdateNewAlbums extends Command
     {
         $this->info('UpdateNewAlbums 시작');
 
-        $artistRows = DB::select("
-            SELECT a.flo_id, a.name, a.img_url, COUNT(*) as recommend_cnt
-            FROM recommends r
-            JOIN songs s ON r.song_id = s.id
-            JOIN song_artists sa ON s.id = sa.song_id
-            JOIN artists a ON sa.artist_id = a.id
-            GROUP BY a.flo_id, a.name, a.img_url
-            ORDER BY recommend_cnt DESC, MAX(r.created_at) DESC
-        ");
-        $artists = array_map(fn($r) => (array) $r, $artistRows);
+        $artists = Artist::popularByRecommends(null);
         $this->info("추천 아티스트 수: " . count($artists));
 
         $newAlbums = $this->getRecommendedArtistsNewAlbums($artists);
@@ -140,13 +131,13 @@ class UpdateNewAlbums extends Command
         }
 
         // 새 앨범 아티스트를 추천한 (유저, 아티스트) 쌍 조회
-        $rows = DB::table('recommends as r')
-            ->join('songs as s', 'r.song_id', '=', 's.id')
-            ->join('song_artists as sa', 's.id', '=', 'sa.song_id')
-            ->join('artists as a', 'sa.artist_id', '=', 'a.id')
-            ->whereIn('a.flo_id', array_keys($artistToAlbums))
+        $rows = Recommend::query()
+            ->join('songs', 'recommends.song_id', '=', 'songs.id')
+            ->join('song_artists', 'songs.id', '=', 'song_artists.song_id')
+            ->join('artists', 'song_artists.artist_id', '=', 'artists.id')
+            ->whereIn('artists.flo_id', array_keys($artistToAlbums))
             ->distinct()
-            ->get(['r.user_id', 'a.flo_id']);
+            ->get(['recommends.user_id', 'artists.flo_id']);
 
         // 유저 => 받을 앨범 목록 (앨범 flo_id로 중복 제거)
         $userAlbums = [];
