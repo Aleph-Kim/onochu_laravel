@@ -31,7 +31,7 @@
             @endforeach
         </div>
     @else
-        <div class="flex gap-4 p-2.5 overflow-hidden relative before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-black/25 before:text-white before:text-xl before:rounded-2xl before:absolute before:top-0 before:left-0 before:z-10 before:text-center" data-text="다른 유저들의 추천 노래를 이 곳에서 보여드릴게요!">
+        <div class="flex gap-4 p-2.5 overflow-hidden relative before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-black/25 before:text-white before:text-xl before:absolute before:top-0 before:left-0 before:z-10 before:text-center" data-text="다른 유저들의 추천 노래를 이 곳에서 보여드릴게요!">
             <div class="flex animate-[scroll_10s_linear_infinite] gap-4 mb-2.5">
                 @for($i = 0; $i < 10; $i++)
                     <div class="w-[330px] p-[15px] shrink-0">
@@ -51,7 +51,7 @@
 
 <div class="md:w-[70%] md:max-w-[1200px] md:mx-auto md:px-[15px]">
     <div class="mt-[30px]">
-        <h2 class="text-2xl font-bold mb-6 tracking-tight">{{ $newAlbumSectionTitle }}</h2>
+        <h2 class="text-2xl font-bold mb-6 tracking-tight pl-[15px] md:pl-0">{{ $newAlbumSectionTitle }}</h2>
         @if(!empty($newAlbums))
             <div class="flex gap-4 py-4 overflow-x-auto scrollbar-hide">
                 @foreach($newAlbums as $newAlbum)
@@ -66,7 +66,7 @@
                 @endforeach
             </div>
         @else
-            <div class="flex gap-4 p-2.5 overflow-hidden relative before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-black/25 before:text-white before:text-xl before:rounded-2xl before:absolute before:top-0 before:left-0 before:z-10 before:text-center" data-text="새로 나온 앨범이 있다면 이 곳에서 알려드릴게요!">
+            <div class="flex gap-4 p-2.5 overflow-hidden relative before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-black/25 before:text-white before:text-xl before:absolute before:top-0 before:left-0 before:z-10 before:text-center" data-text="새로 나온 앨범이 있다면 이 곳에서 알려드릴게요!">
                 <div class="flex animate-[scroll_10s_linear_infinite] gap-4 mb-2.5">
                     @for($i = 0; $i < 10; $i++)
                         <div class="rounded-2xl shadow-sm border border-[#ebebf0] bg-white overflow-hidden">
@@ -82,8 +82,8 @@
         @endif
     </div>
 
-    <div class="mt-[40px]">
-        <h2 class="text-2xl font-bold mb-6 tracking-tight">{{ $artistSectionTitle }}</h2>
+    <div class="my-[40px]">
+        <h2 class="text-2xl font-bold mb-6 tracking-tight pl-[15px] md:pl-0">{{ $artistSectionTitle }}</h2>
         @if(!empty($artists))
             <div class="flex gap-4 py-4 overflow-x-auto scrollbar-hide">
                 @foreach($artists as $artist)
@@ -100,14 +100,14 @@
                 @endforeach
             </div>
         @else
-            <div class="flex gap-4 p-2.5 overflow-hidden relative before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-black/25 before:text-white before:text-xl before:rounded-2xl before:absolute before:top-0 before:left-0 before:z-10 before:text-center" data-text="아직 추천 아티스트가 없네요!&#10;나만의 노래를 추천해주세요!">
+            <div class="flex gap-4 p-2.5 overflow-hidden relative before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-black/25 before:text-white before:text-xl before:absolute before:top-0 before:left-0 before:z-10 before:text-center" data-text="아직 추천 아티스트가 없네요!&#10;나만의 노래를 추천해주세요!">
                 <div class="flex animate-[scroll_10s_linear_infinite] gap-4 mb-2.5">
                     @for($i = 0; $i < 10; $i++)
                         <div>
                             <div class="w-48 h-48 rounded-full mx-auto my-0 animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-[#f0f0f5] from-[25%] via-[#e8e8f0] via-[50%] to-[#f0f0f5] to-[75%] bg-[length:200%_100%]"></div>
                             <div class="p-2">
-                                <div class="w-[70%] mx-auto mt-0 mb-2 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-[#f0f0f5] from-[25%] via-[#e8e8f0] via-[50%] to-[#f0f0f5] to-[75%] bg-[length:200%_100%]"></div>
-                                <div class="w-[40%] mx-auto my-0 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-[#f0f0f5] from-[25%] via-[#e8e8f0] via-[50%] to-[#f0f0f5] to-[75%] bg-[length:200%_100%]"></div>
+                                <div class="h-4 w-[70%] mx-auto mt-0 mb-2 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-[#f0f0f5] from-[25%] via-[#e8e8f0] via-[50%] to-[#f0f0f5] to-[75%] bg-[length:200%_100%]"></div>
+                                <div class="h-[0.8rem] w-[40%] mx-auto my-0 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-[#f0f0f5] from-[25%] via-[#e8e8f0] via-[50%] to-[#f0f0f5] to-[75%] bg-[length:200%_100%]"></div>
                             </div>
                         </div>
                     @endfor

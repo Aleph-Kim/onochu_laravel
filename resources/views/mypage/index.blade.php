@@ -26,7 +26,7 @@
     @if($userInfo['recommend_count'] > 0)
         <div class="flex-grow bg-white">
             <div class="max-w-[1200px] mx-auto p-6 pb-0">
-                <div class="flex gap-8 xl:flex-col">
+                <div class="flex flex-col gap-8 xl:flex-row">
                     <div class="flex-1">
                         <h2 class="text-2xl font-bold mb-6 tracking-tight text-[#111]">좋아하는 아티스트</h2>
                         <div class="flex flex-col gap-3 max-h-[400px] overflow-y-auto scrollbar-hide">
@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div class="max-w-[1200px] mx-auto p-6 pb-8">
-                <div class="flex items-center justify-between mb-4">
+                <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-4">
                     <h2 class="text-2xl font-bold tracking-tight text-[#111]">추천하는 노래</h2>
                     <div class="flex justify-evenly lg:justify-end items-center gap-5">
                         <div class="flex items-center gap-[10px]">
