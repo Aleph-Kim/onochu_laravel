@@ -8,7 +8,8 @@ function setProfileAlbum(recommendId) {
     fetch(`/mypage/setProfileAlbum`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': getMeta('csrf-token'),
         },
         body: JSON.stringify({
             recommend_id: recommendId
@@ -18,6 +19,9 @@ function setProfileAlbum(recommendId) {
     .then(data => {
         editProfile(data.album_flo_id, data.album_img_url);
         alert("프로필 앨범이 변경되었습니다.");
+    })
+    .catch(() => {
+        alert("프로필 앨범 변경 중 오류가 발생했습니다.");
     })
 }
 
