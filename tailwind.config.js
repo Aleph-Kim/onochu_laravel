@@ -17,6 +17,7 @@ export default {
                 flo: '#8B00FF',
                 genie: '#0F7EFF',
                 spotify: '#1DB954',
+                apple: '#000000',
                 kakao: {
                     DEFAULT: '#fae100',
                     text: '#371d1e',

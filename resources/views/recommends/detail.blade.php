@@ -18,8 +18,11 @@
            class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-youtube text-youtube text-sm font-semibold hover:bg-youtube hover:text-white transition-colors">YouTube Music</a>
         <a href="{{ $recommendInfo['url']['flo'] }}" target="_blank"
            class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-flo text-flo text-sm font-semibold hover:bg-flo hover:text-white transition-colors">FLO</a>
-        <a href="{{ $recommendInfo['url']['spotify'] }}" target="_blank"
-           class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-spotify text-spotify text-sm font-semibold hover:bg-spotify hover:text-white transition-colors">Spotify</a>
+        {{-- 스포티파이 잠시 숨김 처리 --}}
+        {{-- <a href="{{ $recommendInfo['url']['spotify'] }}" target="_blank"
+           class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-spotify text-spotify text-sm font-semibold hover:bg-spotify hover:text-white transition-colors">Spotify</a> --}}
+        <a href="{{ $recommendInfo['url']['apple_music'] }}" onclick="openAppleMusic(event, '{{ $recommendInfo['url']['apple_music_app'] }}', '{{ $recommendInfo['url']['apple_music'] }}')" target="_blank"
+           class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-apple text-apple text-sm font-semibold hover:bg-apple hover:text-white transition-colors">Apple Music</a>
     </div>
     <div class="w-full aspect-square mb-4 overflow-hidden relative rounded-2xl">
         <img src="{{ $recommendInfo['album_img_url'] }}?size=500x500"
