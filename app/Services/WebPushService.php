@@ -9,11 +9,11 @@ use Minishlink\WebPush\WebPush;
 
 class WebPushService
 {
-    private WebPush $webPush;
+    private ?WebPush $webPush = null;
 
-    public function __construct()
+    private function client(): WebPush
     {
-        $this->webPush = new WebPush([
+        return $this->webPush ??= new WebPush([
             'VAPID' => [
                 'subject'    => config('webpush.subject'),
                 'publicKey'  => config('webpush.public_key'),
@@ -25,7 +25,7 @@ class WebPushService
     // 발송 큐에 추가 (실제 전송은 flush에서)
     public function queue(PushSubscription $subscription, array $payload): void
     {
-        $this->webPush->queueNotification(
+        $this->client()->queueNotification(
             Subscription::create([
                 'endpoint' => $subscription->endpoint,
                 'keys'     => [
@@ -40,7 +40,7 @@ class WebPushService
     // 큐에 쌓인 알림을 일괄 전송. 만료된(410/404) 구독은 자동 삭제
     public function flush(): void
     {
-        foreach ($this->webPush->flush() as $report) {
+        foreach ($this->client()->flush() as $report) {
             if ($report->isSubscriptionExpired()) {
                 PushSubscription::where('endpoint', $report->getEndpoint())->delete();
             }
