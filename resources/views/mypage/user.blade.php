@@ -56,15 +56,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="songs-grid grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="songs-grid grid gap-3 [grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr))]">
                     @foreach($songList as $song)
                         <div class="song-card flex items-center p-4 rounded-2xl border border-[#ebebf0] transition-all hover:shadow-md hover:border-[#d8d8e8] bg-white cursor-pointer">
                             <img src="{{ $song['album_img_url'] }}?/dims/resize/200x200/quality/90" alt="앨범커버"
-                                 class="w-20 h-20 rounded-xl object-cover mr-4" loading="lazy"
+                                 class="w-20 h-20 rounded-xl object-cover mr-4 flex-none" loading="lazy"
                                  onclick="window.location.href='{{ route('recommends.detail', ['id' => $song['id']]) }}'">
-                            <div class="flex-grow" onclick="window.location.href='{{ route('recommends.detail', ['id' => $song['id']]) }}'">
-                                <h3 class="song-title font-semibold text-lg text-[#111]">{{ $song['song_title'] }}</h3>
-                                <p class="text-[#8b8b9a] text-sm">{{ $song['artist_name'] }}</p>
+                            <div class="flex-grow min-w-0" onclick="window.location.href='{{ route('recommends.detail', ['id' => $song['id']]) }}'">
+                                <h3 class="song-title font-semibold text-lg text-[#111] line-clamp-2 break-keep">{{ $song['song_title'] }}</h3>
+                                <p class="text-[#8b8b9a] text-sm truncate">{{ $song['artist_name'] }}</p>
                                 <p class="recommend-date text-[#b0b0c0] text-xs mt-1">{{ date('Y.m.d', strtotime($song['recommend_date'])) }}</p>
                             </div>
                         </div>
