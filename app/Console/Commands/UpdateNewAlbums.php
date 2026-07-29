@@ -6,8 +6,11 @@ use App\Console\Commands\Concerns\DelaysApiRequests;
 use App\Models\Artist;
 use App\Models\NewAlbum;
 use App\Models\NewAlbumArtist;
+use App\Models\User;
 use App\Services\FloApiService;
 use App\Services\ImageService;
+use App\Services\WebPushService;
+use App\WebPush\NewAlbumPayload;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -21,6 +24,7 @@ class UpdateNewAlbums extends Command
     public function __construct(
         private FloApiService $floApi,
         private ImageService $imageService,
+        private WebPushService $webPush,
     ) {
         parent::__construct();
     }
@@ -88,7 +92,8 @@ class UpdateNewAlbums extends Command
 
     private function saveNewAlbums(array $albums): void
     {
-        $savedCount = 0;
+        $savedCount  = 0;
+        $savedAlbums = [];
         foreach ($albums as $album) {
             if (NewAlbum::where('flo_id', $album['flo_id'])->exists()) {
                 continue;
@@ -101,6 +106,7 @@ class UpdateNewAlbums extends Command
             ]);
 
             $savedCount++;
+            $savedAlbums[] = $album;
 
             foreach ($album['artist'] as $artist) {
                 NewAlbumArtist::create([
@@ -114,6 +120,69 @@ class UpdateNewAlbums extends Command
         }
 
         $this->info("저장된 새 앨범 수: {$savedCount}");
+
+        $this->notifyRecommenders($savedAlbums);
+    }
+
+    // 새 앨범을 추천 아티스트로 둔 유저에게 웹 푸시 발송 (유저당 1회로 묶음)
+    private function notifyRecommenders(array $savedAlbums): void
+    {
+        if (empty($savedAlbums)) {
+            return;
+        }
+
+        // 아티스트 flo_id => 해당 아티스트가 참여한 새 앨범 목록
+        $artistToAlbums = [];
+        foreach ($savedAlbums as $album) {
+            foreach ($album['artist'] as $artist) {
+                $artistToAlbums[$artist['flo_id']][] = $album;
+            }
+        }
+
+        // 새 앨범 아티스트를 추천한 (유저, 아티스트) 쌍 조회
+        $rows = DB::table('recommends as r')
+            ->join('songs as s', 'r.song_id', '=', 's.id')
+            ->join('song_artists as sa', 's.id', '=', 'sa.song_id')
+            ->join('artists as a', 'sa.artist_id', '=', 'a.id')
+            ->whereIn('a.flo_id', array_keys($artistToAlbums))
+            ->distinct()
+            ->get(['r.user_id', 'a.flo_id']);
+
+        // 유저 => 받을 앨범 목록 (앨범 flo_id로 중복 제거)
+        $userAlbums = [];
+        foreach ($rows as $row) {
+            foreach ($artistToAlbums[$row->flo_id] as $album) {
+                $userAlbums[$row->user_id][$album['flo_id']] = $album;
+            }
+        }
+
+        if (empty($userAlbums)) {
+            return;
+        }
+
+        $users = User::whereIn('id', array_keys($userAlbums))
+            ->whereHas('pushSubscriptions')
+            ->with('pushSubscriptions')
+            ->get()
+            ->keyBy('id');
+
+        $sent = 0;
+        foreach ($userAlbums as $userId => $albums) {
+            $user = $users->get($userId);
+            if (!$user) {
+                continue;
+            }
+
+            $payload = NewAlbumPayload::build(array_values($albums));
+            foreach ($user->pushSubscriptions as $subscription) {
+                $this->webPush->queue($subscription, $payload);
+            }
+            $sent++;
+        }
+
+        $this->webPush->flush();
+
+        $this->info("알림 발송: {$sent}명");
     }
 
     private function updateArtistImgUrl(int $floId): void

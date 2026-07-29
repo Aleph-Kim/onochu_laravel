@@ -27,6 +27,11 @@ class User extends Authenticatable
         return $this->hasMany(Recommend::class);
     }
 
+    public function pushSubscriptions()
+    {
+        return $this->hasMany(PushSubscription::class);
+    }
+
     public function profileAlbum()
     {
         return $this->belongsTo(Album::class, 'profile_album_id');

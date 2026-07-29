@@ -5,7 +5,13 @@
     <meta charset="UTF-8" />
     <title>Onochu - 오늘의 노래 추천</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="vapid-public-key" content="{{ config('webpush.public_key') }}" />
     <link rel="icon" type="image/png" href="{{ asset('image/logo.png') }}">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="{{ asset('image/logo.png') }}">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
