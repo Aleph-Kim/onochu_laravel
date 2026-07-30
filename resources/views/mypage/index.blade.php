@@ -68,7 +68,7 @@
                 </div>
                 <div class="songs-grid grid gap-3 [grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr))]">
                     @foreach($songList as $song)
-                        <div class="song-card flex items-center p-4 rounded-2xl border border-[#ebebf0] transition-all hover:shadow-md hover:border-[#d8d8e8] bg-white cursor-pointer">
+                        <div class="song-card flex items-center p-4 rounded-2xl border border-[#ebebf0] transition-all hover:shadow-md hover:border-[#d8d8e8] bg-white cursor-pointer" data-id="{{ $song['id'] }}">
                             <img src="{{ $song['album_img_url'] }}?/dims/resize/200x200/quality/90" alt="앨범커버"
                                  class="w-20 h-20 rounded-xl object-cover mr-4 flex-none" loading="lazy"
                                  onclick="window.location.href='{{ route('recommends.detail', ['id' => $song['id']]) }}'">

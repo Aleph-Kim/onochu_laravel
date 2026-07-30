@@ -41,7 +41,7 @@ function initSongs() {
 
     songs = Array.from(songElements).map(song => ({
         element: song,
-        date: new Date(song.querySelector('.recommend-date').innerText.trim()),
+        id: Number(song.dataset.id),
         title: song.querySelector('.song-title').innerText.toLowerCase().trim()
     }));
 }
@@ -56,7 +56,7 @@ function renderSongs() {
             (searchQuery === '' || song.title.includes(searchQuery) || separateKoreanCharacters(song.title).includes(separateKoreanCharacters(searchQuery)))
         )
         .sort((a, b) =>
-            currentSort === 'latest' ? b.date - a.date : a.date - b.date
+            currentSort === 'latest' ? b.id - a.id : a.id - b.id
         );
 
     songList.innerHTML = filteredSongs.length === 0
