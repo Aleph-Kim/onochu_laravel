@@ -16,7 +16,7 @@ class MypageController extends Controller
 
         $data = $this->getMypageInfo(session('user.id'));
 
-        return view('mypage.index', $data);
+        return view('mypage.show', $data + ['isOwner' => true]);
     }
 
     public function user(Request $request)
@@ -33,7 +33,7 @@ class MypageController extends Controller
 
         $data = $this->getMypageInfo($userId);
 
-        return view('mypage.user', $data);
+        return view('mypage.show', $data + ['isOwner' => false]);
     }
 
     public function setProfileAlbum(Request $request)

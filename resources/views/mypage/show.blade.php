@@ -13,15 +13,17 @@
         </div>
     </a>
 
-    <div class="max-w-[1200px] mx-auto px-6 pt-6 w-full flex justify-end">
-        <div class="flex items-center gap-[10px]">
-            <span class="text-sm font-medium text-[#555]">신곡 알림 받기</span>
-            <label class="relative inline-block w-10 h-5">
-                <input type="checkbox" id="pushToggle" class="peer opacity-0 w-0 h-0" onchange="togglePush()">
-                <span class="absolute cursor-pointer inset-0 bg-[#d8d8e4] transition-all duration-300 rounded-[10px] peer-checked:bg-primary before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:transition-all before:duration-300 before:rounded-full before:shadow-[0_1px_3px_rgba(0,0,0,0.15)] peer-checked:before:translate-x-5"></span>
-            </label>
+    @if($isOwner)
+        <div class="max-w-[1200px] mx-auto px-6 pt-6 w-full flex justify-end">
+            <div class="flex items-center gap-[10px]">
+                <span class="text-sm font-medium text-[#555]">신곡 알림 받기</span>
+                <label class="relative inline-block w-10 h-5">
+                    <input type="checkbox" id="pushToggle" class="peer opacity-0 w-0 h-0" onchange="togglePush()">
+                    <span class="absolute cursor-pointer inset-0 bg-[#d8d8e4] transition-all duration-300 rounded-[10px] peer-checked:bg-primary before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:transition-all before:duration-300 before:rounded-full before:shadow-[0_1px_3px_rgba(0,0,0,0.15)] peer-checked:before:translate-x-5"></span>
+                </label>
+            </div>
         </div>
-    </div>
+    @endif
 
     @if($userInfo['recommend_count'] > 0)
         <div class="flex-grow bg-white">
@@ -77,9 +79,11 @@
                                 <p class="text-[#8b8b9a] text-sm truncate">{{ $song['artist_name'] }}</p>
                                 <p class="recommend-date text-[#b0b0c0] text-xs mt-1">{{ date('Y.m.d', strtotime($song['recommend_date'])) }}</p>
                             </div>
-                            <div class="flex-none" onclick="setProfileAlbum('{{ $song['id'] }}')">
-                                <button class="py-1.5 px-4 rounded-full text-sm font-medium cursor-pointer bg-primary text-white hover:bg-primary-light shadow-sm hover:shadow transition">프로필 설정</button>
-                            </div>
+                            @if($isOwner)
+                                <div class="flex-none" onclick="setProfileAlbum('{{ $song['id'] }}')">
+                                    <button class="py-1.5 px-4 rounded-full text-sm font-medium cursor-pointer bg-primary text-white hover:bg-primary-light shadow-sm hover:shadow transition">프로필 설정</button>
+                                </div>
+                            @endif
                         </div>
                     @endforeach
                 </div>
@@ -92,8 +96,12 @@
                     <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/>
                 </svg>
                 <h2 class="text-2xl font-bold text-[#111] mb-2">아직 추천한 노래가 없어요</h2>
-                <p class="text-[#8b8b9a] mb-8">마음에 드는 노래를 추천하면 이 곳에 모아서 보여드릴게요.</p>
-                <a href="{{ route('main') }}" class="py-2 px-6 rounded-full text-sm font-semibold bg-primary text-white hover:bg-primary-light shadow-sm hover:shadow-md transition">노래 둘러보기</a>
+                @if($isOwner)
+                    <p class="text-[#8b8b9a] mb-8">마음에 드는 노래를 추천하면 이 곳에 모아서 보여드릴게요.</p>
+                    <a href="{{ route('main') }}" class="py-2 px-6 rounded-full text-sm font-semibold bg-primary text-white hover:bg-primary-light shadow-sm hover:shadow-md transition">노래 둘러보기</a>
+                @else
+                    <p class="text-[#8b8b9a]">이 사용자가 노래를 추천하면 이 곳에 표시됩니다.</p>
+                @endif
             </div>
         </div>
     @endif
@@ -101,7 +109,9 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/push.js') }}"></script>
+@if($isOwner)
+    <script src="{{ asset('js/push.js') }}"></script>
+@endif
 <script src="{{ asset('js/lib/echarts.min.js') }}"></script>
 @if($genreList)
     <script src="{{ asset('js/mypage.js') }}"></script>
