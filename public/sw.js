@@ -1,4 +1,14 @@
 // 웹 푸시 서비스 워커 (루트 스코프 /sw.js)
+
+// 새 버전 즉시 활성화 (안 하면 배포 되어도 기존 워커가 계속 알림을 처리함)
+self.addEventListener('install', function (event) {
+    event.waitUntil(self.skipWaiting());
+});
+
+self.addEventListener('activate', function (event) {
+    event.waitUntil(self.clients.claim());
+});
+
 self.addEventListener('push', function (event) {
     if (!event.data) {
         return;
@@ -27,19 +37,6 @@ self.addEventListener('notificationclick', function (event) {
     const url = (event.notification.data && event.notification.data.url) || '/';
 
     event.waitUntil((async () => {
-        const windowClients = await clients.matchAll({ type: 'window', includeUncontrolled: true });
-
-        if (windowClients.length > 0) {
-            const client = windowClients[0];
-            try {
-                await client.navigate(url);
-                await client.focus();
-                return;
-            } catch (e) {
-                // navigate() 미지원 브라우저는 아래 openWindow 경로로 폴백
-            }
-        }
-
         const cache = await caches.open(PENDING_REDIRECT_CACHE);
         await cache.put(PENDING_REDIRECT_KEY, new Response(JSON.stringify({ url, ts: Date.now() })));
 

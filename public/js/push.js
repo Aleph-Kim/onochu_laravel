@@ -120,6 +120,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (!pushSupported()) {
         return;
     }
-    const subscription = await getSubscription();
+    // 페이지 로드 시 새 sw.js 버전이 있는지 체크
+    const registration = await navigator.serviceWorker.register('/sw.js');
+    const subscription = await registration.pushManager.getSubscription();
     setButtonState(!!subscription);
 });
