@@ -15,3 +15,15 @@ window.openAppleMusic = function (event, appUrl, webUrl) {
     });
     window.location.href = appUrl;
 };
+
+window.openAppleMusicLazy = async function (event, keyword) {
+    event.preventDefault();
+
+    try {
+        const response = await fetch('/api/apple-music-url?q=' + encodeURIComponent(keyword));
+        const { app, web } = await response.json();
+        window.openAppleMusic(event, app, web);
+    } catch (e) {
+        window.open('https://music.apple.com/kr/search?term=' + encodeURIComponent(keyword), '_blank');
+    }
+};

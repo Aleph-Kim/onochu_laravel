@@ -21,7 +21,7 @@
         {{-- 스포티파이 잠시 숨김 처리 --}}
         {{-- <a href="{{ $recommend->url['spotify'] }}" target="_blank"
            class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-spotify text-spotify text-sm font-semibold hover:bg-spotify hover:text-white transition-colors">Spotify</a> --}}
-        <a href="{{ $recommend->url['apple_music'] }}" onclick="openAppleMusic(event, '{{ $recommend->url['apple_music_app'] }}', '{{ $recommend->url['apple_music'] }}')" target="_blank"
+        <a href="#" onclick="openAppleMusicLazy(event, {{ Js::from($recommend->url['apple_music_keyword']) }})" target="_blank"
            class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-apple text-apple text-sm font-semibold hover:bg-apple hover:text-white transition-colors">Apple Music</a>
     </div>
     <div class="w-full aspect-square mb-4 overflow-hidden relative rounded-2xl">

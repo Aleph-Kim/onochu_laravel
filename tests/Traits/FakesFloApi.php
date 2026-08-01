@@ -40,11 +40,10 @@ trait FakesFloApi
             'lyricist'  => fake()->name(),
             'arranger'  => fake()->name(),
             'url'       => [
-                'youtube'         => 'https://music.youtube.com/search?q=test',
-                'flo'             => 'https://www.music-flo.com/detail/track/1/details',
-                'spotify'         => 'https://open.spotify.com/search/test/tracks',
-                'apple_music'     => 'https://music.apple.com/kr/search?term=test',
-                'apple_music_app' => null,
+                'youtube'             => 'https://music.youtube.com/search?q=test',
+                'flo'                 => 'https://www.music-flo.com/detail/track/1/details',
+                'spotify'             => 'https://open.spotify.com/search/test/tracks',
+                'apple_music_keyword' => 'test',
             ],
         ], $overrides);
     }

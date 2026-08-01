@@ -29,14 +29,11 @@ class PlatformService
             $flo     = "https://www.music-flo.com/detail/track/{$floId}/details";
             $spotify = "https://open.spotify.com/search/{$keyword}/tracks";
         }
-        $appleMusic = $this->resolveAppleMusicUrl($keyword);
-
         return [
-            'youtube'         => $youtube,
-            'flo'             => $flo,
-            'spotify'         => $spotify,
-            'apple_music'     => $appleMusic['web'],
-            'apple_music_app' => $appleMusic['app'],
+            'youtube' => $youtube,
+            'flo'     => $flo,
+            'spotify' => $spotify,
+            'apple_music_keyword' => $keyword,
         ];
     }
 
@@ -45,7 +42,7 @@ class PlatformService
      * Apple Music은 search 경로용 앱 스킴을 지원하지 않아, 검색 결과로 얻은
      * album/song ID 기반 경로(공식 지원)로만 앱이 열린다.
      */
-    private function resolveAppleMusicUrl(string $keyword): array
+    public function resolveAppleMusicUrl(string $keyword): array
     {
         $webFallback = "https://music.apple.com/kr/search?term=" . urlencode($keyword);
         $cacheKey = 'apple-music:track:' . md5($keyword);
