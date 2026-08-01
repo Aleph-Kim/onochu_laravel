@@ -21,6 +21,14 @@ function hiddenSearchForm() {
     searchFormWrap.style.width = "auto";
 }
 
+searchForm.addEventListener('submit', showLoader);
+
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+        hideLoader();
+    }
+});
+
 function confirmBack() {
     if (confirm("페이지를 나가시겠습니까?")) {
         window.history.go(-1);
