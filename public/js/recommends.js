@@ -4,6 +4,10 @@ document.querySelector('.recommends-form').addEventListener('submit', function (
     const form = event.target;
     const submitBtn = document.querySelector('.btn-submit');
 
+    if (form.dataset.alreadyRecommended === 'true' && !confirm('이미 추천한 노래입니다. 다시 추천하시겠습니까?')) {
+        return;
+    }
+
     showLoader();
     submitBtn.disabled = true; // 버튼 비활성화
     submitBtn.textContent = '처리 중';

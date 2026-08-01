@@ -2,8 +2,32 @@
 
 @section('content')
 <div class="p-5 max-w-[500px] mx-auto">
-    <form class="recommends-form flex flex-col items-center" action="{{ route('recommends.store') }}" method="post">
+    <form class="recommends-form flex flex-col items-center" action="{{ route('recommends.store') }}" method="post" data-already-recommended="{{ $previousRecommends->isNotEmpty() ? 'true' : 'false' }}">
         @csrf
+        @if($previousRecommends->isNotEmpty())
+            <div class="w-full rounded-2xl bg-[#f0f0f8] border-[1.5px] border-[#ebebf0] p-4 mb-4">
+                <p class="flex items-center gap-2 text-[#555] text-base font-semibold mb-3">
+                    <svg viewBox="0 0 24 24" class="w-5 h-5 fill-[#b0b0c0] shrink-0" aria-hidden="true"><path d="M12,2 L1,21 H23 L12,2 Z M11,9 H13 V14 H11 Z M11,16 H13 V18 H11 Z"></path></svg>
+                    이미 이 노래를 {{ $previousRecommends->count() }}번 추천했어요
+                </p>
+                <div class="flex flex-col gap-3 {{ $previousRecommends->count() > 2 ? 'max-h-[220px] overflow-y-auto pr-1' : '' }}">
+                    @foreach($previousRecommends as $previous)
+                        <div class="flex items-start justify-between gap-3 {{ !$loop->last ? 'border-b border-[#ebebf0]' : '' }}">
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-amber-500 text-base tracking-tight">{{ str_repeat('★', $previous->score) }}{{ str_repeat('☆', 5 - $previous->score) }}</span>
+                                    <span class="text-[#b0b0c0] text-xs">{{ $previous->created_at->format('Y.m.d') }}</span>
+                                </div>
+                                @if($previous->comment)
+                                    <p class="text-[#666] text-sm leading-snug truncate">"{{ $previous->comment }}"</p>
+                                @endif
+                            </div>
+                            <a href="{{ route('recommends.show', $previous) }}" class="shrink-0 text-sm text-primary font-medium hover:text-primary-light">자세히 보기 &rsaquo;</a>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
         <div class="flex w-full items-center gap-3 mb-5">
             <img src="{{ $songInfo['artists'][0]['img_url'] }}?/dims/resize/200x200/quality/90"
                  class="w-10 h-10 rounded-full object-cover cursor-pointer transition hover:opacity-80 shadow-sm"

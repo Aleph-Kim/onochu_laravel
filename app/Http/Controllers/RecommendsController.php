@@ -26,7 +26,12 @@ class RecommendsController extends Controller
         $songInfo = $this->floApi->getSongByFloId($songId);
         session(['song_info' => $songInfo]);
 
-        return view('recommends.index', compact('songInfo'));
+        $song = Song::where('flo_id', $songInfo['song']['flo_id'])->first();
+        $previousRecommends = $song
+            ? Recommend::where('user_id', session('user.id'))->where('song_id', $song->id)->latest()->get()
+            : collect();
+
+        return view('recommends.index', compact('songInfo', 'previousRecommends'));
     }
 
     public function store(RecommendStoreRequest $request)
