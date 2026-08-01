@@ -53,7 +53,7 @@
     <div class="mt-[30px]">
         <h2 class="text-2xl font-bold mb-6 tracking-tight pl-[15px] md:pl-0">{{ $newAlbumSectionTitle }}</h2>
         @if(!empty($newAlbums))
-            <div class="flex gap-4 py-4 overflow-x-auto scrollbar-hide">
+            <div class="flex gap-4 py-4 overflow-x-auto scrollbar-hide pl-[15px] md:pl-0">
                 @foreach($newAlbums as $newAlbum)
                     @php $artistName = implode(' & ', array_column($newAlbum['artists'], 'name')); @endphp
                     <a class="w-[200px] flex-none rounded-2xl shadow-sm border border-[#ebebf0] bg-white overflow-hidden hover:shadow-md transition-shadow" href="{{ route('album.detail', ['id' => $newAlbum['flo_id'], 'new_album' => 'true']) }}">
@@ -66,7 +66,7 @@
                 @endforeach
             </div>
         @else
-            <div class="flex gap-4 p-2.5 overflow-hidden relative before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-black/25 before:text-white before:text-xl before:absolute before:top-0 before:left-0 before:z-10 before:text-center" data-text="새로 나온 앨범이 있다면 이 곳에서 알려드릴게요!">
+            <div class="flex gap-4 p-2.5 overflow-hidden relative pl-[15px] md:pl-0 before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-black/25 before:text-white before:text-xl before:absolute before:top-0 before:left-0 before:z-10 before:text-center" data-text="새로 나온 앨범이 있다면 이 곳에서 알려드릴게요!">
                 <div class="flex animate-[scroll_10s_linear_infinite] gap-4 mb-2.5">
                     @for($i = 0; $i < 10; $i++)
                         <div class="rounded-2xl shadow-sm border border-[#ebebf0] bg-white overflow-hidden">
@@ -85,7 +85,7 @@
     <div class="my-[40px]">
         <h2 class="text-2xl font-bold mb-6 tracking-tight pl-[15px] md:pl-0">{{ $artistSectionTitle }}</h2>
         @if($artists->isNotEmpty())
-            <div class="flex gap-4 py-4 overflow-x-auto scrollbar-hide">
+            <div class="flex gap-4 py-4 overflow-x-auto scrollbar-hide pl-[15px] md:pl-0">
                 @foreach($artists as $artist)
                     <a class="flex-none basis-48" href="{{ route('artist.detail', ['id' => $artist->flo_id]) }}">
                         <img src="{{ $artist->img_url }}?size=350x350" loading="lazy" class="aspect-square rounded-full w-full h-auto object-cover shadow-[0_4px_16px_rgba(0,0,20,0.12)]" />
@@ -100,7 +100,7 @@
                 @endforeach
             </div>
         @else
-            <div class="flex gap-4 p-2.5 overflow-hidden relative before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-black/25 before:text-white before:text-xl before:absolute before:top-0 before:left-0 before:z-10 before:text-center" data-text="아직 추천 아티스트가 없네요!&#10;나만의 노래를 추천해주세요!">
+            <div class="flex gap-4 p-2.5 overflow-hidden relative pl-[15px] md:pl-0 before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-black/25 before:text-white before:text-xl before:absolute before:top-0 before:left-0 before:z-10 before:text-center" data-text="아직 추천 아티스트가 없네요!&#10;나만의 노래를 추천해주세요!">
                 <div class="flex animate-[scroll_10s_linear_infinite] gap-4 mb-2.5">
                     @for($i = 0; $i < 10; $i++)
                         <div>
