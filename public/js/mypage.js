@@ -87,9 +87,10 @@ function initSongs() {
  */
 function renderSongs() {
     const songList = document.querySelector('.songs-grid');
+    const decomposedQuery = separateKoreanCharacters(searchQuery);
     const filteredSongs = songs
         .filter(song =>
-            (searchQuery === '' || song.title.includes(searchQuery) || separateKoreanCharacters(song.title).includes(separateKoreanCharacters(searchQuery)))
+            (searchQuery === '' || song.title.includes(searchQuery) || (decomposedQuery !== '' && separateKoreanCharacters(song.title).includes(decomposedQuery)))
         )
         .sort((a, b) =>
             currentSort === 'latest' ? b.id - a.id : a.id - b.id

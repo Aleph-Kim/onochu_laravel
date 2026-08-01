@@ -118,10 +118,8 @@
     <script src="{{ asset('js/push.js') }}"></script>
 @endif
 <script src="{{ asset('js/lib/echarts.min.js') }}"></script>
-@if($genreList)
-    <script src="{{ asset('js/mypage.js') }}"></script>
-    <script>
-        const genreList = {!! json_encode($genreList) !!};
-    </script>
-@endif
+<script>
+    const genreList = {!! json_encode($genreList) !!};
+</script>
+<script src="{{ asset('js/mypage.js') }}"></script>
 @endpush
