@@ -10,8 +10,7 @@ return new class extends Migration
     {
         Schema::create('songs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('album_id')->comment('연관 앨범 ID');
-            $table->foreign('album_id')->references('id')->on('albums');
+            $table->foreignId('album_id')->constrained()->comment('연관 앨범 ID');
             $table->string('title')->comment('노래 제목');
             $table->string('genre', 50)->nullable()->comment('장르 정보');
             $table->string('title_yn', 50)->nullable()->comment('타이틀 여부');
