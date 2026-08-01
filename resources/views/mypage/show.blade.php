@@ -3,13 +3,13 @@
 @section('content')
 <div class="flex flex-col bg-white">
     <a class="profile-header relative h-[340px] overflow-hidden w-full rounded-b-[2rem] before:content-[''] before:absolute before:inset-0 before:bg-gradient-to-b before:from-black/5 before:to-black/65 before:z-[1]" @if(!empty($userInfo['profile_album_flo_id'])) href="{{ route('album.detail', ['id' => $userInfo['profile_album_flo_id']]) }}" @endif>
-        <div class="profile-background absolute inset-0 bg-center bg-cover" style="background-image: url('{{ $userInfo['profile_img_url'] }}?size=1000x1000');"></div>
+        <div class="profile-background absolute inset-0 bg-center bg-cover {{ empty($userInfo['profile_img_url']) ? 'bg-[#d8d8e8]' : '' }}" @if(!empty($userInfo['profile_img_url'])) style="background-image: url('{{ $userInfo['profile_img_url'] }}?size=1000x1000');" @endif></div>
         <div class="max-w-[1200px] mx-auto px-6 h-full flex flex-col justify-end pb-8">
             @if($genreList)
                 <p class="text-white/70 text-base font-medium z-[1]">{{ array_keys($genreList)[0] }} 장르를 좋아하는</p>
             @endif
             <p class="text-white text-[3.75rem] font-bold mb-1 z-[1] leading-tight">{{ $userInfo['nickname'] }} 님</p>
-            <p class="text-white/70 text-base z-[1]">추천한 노래 {{ $userInfo['recommend_count'] }}개</p>
+            <p id="recommendCount" class="text-white/70 text-base z-[1]">추천한 노래 {{ $userInfo['recommend_count'] }}개</p>
         </div>
     </a>
 
@@ -70,7 +70,12 @@
                 </div>
                 <div class="songs-grid grid gap-3 [grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr))]">
                     @foreach($songList as $song)
-                        <div class="song-card flex items-center p-4 rounded-2xl border border-[#ebebf0] transition-all hover:shadow-md hover:border-[#d8d8e8] bg-white cursor-pointer" data-id="{{ $song['id'] }}">
+                        <div class="song-card relative flex items-center p-4 rounded-2xl border border-[#ebebf0] transition-all hover:shadow-md hover:border-[#d8d8e8] bg-white cursor-pointer" data-id="{{ $song['id'] }}">
+                            @if($isOwner)
+                                <button type="button" class="absolute top-2 right-2 w-6 h-6 flex items-center justify-center rounded-full text-[#b0b0c0] hover:bg-[#f0f0f8] hover:text-[#555] transition" onclick="event.stopPropagation(); deleteRecommend('{{ $song['id'] }}')" aria-label="추천 삭제">
+                                    <svg viewBox="0 0 24 24" class="w-4 h-4 fill-current"><path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7A1 1 0 0 0 5.7 7.11L10.59 12l-4.9 4.89a1 1 0 1 0 1.41 1.41L12 13.41l4.89 4.9a1 1 0 0 0 1.41-1.41L13.41 12l4.9-4.89a1 1 0 0 0 0-1.4z"/></svg>
+                                </button>
+                            @endif
                             <img src="{{ $song['album_img_url'] }}?/dims/resize/200x200/quality/90" alt="앨범커버"
                                  class="w-20 h-20 rounded-xl object-cover mr-4 flex-none" loading="lazy"
                                  onclick="window.location.href='{{ route('recommends.detail', ['id' => $song['id']]) }}'">

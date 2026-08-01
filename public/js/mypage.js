@@ -25,6 +25,58 @@ function setProfileAlbum(recommendId) {
     })
 }
 
+function deleteRecommend(recommendId) {
+    if (!confirm("이 추천을 삭제하시겠습니까?")) return;
+
+    fetch(`/recommends/delete`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': getMeta('csrf-token'),
+        },
+        body: JSON.stringify({
+            recommend_id: recommendId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.code) {
+            alert(data.message);
+            return;
+        }
+        removeSongCard(recommendId);
+        if (data.profile_reset) {
+            resetProfileBackground();
+        }
+    })
+    .catch(() => {
+        alert("추천 삭제 중 오류가 발생했습니다.");
+    });
+}
+
+function resetProfileBackground() {
+    const profileHeader = document.querySelector('.profile-header');
+    const profileBackground = document.querySelector('.profile-background');
+    profileHeader.removeAttribute('href');
+    profileBackground.style.backgroundImage = '';
+    profileBackground.classList.add('bg-[#d8d8e8]');
+}
+
+function removeSongCard(recommendId) {
+    const id = Number(recommendId);
+    const song = songs.find(s => s.id === id);
+    if (!song) return;
+
+    song.element.remove();
+    songs = songs.filter(s => s.id !== id);
+    renderSongs();
+
+    const countEl = document.getElementById('recommendCount');
+    if (countEl) {
+        countEl.textContent = `추천한 노래 ${songs.length}개`;
+    }
+}
+
 function editProfile(albumFloId, albumImgUrl) {
     const profileHeader = document.querySelector('.profile-header');
     const profileBackground = document.querySelector('.profile-background');

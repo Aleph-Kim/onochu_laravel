@@ -33,6 +33,7 @@ Route::get('/login', [AuthController::class, 'login']);
 Route::get('/recommends', [RecommendsController::class, 'index'])->name('recommends.index');
 Route::post('/recommends/post', [RecommendsController::class, 'post'])->name('recommends.post');
 Route::get('/recommends/detail', [RecommendsController::class, 'detail'])->name('recommends.detail');
+Route::post('/recommends/delete', [RecommendsController::class, 'destroy'])->name('recommends.delete');
 
 Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
 Route::get('/mypage/user', [MypageController::class, 'user'])->name('mypage.user');

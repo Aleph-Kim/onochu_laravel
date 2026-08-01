@@ -6,6 +6,7 @@ use App\Models\Album;
 use App\Models\Artist;
 use App\Models\Recommend;
 use App\Models\Song;
+use App\Models\User;
 use App\Services\FloApiService;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
@@ -104,5 +105,36 @@ class RecommendsController extends Controller
         }
 
         return view('recommends.detail', compact('recommendInfo'));
+    }
+
+    public function destroy(Request $request)
+    {
+        if (!session('user')) {
+            return response()->json(['code' => 401, 'message' => '로그인이 필요합니다.']);
+        }
+
+        $recommendId = (int) $request->input('recommend_id');
+        $userId = session('user.id');
+
+        $recommend = Recommend::where('user_id', $userId)
+            ->where('id', $recommendId)
+            ->first();
+
+        if (!$recommend) {
+            return response()->json(['code' => 400, 'message' => '잘못된 요청입니다.']);
+        }
+
+        $albumId = $recommend->song->album_id;
+        $recommend->delete();
+
+        // 삭제한 추천의 앨범이 프로필 앨범으로 설정되어 있었다면 함께 초기화
+        $profileReset = (bool) User::where('id', $userId)
+            ->where('profile_album_id', $albumId)
+            ->update(['profile_album_id' => null]);
+
+        return response()->json([
+            'message'       => '추천이 삭제되었습니다.',
+            'profile_reset' => $profileReset,
+        ]);
     }
 }
