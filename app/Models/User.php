@@ -37,25 +37,17 @@ class User extends Authenticatable
     }
 
     /**
-     * 추천 수, 프로필 앨범 포함한 유저 정보 (MypageController 공통)
+     * 추천 수, 프로필 앨범을 함께 로드 (MypageController 공통)
      */
-    public function infoWithStats(): array
+    public function loadStats(): static
     {
-        $this->loadCount('recommends')->load('profileAlbum');
-
-        return [
-            'id'                   => $this->id,
-            'nickname'             => $this->nickname,
-            'recommend_count'      => $this->recommends_count,
-            'profile_album_flo_id' => $this->profileAlbum?->flo_id,
-            'profile_img_url'      => $this->profileAlbum?->img_url,
-        ];
+        return $this->loadCount('recommends')->load('profileAlbum');
     }
 
     /**
      * 유저가 추천한 아티스트 Top 5 (MypageController)
      */
-    public function likeArtists(int $limit = 5): array
+    public function likeArtists(int $limit = 5): \Illuminate\Database\Eloquent\Collection
     {
         return Artist::select('artists.id', 'artists.flo_id', 'artists.name', 'artists.img_url')
             ->selectRaw('COUNT(artists.id) as count')
@@ -66,8 +58,7 @@ class User extends Authenticatable
             ->groupBy('artists.id', 'artists.flo_id', 'artists.name', 'artists.img_url')
             ->orderByDesc('count')
             ->limit($limit)
-            ->get()
-            ->toArray();
+            ->get();
     }
 
     /**

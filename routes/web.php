@@ -5,7 +5,6 @@ use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\MypageController;
-use App\Http\Controllers\PushSubscriptionController;
 use App\Http\Controllers\RecommendsController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\SearchController;
@@ -30,15 +29,10 @@ Route::get('/auth/callback', [AuthController::class, 'callback']);
 Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/login', [AuthController::class, 'login']);
 
-Route::get('/recommends', [RecommendsController::class, 'index'])->name('recommends.index');
-Route::post('/recommends/post', [RecommendsController::class, 'post'])->name('recommends.post');
-Route::get('/recommends/detail', [RecommendsController::class, 'detail'])->name('recommends.detail');
-Route::post('/recommends/delete', [RecommendsController::class, 'destroy'])->name('recommends.delete');
+Route::middleware('check.login')->group(function () {
+    Route::resource('recommends', RecommendsController::class)->only(['create', 'store']);
+    Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
+});
+Route::resource('recommends', RecommendsController::class)->only(['show']);
 
-Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
-Route::get('/mypage/user', [MypageController::class, 'user'])->name('mypage.user');
-Route::post('/mypage/setProfileAlbum', [MypageController::class, 'setProfileAlbum'])->name('mypage.setProfileAlbum');
-
-Route::post('/push/subscribe', [PushSubscriptionController::class, 'subscribe']);
-Route::post('/push/unsubscribe', [PushSubscriptionController::class, 'unsubscribe']);
-//Route::get('/push/test', [PushSubscriptionController::class, 'test']);
+Route::get('/mypage/{user}', [MypageController::class, 'user'])->name('mypage.user');

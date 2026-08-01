@@ -2,23 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchRequest;
 use App\Services\FloApiService;
-use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
     public function __construct(private FloApiService $floApi) {}
 
-    public function index(Request $request)
+    public function index(SearchRequest $request)
     {
-        $keyword = $request->input('q', '');
-
-        if (empty($keyword)) {
-            abort(400);
-        }
+        $keyword = $request->validated('q');
 
         $songs = $this->floApi->getSongsByKeyword($keyword);
 
-        return view('search.index', compact('songs', 'keyword'));
+        return view('search.index', ['songs' => $songs, 'keyword' => $keyword]);
     }
 }

@@ -13,6 +13,7 @@ use App\Services\ImageService;
 use App\Services\WebPushService;
 use App\WebPush\NewAlbumPayload;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Collection;
 
 class UpdateNewAlbums extends Command
 {
@@ -60,13 +61,13 @@ class UpdateNewAlbums extends Command
         ];
     }
 
-    private function getRecommendedArtistsNewAlbums(array $artists): array
+    private function getRecommendedArtistsNewAlbums(Collection $artists): array
     {
         $newAlbums       = [];
         $newAlbumFloIds  = [];
         $newAlbumData    = $this->getNewAlbumData();
 
-        $artistsFloId = array_column($artists, 'flo_id');
+        $artistsFloId = $artists->pluck('flo_id')->all();
         $matchingIds  = array_intersect(array_keys($newAlbumData['artists_flo_id']), $artistsFloId);
         $this->info("매칭된 아티스트 수: " . count($matchingIds));
 

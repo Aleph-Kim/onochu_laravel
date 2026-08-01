@@ -2,41 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PushSubscribeRequest;
+use App\Http\Requests\PushUnsubscribeRequest;
 use App\Models\PushSubscription;
 use App\Models\User;
 use App\Services\WebPushService;
 use App\WebPush\NewAlbumPayload;
-use Illuminate\Http\Request;
 
 class PushSubscriptionController extends Controller
 {
-    public function subscribe(Request $request)
+    public function subscribe(PushSubscribeRequest $request)
     {
         if (!session('user')) {
-            return response()->json(['code' => 401, 'message' => '로그인이 필요합니다.']);
+            return $this->errorResponse('로그인이 필요합니다.', 401);
         }
 
         PushSubscription::updateOrCreate(
-            ['endpoint' => $request->input('endpoint')],
+            ['endpoint' => $request->validated('endpoint')],
             [
                 'user_id'    => session('user.id'),
-                'public_key' => $request->input('keys.p256dh'),
-                'auth_token' => $request->input('keys.auth'),
+                'public_key' => $request->validated('keys.p256dh'),
+                'auth_token' => $request->validated('keys.auth'),
             ],
         );
 
-        return response()->json(['message' => '알림 구독 완료']);
+        return $this->successResponse('알림 구독 완료');
     }
 
-    public function unsubscribe(Request $request)
+    public function unsubscribe(PushUnsubscribeRequest $request)
     {
         if (!session('user')) {
-            return response()->json(['code' => 401, 'message' => '로그인이 필요합니다.']);
+            return $this->errorResponse('로그인이 필요합니다.', 401);
         }
 
-        PushSubscription::where('endpoint', $request->input('endpoint'))->delete();
+        PushSubscription::where('endpoint', $request->validated('endpoint'))->delete();
 
-        return response()->json(['message' => '알림 구독 해제 완료']);
+        return $this->successResponse('알림 구독 해제 완료');
     }
 
     /**
@@ -48,13 +49,13 @@ class PushSubscriptionController extends Controller
     public function test(WebPushService $webPush)
     {
         if (!session('user')) {
-            return response()->json(['code' => 401, 'message' => '로그인이 필요합니다.']);
+            return $this->errorResponse('로그인이 필요합니다.', 401);
         }
 
         $user = User::find(session('user.id'));
 
         if ($user->pushSubscriptions()->count() === 0) {
-            return response()->json(['code' => 400, 'message' => '먼저 알림을 구독해 주세요.']);
+            return $this->errorResponse('먼저 알림을 구독해 주세요.', 400);
         }
 
         $webPush->sendToUser($user, NewAlbumPayload::build([
@@ -66,6 +67,6 @@ class PushSubscriptionController extends Controller
             ],
         ]));
 
-        return response()->json(['message' => '테스트 알림을 발송했습니다.']);
+        return $this->successResponse('테스트 알림을 발송했습니다.');
     }
 }

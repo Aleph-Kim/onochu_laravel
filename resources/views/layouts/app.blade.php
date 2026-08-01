@@ -65,6 +65,7 @@
     <div class="loader-container fixed top-0 left-0 w-screen h-screen hidden items-center justify-center bg-black/40 backdrop-blur-sm">
         <div class="loader relative w-[120px] h-[90px] mx-auto my-0 before:content-[''] before:absolute before:bottom-[30px] before:left-[50px] before:h-[30px] before:w-[30px] before:rounded-full before:bg-primary before:animate-[loading-bounce_0.5s_ease-in-out_infinite_alternate] after:content-[''] after:absolute after:right-0 after:top-0 after:h-[7px] after:w-[45px] after:rounded after:shadow-[0_5px_0_#f2f2f2,-35px_50px_0_#f2f2f2,-70px_95px_0_#f2f2f2] after:animate-[loading-step_1s_ease-in-out_infinite]"></div>
     </div>
+    <script src="{{ asset('js/util.js') }}"></script>
     <script src="{{ asset('js/layout.js') }}"></script>
     @stack('scripts')
 </body>

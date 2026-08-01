@@ -68,7 +68,7 @@
             @endif
         </div>
         <div class="flex justify-end my-[10px]">
-            <a class="inline-block py-[10px] px-[24px] rounded-full cursor-pointer transition-all text-white bg-primary hover:bg-primary-light font-semibold shadow-sm hover:shadow-md" href="{{ route('recommends.index', ['id' => $songInfo['song']['flo_id']]) }}">추천하기</a>
+            <a class="inline-block py-[10px] px-[24px] rounded-full cursor-pointer transition-all text-white bg-primary hover:bg-primary-light font-semibold shadow-sm hover:shadow-md" href="{{ route('recommends.create', ['id' => $songInfo['song']['flo_id']]) }}">추천하기</a>
         </div>
     </div>
 </div>

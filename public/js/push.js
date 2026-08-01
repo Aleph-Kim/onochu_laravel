@@ -1,9 +1,5 @@
 // 웹 푸시 구독 처리 (마이페이지 '신곡 알림' 버튼)
 
-function getMeta(name) {
-    return document.querySelector(`meta[name="${name}"]`)?.content;
-}
-
 function pushSupported() {
     return 'serviceWorker' in navigator && 'PushManager' in window;
 }
@@ -33,17 +29,10 @@ function urlBase64ToUint8Array(base64String) {
 
 function sendSubscription(url, subscription) {
     const json = subscription.toJSON();
-    return fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': getMeta('csrf-token'),
-        },
-        body: JSON.stringify({
-            endpoint: subscription.endpoint,
-            keys: json.keys,
-        }),
-    });
+    return fetchApi(url, {
+        endpoint: subscription.endpoint,
+        keys: json.keys,
+    }, 'POST');
 }
 
 async function getSubscription() {
@@ -65,7 +54,7 @@ async function subscribePush() {
         applicationServerKey: urlBase64ToUint8Array(getMeta('vapid-public-key')),
     });
 
-    await sendSubscription('/push/subscribe', subscription);
+    await sendSubscription('/api/push/subscribe', subscription);
     return true;
 }
 
@@ -75,7 +64,7 @@ async function unsubscribePush() {
         return true;
     }
 
-    await sendSubscription('/push/unsubscribe', subscription);
+    await sendSubscription('/api/push/unsubscribe', subscription);
     await subscription.unsubscribe();
     return true;
 }

@@ -3,31 +3,31 @@
 @section('content')
 <div class="p-5 max-w-[500px] mx-auto flex flex-col items-center">
     <div class="flex w-full items-center gap-3 mb-5">
-        <img src="{{ $recommendInfo['artists'][0]['img_url'] }}?size=200x200"
+        <img src="{{ $recommend->song->artists->first()->img_url }}?size=200x200"
              class="w-10 h-10 rounded-full object-cover cursor-pointer transition hover:opacity-80 shadow-sm"
-             onclick="window.location.href = '{{ route('artist.detail', ['id' => $recommendInfo['artists'][0]['flo_id']]) }}'">
+             onclick="window.location.href = '{{ route('artist.detail', ['id' => $recommend->song->artists->first()->flo_id]) }}'">
         <span>
-            @foreach($recommendInfo['artists'] as $artist)
+            @foreach($recommend->song->artists as $artist)
                 <span class="text-sm text-[#333] font-medium cursor-pointer transition hover:text-primary artist-name"
-                      onclick="window.location.href = '{{ route('artist.detail', ['id' => $artist['flo_id']]) }}'">{{ $artist['name'] }}</span>
+                      onclick="window.location.href = '{{ route('artist.detail', ['id' => $artist->flo_id]) }}'">{{ $artist->name }}</span>
             @endforeach
         </span>
     </div>
     <div class="flex justify-end w-full gap-[10px] mb-5 max-w-[600px]">
-        <a href="{{ $recommendInfo['url']['youtube'] }}" target="_blank"
+        <a href="{{ $recommend->url['youtube'] }}" target="_blank"
            class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-youtube text-youtube text-sm font-semibold hover:bg-youtube hover:text-white transition-colors">YouTube Music</a>
-        <a href="{{ $recommendInfo['url']['flo'] }}" target="_blank"
+        <a href="{{ $recommend->url['flo'] }}" target="_blank"
            class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-flo text-flo text-sm font-semibold hover:bg-flo hover:text-white transition-colors">FLO</a>
         {{-- 스포티파이 잠시 숨김 처리 --}}
-        {{-- <a href="{{ $recommendInfo['url']['spotify'] }}" target="_blank"
+        {{-- <a href="{{ $recommend->url['spotify'] }}" target="_blank"
            class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-spotify text-spotify text-sm font-semibold hover:bg-spotify hover:text-white transition-colors">Spotify</a> --}}
-        <a href="{{ $recommendInfo['url']['apple_music'] }}" onclick="openAppleMusic(event, '{{ $recommendInfo['url']['apple_music_app'] }}', '{{ $recommendInfo['url']['apple_music'] }}')" target="_blank"
+        <a href="{{ $recommend->url['apple_music'] }}" onclick="openAppleMusic(event, '{{ $recommend->url['apple_music_app'] }}', '{{ $recommend->url['apple_music'] }}')" target="_blank"
            class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-apple text-apple text-sm font-semibold hover:bg-apple hover:text-white transition-colors">Apple Music</a>
     </div>
     <div class="w-full aspect-square mb-4 overflow-hidden relative rounded-2xl">
-        <img src="{{ $recommendInfo['album_img_url'] }}?size=500x500"
+        <img src="{{ $recommend->song->album->img_url }}?size=500x500"
              class="w-full h-full object-cover cursor-pointer"
-             onclick="window.location.href = '{{ route('song.detail', ['id' => $recommendInfo['song_flo_id']]) }}'">
+             onclick="window.location.href = '{{ route('song.detail', ['id' => $recommend->song->flo_id]) }}'">
         <span class="share-btn group absolute top-0 right-0 bg-white rounded-full m-2.5 w-[50px] h-[50px] text-lg flex justify-center items-center flex-col shadow-[0_4px_16px_rgba(0,0,0,0.12)] cursor-pointer transition-all duration-200 ease-[cubic-bezier(0.68,-0.55,0.265,1.55)] hover:bg-kakao hover:text-kakao-text">
             <span class="absolute top-0 text-sm bg-white text-white py-[5px] px-2 rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.10)] opacity-0 pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.68,-0.55,0.265,1.55)] group-hover:top-[58px] group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto group-hover:bg-kakao group-hover:text-kakao-text before:content-[''] before:absolute before:h-2 before:w-2 before:bg-white before:-top-[3px] before:left-1/2 before:-translate-x-1/2 before:rotate-45 before:transition-all before:duration-300 before:ease-[cubic-bezier(0.68,-0.55,0.265,1.55)] group-hover:before:bg-kakao">공유하기</span>
             <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" fill="currentColor" viewBox="0 0 208 191.94">
@@ -36,31 +36,31 @@
         </span>
     </div>
     <div class="w-full text-left mb-4">
-        <a href="{{ route('song.detail', ['id' => $recommendInfo['song_flo_id']]) }}">
-            <h2 class="text-[20px] font-bold mb-2 text-[#111] tracking-tight hover:text-primary transition-colors">{{ $recommendInfo['song_title'] }}</h2>
+        <a href="{{ route('song.detail', ['id' => $recommend->song->flo_id]) }}">
+            <h2 class="text-[20px] font-bold mb-2 text-[#111] tracking-tight hover:text-primary transition-colors">{{ $recommend->song->title }}</h2>
         </a>
         <p class="text-[13px] text-[#8b8b9a] flex items-center gap-2">
-            {{ $recommendInfo['release_date'] ?? '발매일 미상' }}
+            {{ $recommend->song->album->release_date ?? '발매일 미상' }}
             <span class="inline-block w-px h-2.5 mx-1 my-0 bg-[#c8c8d8]"></span>
-            {{ $recommendInfo['genre'] }}
+            {{ $recommend->song->genre }}
             <span class="inline-block w-px h-2.5 mx-1 my-0 bg-[#c8c8d8]"></span>
-            {{ $recommendInfo['play_time'] }}
+            {{ $recommend->song->play_time }}
         </p>
     </div>
     <div class="w-full flex flex-col items-center">
         <div class="[direction:rtl] text-[40px] my-4 mx-0">
             @foreach([5,4,3,2,1] as $star)
-                <input type="radio" id="star{{ $star }}" name="score" value="{{ $star }}" {{ $recommendInfo['score'] == $star ? 'checked' : '' }} disabled class="peer hidden">
+                <input type="radio" id="star{{ $star }}" name="score" value="{{ $star }}" {{ $recommend->score == $star ? 'checked' : '' }} disabled class="peer hidden">
                 <label for="star{{ $star }}" class="peer text-[#e0e0e0] cursor-default hover:text-amber-500 peer-checked:text-amber-500 peer-hover:text-amber-500">★</label>
             @endforeach
         </div>
         <textarea name="comment" disabled
                   class="w-full h-[120px] p-4 border-0 rounded-2xl bg-[#f0f0f8] resize-none text-sm mb-4 placeholder:text-[#b0b0c0] focus:outline-none"
-                  placeholder="작성된 코멘트가 없습니다.">{{ $recommendInfo['comment'] }}</textarea>
+                  placeholder="작성된 코멘트가 없습니다.">{{ $recommend->comment }}</textarea>
         <div class="w-full text-sm text-[#8b8b9a] text-right">추천인:
-            <a href="{{ route('mypage.user', ['id' => $recommendInfo['user_id']]) }}" class="hover:text-primary transition-colors font-medium">{{ $recommendInfo['user_name'] }}</a>
+            <a href="{{ route('mypage.user', $recommend->user) }}" class="hover:text-primary transition-colors font-medium">{{ $recommend->user->nickname }}</a>
         </div>
-        <div class="w-full text-sm text-[#8b8b9a] text-right">추천일: {{ date('Y년 m월 d일', strtotime($recommendInfo['recommend_date'])) }}</div>
+        <div class="w-full text-sm text-[#8b8b9a] text-right">추천일: {{ $recommend->created_at->format('Y년 m월 d일') }}</div>
     </div>
 </div>
 @endsection
@@ -73,12 +73,12 @@
         container: '.share-btn',
         templateId: {{ config('services.kakao.share_template_id') }},
         templateArgs: {
-            RECOMMEND_ID: '{{ $recommendInfo['id'] }}',
-            ALBUM_IMG_URL: '{{ $recommendInfo['album_img_url'] }}?size=500x500',
-            SONG_TITLE: '{{ $recommendInfo['song_title'] }}',
-            ARTIST_NAME: '{{ $recommendInfo['artists'][0]['name'] }}',
-            YOUTUBE_Q: "{{ $recommendInfo['song_title'] . ' ' . $recommendInfo['artists'][0]['name'] }}",
-            FLO_ID: '{{ $recommendInfo['song_flo_id'] }}'
+            RECOMMEND_ID: '{{ $recommend->id }}',
+            ALBUM_IMG_URL: '{{ $recommend->song->album->img_url }}?size=500x500',
+            SONG_TITLE: '{{ $recommend->song->title }}',
+            ARTIST_NAME: '{{ $recommend->song->artists->first()->name }}',
+            YOUTUBE_Q: "{{ $recommend->song->title . ' ' . $recommend->song->artists->first()->name }}",
+            FLO_ID: '{{ $recommend->song->flo_id }}'
         },
     });
 </script>

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RedirectFloRequest;
+use App\Http\Requests\RedirectYoutubeRequest;
 use App\Services\PlatformService;
-use Illuminate\Http\Request;
 
 class RedirectController extends Controller
 {
@@ -11,25 +12,13 @@ class RedirectController extends Controller
     {
     }
 
-    public function flo(Request $request)
+    public function flo(RedirectFloRequest $request)
     {
-        $floId = $request->input('id');
-
-        if (empty($floId)) {
-            abort(400);
-        }
-
-        return redirect()->away($this->platform->getFloUrl($floId));
+        return redirect()->away($this->platform->getFloUrl($request->validated('id')));
     }
 
-    public function youtube(Request $request)
+    public function youtube(RedirectYoutubeRequest $request)
     {
-        $keyword = $request->input('q');
-
-        if (empty($keyword)) {
-            abort(400);
-        }
-
-        return redirect()->away($this->platform->getYoutubeUrl($keyword));
+        return redirect()->away($this->platform->getYoutubeUrl($request->validated('q')));
     }
 }

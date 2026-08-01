@@ -2,20 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ArtistDetailRequest;
 use App\Services\FloApiService;
-use Illuminate\Http\Request;
 
 class ArtistController extends Controller
 {
     public function __construct(private FloApiService $floApi) {}
 
-    public function detail(Request $request)
+    public function detail(ArtistDetailRequest $request)
     {
-        $artistId = (int) $request->input('id');
-
-        if (empty($artistId)) {
-            abort(400);
-        }
+        $artistId = $request->validated('id');
 
         $artistInfo = $this->floApi->getArtistByFloId($artistId);
         $albumsInfo = $this->floApi->getAlbumsByArtistFloId($artistId);

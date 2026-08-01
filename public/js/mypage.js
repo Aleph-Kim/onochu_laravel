@@ -5,53 +5,37 @@ let searchQuery = '';
 let chartColors = ['#FF6347', '#FFD39B', '#FFEC8B', '#98FB98', '#87CEEB', '#DDA0DD', '#FFC0CB'];
 
 function setProfileAlbum(recommendId) {
-    fetch(`/mypage/setProfileAlbum`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': getMeta('csrf-token'),
-        },
-        body: JSON.stringify({
-            recommend_id: recommendId
+    fetchApi(`/api/mypage/profile-album/${recommendId}`, null, 'POST')
+        .then(response => {
+            if (!response.success) {
+                alert(response.message);
+                return;
+            }
+            editProfile(response.data.album_flo_id, response.data.album_img_url);
+            alert("프로필 앨범이 변경되었습니다.");
         })
-    })
-    .then(response => response.json())
-    .then(data => {
-        editProfile(data.album_flo_id, data.album_img_url);
-        alert("프로필 앨범이 변경되었습니다.");
-    })
-    .catch(() => {
-        alert("프로필 앨범 변경 중 오류가 발생했습니다.");
-    })
+        .catch(() => {
+            alert("프로필 앨범 변경 중 오류가 발생했습니다.");
+        })
 }
 
 function deleteRecommend(recommendId) {
     if (!confirm("이 추천을 삭제하시겠습니까?")) return;
 
-    fetch(`/recommends/delete`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': getMeta('csrf-token'),
-        },
-        body: JSON.stringify({
-            recommend_id: recommendId
+    fetchApi(`/api/recommends/${recommendId}`, null, 'DELETE')
+        .then(response => {
+            if (!response.success) {
+                alert(response.message);
+                return;
+            }
+            removeSongCard(recommendId);
+            if (response.data.profile_reset) {
+                resetProfileBackground();
+            }
         })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.code) {
-            alert(data.message);
-            return;
-        }
-        removeSongCard(recommendId);
-        if (data.profile_reset) {
-            resetProfileBackground();
-        }
-    })
-    .catch(() => {
-        alert("추천 삭제 중 오류가 발생했습니다.");
-    });
+        .catch(() => {
+            alert("추천 삭제 중 오류가 발생했습니다.");
+        });
 }
 
 function resetProfileBackground() {

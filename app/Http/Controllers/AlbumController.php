@@ -2,23 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AlbumDetailRequest;
 use App\Models\Artist;
 use App\Services\FloApiService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class AlbumController extends Controller
 {
     public function __construct(private FloApiService $floApi) {}
 
-    public function detail(Request $request)
+    public function detail(AlbumDetailRequest $request)
     {
-        $albumId = (int) $request->input('id');
+        $albumId = $request->validated('id');
         $isNewAlbum = $request->boolean('new_album');
-
-        if (empty($albumId)) {
-            abort(400);
-        }
 
         $album = $this->floApi->getAlbumByFloId($albumId);
 

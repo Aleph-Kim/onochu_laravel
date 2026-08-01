@@ -4,76 +4,55 @@ namespace App\Http\Controllers;
 
 use App\Models\Recommend;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class MypageController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        if (!session('user')) {
-            return redirect()->route('login')->cookie('last_url', '/mypage', 3600);
-        }
-
-        $data = $this->getMypageInfo(session('user.id'));
+        $user = User::findOrFail(session('user.id'));
+        $data = $this->getMypageInfo($user);
 
         return view('mypage.show', $data + ['isOwner' => true]);
     }
 
-    public function user(Request $request)
+    public function user(User $user)
     {
-        $userId = (int) $request->input('id');
-
-        if (!$userId) {
-            return redirect()->route('main')->with('error', '잘못된 요청입니다.');
-        }
-
-        if ($userId === session('user.id')) {
+        if ($user->id === session('user.id')) {
             return redirect()->route('mypage.index');
         }
 
-        $data = $this->getMypageInfo($userId);
+        $data = $this->getMypageInfo($user);
 
         return view('mypage.show', $data + ['isOwner' => false]);
     }
 
-    public function setProfileAlbum(Request $request)
+    public function setProfileAlbum(Recommend $recommend)
     {
         if (!session('user')) {
-            return response()->json(['code' => 401, 'message' => '로그인이 필요합니다.']);
+            return $this->errorResponse('로그인이 필요합니다.', 401);
         }
 
-        $recommendId = (int) $request->input('recommend_id');
-        $userId = session('user.id');
-
-        $recommend = Recommend::with('song.album')
-            ->where('user_id', $userId)
-            ->where('id', $recommendId)
-            ->first();
-
-        if (!$recommend) {
-            return response()->json(['code' => 400, 'message' => '잘못된 요청입니다.']);
+        if ($recommend->user_id !== session('user.id')) {
+            return $this->errorResponse('잘못된 요청입니다.', 400);
         }
 
         $album = $recommend->song->album;
 
-        User::where('id', $userId)->update(['profile_album_id' => $album->id]);
+        User::where('id', $recommend->user_id)->update(['profile_album_id' => $album->id]);
 
-        return response()->json([
-            'message'       => '앨범 설정 완료',
+        return $this->successResponse('앨범 설정 완료', [
             'album_img_url' => $album->img_url . '?size=1000x1000',
             'album_flo_id'  => $album->flo_id,
         ]);
     }
 
-    private function getMypageInfo(int $userId): array
+    private function getMypageInfo(User $user): array
     {
-        $user = User::findOrFail($userId);
-
-        $userInfo   = $user->infoWithStats();
+        $user->loadStats();
         $artistList = $user->likeArtists();
         $genreList  = $user->likeGenres();
-        $songList   = Recommend::latestPerSong(1000, $userId);
+        $songList   = Recommend::latestPerSong(1000, $user->id);
 
-        return compact('userInfo', 'artistList', 'genreList', 'songList');
+        return compact('user', 'artistList', 'genreList', 'songList');
     }
 }

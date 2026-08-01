@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="p-5 max-w-[500px] mx-auto">
-    <form class="recommends-form flex flex-col items-center" action="{{ route('recommends.post') }}" method="post">
+    <form class="recommends-form flex flex-col items-center" action="{{ route('recommends.store') }}" method="post">
         @csrf
         <div class="flex w-full items-center gap-3 mb-5">
             <img src="{{ $songInfo['artists'][0]['img_url'] }}?/dims/resize/200x200/quality/90"

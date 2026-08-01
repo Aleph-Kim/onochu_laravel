@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Artist extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'name',
         'genre',
@@ -23,7 +27,7 @@ class Artist extends Model
     /**
      * 추천 수 기준 인기 아티스트 (MainController - 비로그인, UpdateNewAlbums - 전체)
      */
-    public static function popularByRecommends(?int $limit = 20): array
+    public static function popularByRecommends(?int $limit = 20): Collection
     {
         return static::select('artists.flo_id', 'artists.name', 'artists.img_url')
             ->selectRaw('COUNT(*) as recommend_cnt')
@@ -34,14 +38,13 @@ class Artist extends Model
             ->orderByDesc('recommend_cnt')
             ->orderByRaw('MAX(recommends.created_at) DESC')
             ->when($limit, fn ($q) => $q->limit($limit))
-            ->get()
-            ->toArray();
+            ->get();
     }
 
     /**
      * 특정 유저의 추천 아티스트 목록 (MainController - 로그인)
      */
-    public static function byUser(int $userId): array
+    public static function byUser(int $userId): Collection
     {
         return static::select('artists.flo_id', 'artists.name', 'artists.img_url')
             ->selectRaw('COUNT(*) as recommend_cnt')
@@ -52,7 +55,6 @@ class Artist extends Model
             ->groupBy('artists.flo_id', 'artists.name', 'artists.img_url')
             ->orderByDesc('recommend_cnt')
             ->orderByRaw('MAX(recommends.created_at) DESC')
-            ->get()
-            ->toArray();
+            ->get();
     }
 }

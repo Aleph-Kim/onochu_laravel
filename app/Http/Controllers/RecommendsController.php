@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RecommendCreateRequest;
+use App\Http\Requests\RecommendStoreRequest;
 use App\Models\Album;
 use App\Models\Artist;
 use App\Models\Recommend;
@@ -9,7 +11,6 @@ use App\Models\Song;
 use App\Models\User;
 use App\Services\FloApiService;
 use App\Services\ImageService;
-use Illuminate\Http\Request;
 
 class RecommendsController extends Controller
 {
@@ -18,17 +19,9 @@ class RecommendsController extends Controller
         private ImageService $imageService,
     ) {}
 
-    public function index(Request $request)
+    public function create(RecommendCreateRequest $request)
     {
-        if (!session('user')) {
-            return redirect()->route('login')->cookie('last_url', $request->getRequestUri(), 3600);
-        }
-
-        $songId = (int) $request->input('id');
-
-        if (empty($songId)) {
-            abort(400);
-        }
+        $songId = $request->validated('id');
 
         $songInfo = $this->floApi->getSongByFloId($songId);
         session(['song_info' => $songInfo]);
@@ -36,12 +29,8 @@ class RecommendsController extends Controller
         return view('recommends.index', compact('songInfo'));
     }
 
-    public function post(Request $request)
+    public function store(RecommendStoreRequest $request)
     {
-        if (!session('user')) {
-            return redirect()->route('login')->cookie('last_url', '/recommends', 3600);
-        }
-
         $songInfo = session('song_info');
 
         // 가수 조회 및 저장 (이미지 업로드는 신규 생성 시에만)
@@ -82,49 +71,33 @@ class RecommendsController extends Controller
         $recommend = Recommend::create([
             'song_id' => $song->id,
             'user_id' => session('user.id'),
-            'score'   => $request->input('score', 3),
-            'comment' => $request->input('comment'),
+            'score'   => $request->validated('score') ?? 3,
+            'comment' => $request->validated('comment'),
         ]);
 
-        return redirect()->route('recommends.detail', ['id' => $recommend->id])
+        return redirect()->route('recommends.show', $recommend)
             ->with('message', '추천이 저장되었습니다.');
     }
 
-    public function detail(Request $request)
+    public function show(Recommend $recommend)
     {
-        $recommendId = (int) $request->input('id');
+        $recommend->loadMissing(['song.album', 'song.artists', 'user']);
 
-        if (empty($recommendId)) {
-            abort(400);
-        }
-
-        $recommendInfo = Recommend::findWithDetails($recommendId);
-
-        if (!$recommendInfo) {
-            abort(400);
-        }
-
-        return view('recommends.detail', compact('recommendInfo'));
+        return view('recommends.detail', compact('recommend'));
     }
 
-    public function destroy(Request $request)
+    public function destroy(Recommend $recommend)
     {
         if (!session('user')) {
-            return response()->json(['code' => 401, 'message' => '로그인이 필요합니다.']);
+            return $this->errorResponse('로그인이 필요합니다.', 401);
         }
 
-        $recommendId = (int) $request->input('recommend_id');
-        $userId = session('user.id');
-
-        $recommend = Recommend::where('user_id', $userId)
-            ->where('id', $recommendId)
-            ->first();
-
-        if (!$recommend) {
-            return response()->json(['code' => 400, 'message' => '잘못된 요청입니다.']);
+        if ($recommend->user_id !== session('user.id')) {
+            return $this->errorResponse('잘못된 요청입니다.', 400);
         }
 
         $albumId = $recommend->song->album_id;
+        $userId = $recommend->user_id;
         $recommend->delete();
 
         // 삭제한 추천의 앨범이 프로필 앨범으로 설정되어 있었다면 함께 초기화
@@ -132,9 +105,6 @@ class RecommendsController extends Controller
             ->where('profile_album_id', $albumId)
             ->update(['profile_album_id' => null]);
 
-        return response()->json([
-            'message'       => '추천이 삭제되었습니다.',
-            'profile_reset' => $profileReset,
-        ]);
+        return $this->successResponse('추천이 삭제되었습니다.', ['profile_reset' => $profileReset]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Artist;
 use App\Models\NewAlbum;
 use App\Models\Recommend;
+use Illuminate\Database\Eloquent\Collection;
 
 class MainController extends Controller
 {
@@ -20,7 +21,7 @@ class MainController extends Controller
         return view('main.index', compact('recommends', 'artists', 'newAlbums'));
     }
 
-    private function getNewAlbumsForUser(array $artists): array
+    private function getNewAlbumsForUser(Collection $artists): array
     {
         $newAlbumData = NewAlbum::with('artists')
             ->where('created_at', '>=', now()->subDays(7))
@@ -47,7 +48,7 @@ class MainController extends Controller
             }
         }
 
-        $userArtistIds = array_column($artists, 'flo_id');
+        $userArtistIds = $artists->pluck('flo_id')->all();
         $matchingIds = array_intersect(array_keys($artistFloIds), $userArtistIds);
 
         $result = [];

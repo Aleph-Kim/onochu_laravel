@@ -7,22 +7,22 @@
 @endphp
 
 <div class="overflow-hidden">
-    @if(!empty($recommends))
+    @if($recommends->isNotEmpty())
         <div class="music-slider py-[60px] overflow-visible focus:outline-none">
             @foreach($recommends as $recommend)
-                <a class="group [&.is-selected]:z-10" href="{{ route('recommends.detail', ['id' => $recommend['id']]) }}">
+                <a class="group [&.is-selected]:z-10" href="{{ route('recommends.show', $recommend) }}">
                     <div class="p-[15px] transition-transform duration-300 group-[&.is-selected]:scale-[1.3] max-[480px]:group-[&.is-selected]:scale-110">
                         <div class="w-[300px] overflow-hidden shadow-[0_8px_24px_rgba(0,0,40,0.12)] rounded-2xl transition-all duration-[400ms] bg-white">
                             <div class="group/body block h-[300px] w-[300px] bg-center bg-cover overflow-hidden transition-all duration-[400ms] relative cursor-pointer">
                                 <span class="h-[100px] w-[100px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 opacity-0 transition-opacity duration-200 group-[&.is-selected]:group-hover/body:opacity-100">
-                                    <img src="{{ $recommend['artist_img_url'] }}?size=350x350" loading="lazy" class="rounded-full w-full h-full object-cover">
+                                    <img src="{{ $recommend->song->artists->first()?->img_url }}?size=350x350" loading="lazy" class="rounded-full w-full h-full object-cover">
                                 </span>
-                                <div class="h-full w-full bg-cover absolute top-0 transition-all duration-200 group-[&.is-selected]:group-hover/body:brightness-50" style="background-image: url({{ $recommend['album_img_url'] }}?size=500x500);"></div>
+                                <div class="h-full w-full bg-cover absolute top-0 transition-all duration-200 group-[&.is-selected]:group-hover/body:brightness-50" style="background-image: url({{ $recommend->song->album->img_url }}?size=500x500);"></div>
                             </div>
                             <div class="pt-3.5 px-5 pb-4 border-0 bg-white relative flex">
                                 <div>
-                                    <span class="block leading-[1.3] font-bold text-sm text-primary">{{ $recommend['song_title'] }}</span>
-                                    <span class="block leading-[1.3] text-xs text-[#8b8b9a]">{{ $recommend['artist_name'] }}</span>
+                                    <span class="block leading-[1.3] font-bold text-sm text-primary">{{ $recommend->song->title }}</span>
+                                    <span class="block leading-[1.3] text-xs text-[#8b8b9a]">{{ $recommend->song->artists->pluck('name')->implode(' & ') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -84,16 +84,16 @@
 
     <div class="my-[40px]">
         <h2 class="text-2xl font-bold mb-6 tracking-tight pl-[15px] md:pl-0">{{ $artistSectionTitle }}</h2>
-        @if(!empty($artists))
+        @if($artists->isNotEmpty())
             <div class="flex gap-4 py-4 overflow-x-auto scrollbar-hide">
                 @foreach($artists as $artist)
-                    <a class="flex-none basis-48" href="{{ route('artist.detail', ['id' => $artist['flo_id']]) }}">
-                        <img src="{{ $artist['img_url'] }}?size=350x350" loading="lazy" class="aspect-square rounded-full w-full h-auto object-cover shadow-[0_4px_16px_rgba(0,0,20,0.12)]" />
+                    <a class="flex-none basis-48" href="{{ route('artist.detail', ['id' => $artist->flo_id]) }}">
+                        <img src="{{ $artist->img_url }}?size=350x350" loading="lazy" class="aspect-square rounded-full w-full h-auto object-cover shadow-[0_4px_16px_rgba(0,0,20,0.12)]" />
                         <div class="p-2 text-center">
-                            <p class="font-semibold line-clamp-2 text-[#111]">{{ $artist['name'] }}</p>
+                            <p class="font-semibold line-clamp-2 text-[#111]">{{ $artist->name }}</p>
                             <div class="flex items-center justify-center gap-1 mt-1">
                                 <svg viewBox="0 0 24 24" class="h-4 w-4 fill-[#5b5bd6]"><g class="style-scope yt-icon"><path d="M18.77,11h-4.23l1.52-4.94C16.38,5.03,15.54,4,14.38,4c-0.58,0-1.14,0.24-1.52,0.65L7,11H3v10h4h1h9.43 c1.06,0,1.98-0.67,2.19-1.61l1.34-6C21.23,12.15,20.18,11,18.77,11z M7,20H4v-8h3V20z M19.98,13.17l-1.34,6 C18.54,19.65,18.03,20,17.43,20H8v-8.61l5.6-6.06C13.79,5.12,14.08,5,14.38,5c0.26,0,0.5,0.11,0.63,0.3 c0.07,0.1,0.15,0.26,0.09,0.47l-1.52,4.94L13.18,12h1.35h4.23c0.41,0,0.8,0.17,1.03,0.46C19.92,12.61,20.05,12.86,19.98,13.17z" class="style-scope yt-icon"></path></g></svg>
-                                <span class="text-sm text-[#8b8b9a]">{{ $artist['recommend_cnt'] }}</span>
+                                <span class="text-sm text-[#8b8b9a]">{{ $artist->recommend_cnt }}</span>
                             </div>
                         </div>
                     </a>

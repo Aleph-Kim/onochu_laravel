@@ -1,19 +1,14 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\MypageController;
+use App\Http\Controllers\PushSubscriptionController;
+use App\Http\Controllers\RecommendsController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+Route::resource('recommends', RecommendsController::class)->only(['destroy']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/mypage/profile-album/{recommend}', [MypageController::class, 'setProfileAlbum'])->name('mypage.setProfileAlbum');
+
+Route::post('/push/subscribe', [PushSubscriptionController::class, 'subscribe']);
+Route::post('/push/unsubscribe', [PushSubscriptionController::class, 'unsubscribe']);
+//Route::get('/push/test', [PushSubscriptionController::class, 'test']);
