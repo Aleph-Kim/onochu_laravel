@@ -19,19 +19,8 @@
                 @endforeach
         </span>
         </div>
-        <div class="flex justify-end w-full gap-[10px] mb-5 max-w-[600px]">
-            <a href="{{ $recommend->url['youtube'] }}" target="_blank"
-               class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-youtube text-youtube text-sm font-semibold hover:bg-youtube hover:text-white transition-colors">YouTube
-                Music</a>
-            <a href="{{ $recommend->url['flo'] }}" target="_blank"
-               class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-flo text-flo text-sm font-semibold hover:bg-flo hover:text-white transition-colors">FLO</a>
-            {{-- 스포티파이 잠시 숨김 처리 --}}
-            {{-- <a href="{{ $recommend->url['spotify'] }}" target="_blank"
-               class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-spotify text-spotify text-sm font-semibold hover:bg-spotify hover:text-white transition-colors">Spotify</a> --}}
-            <a href="#" onclick="openAppleMusicLazy(event, {{ Js::from($recommend->url['apple_music_keyword']) }})"
-               target="_blank"
-               class="flex items-center justify-center py-[9px] px-[14px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-apple text-apple text-sm font-semibold hover:bg-apple hover:text-white transition-colors">Apple
-                Music</a>
+        <div class="flex justify-end w-full mb-5 max-w-[600px]">
+            <x-music-app-open-button :url="$recommend->url" :preferred="$preferredMusicApp"/>
         </div>
         <div class="w-full aspect-square mb-4 overflow-hidden relative rounded-2xl">
             <img src="{{ $recommend->song->album->img_url }}?size=500x500"

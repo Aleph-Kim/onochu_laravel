@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\MusicApp;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -15,11 +16,14 @@ class User extends Authenticatable
         'kakao_id',
         'nickname',
         'profile_album_id',
+        'preferred_music_app',
     ];
 
     protected $hidden = [];
 
-    protected $casts = [];
+    protected $casts = [
+        'preferred_music_app' => MusicApp::class,
+    ];
 
     public function recommends()
     {

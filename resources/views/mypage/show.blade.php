@@ -17,7 +17,14 @@
         </a>
 
         @if($isOwner)
-            <div class="max-w-[1200px] mx-auto px-6 w-full flex justify-end">
+            <div class="max-w-[1200px] mx-auto px-6 pt-6 w-full flex justify-end gap-2">
+                <a href="{{ route('mypage.music-app') }}"
+                   class="flex items-center gap-1.5 py-2 px-5 rounded-full text-sm font-medium cursor-pointer bg-[#f0f0fa] text-primary hover:bg-primary/10 transition">
+                    <svg viewBox="0 0 24 24" class="w-4 h-4 fill-primary">
+                        <path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/>
+                    </svg>
+                    뮤직앱 설정
+                </a>
                 <a href="{{ route('mypage.notifications') }}"
                    class="flex items-center gap-1.5 py-2 px-5 rounded-full text-sm font-medium cursor-pointer bg-[#f0f0fa] text-primary hover:bg-primary/10 transition">
                     <svg viewBox="0 0 24 24" class="w-4 h-4 fill-primary">

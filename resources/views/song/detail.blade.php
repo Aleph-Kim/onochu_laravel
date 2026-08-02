@@ -52,19 +52,8 @@
                 </div>
             @endif
         </div>
-        <div class="flex justify-end w-full gap-[10px] mx-auto mb-5 max-w-[600px]">
-            <a href="{{ $songInfo['song']['url']['youtube'] }}" target="_blank"
-               class="flex items-center justify-center py-[10px] px-[16px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-youtube text-youtube text-sm font-semibold hover:bg-youtube hover:text-white transition-colors">YouTube
-                Music</a>
-            <a href="{{ $songInfo['song']['url']['flo'] }}" target="_blank"
-               class="flex items-center justify-center py-[10px] px-[16px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-flo text-flo text-sm font-semibold hover:bg-flo hover:text-white transition-colors">FLO</a>
-            {{-- 스포티파이 잠시 숨김 처리 --}}
-            {{-- <a href="{{ $songInfo['song']['url']['spotify'] }}" target="_blank" class="flex items-center justify-center py-[10px] px-[16px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-spotify text-spotify text-sm font-semibold hover:bg-spotify hover:text-white transition-colors">Spotify</a> --}}
-            <a href="#"
-               onclick="openAppleMusicLazy(event, {{ Js::from($songInfo['song']['url']['apple_music_keyword']) }})"
-               target="_blank"
-               class="flex items-center justify-center py-[10px] px-[16px] rounded-full border-2 cursor-pointer flex-none sm:flex-1 border-apple text-apple text-sm font-semibold hover:bg-apple hover:text-white transition-colors">Apple
-                Music</a>
+        <div class="flex justify-end w-full mx-auto mb-5 max-w-[600px]">
+            <x-music-app-open-button :url="$songInfo['song']['url']" :preferred="$preferredMusicApp"/>
         </div>
         <h3 class="text-[#333] font-bold mt-[30px] mb-[15px] text-lg tracking-tight border-b border-[#ebebf0] pb-3">곡
             정보</h3>

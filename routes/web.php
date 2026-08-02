@@ -5,6 +5,7 @@ use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\ArtistNotificationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\MusicAppPreferenceController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\RecommendsController;
 use App\Http\Controllers\RedirectController;
@@ -34,6 +35,7 @@ Route::middleware('check.login')->group(function () {
     Route::resource('recommends', RecommendsController::class)->only(['create', 'store']);
     Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
     Route::get('/mypage/notifications', [ArtistNotificationController::class, 'index'])->name('mypage.notifications');
+    Route::get('/mypage/music-app', [MusicAppPreferenceController::class, 'index'])->name('mypage.music-app');
 });
 Route::resource('recommends', RecommendsController::class)->only(['show']);
 

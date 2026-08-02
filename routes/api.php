@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArtistNotificationController;
+use App\Http\Controllers\MusicAppPreferenceController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\PushSubscriptionController;
 use App\Http\Controllers\RecommendsController;
@@ -18,3 +19,5 @@ Route::post('/push/unsubscribe', [PushSubscriptionController::class, 'unsubscrib
 //Route::get('/push/test', [PushSubscriptionController::class, 'test']);
 
 Route::post('/artists/{artist}/notification-toggle', [ArtistNotificationController::class, 'toggle']);
+
+Route::post('/music-app-preference', [MusicAppPreferenceController::class, 'store']);
