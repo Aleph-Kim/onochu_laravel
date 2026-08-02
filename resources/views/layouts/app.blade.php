@@ -82,7 +82,7 @@
 </header>
 
 <main
-    class="w-[70%] max-w-[1200px] mx-auto my-0 pt-6 px-[15px] pb-[60px] min-h-[calc(100vh-71px)] max-md:w-full max-md:px-[10px] max-md:py-0 max-[480px]:p-0">
+    class="w-[70%] max-w-[1200px] mx-auto my-0 px-[15px] pb-[60px] min-h-[calc(100vh-71px)] max-md:w-full max-md:px-[10px] max-md:py-0 max-[480px]:p-0">
     @yield('content')
 </main>
 
