@@ -34,9 +34,7 @@ class Recommend extends Model
     public static function latestPerSong(int $limit = 10, ?int $userId = null): Collection
     {
         $latestIds = static::when($userId, fn($q) => $q->where('user_id', $userId))
-            ->selectRaw('MAX(id) as id')
-            ->groupBy('song_id')
-            ->orderByRaw('MAX(created_at) DESC')
+            ->orderByRaw('created_at DESC')
             ->limit($limit)
             ->pluck('id');
 
