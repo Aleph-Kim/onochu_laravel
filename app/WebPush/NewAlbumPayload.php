@@ -27,7 +27,7 @@ class NewAlbumPayload
             : "추천 아티스트의 새 앨범 {$count}개";
 
         $url = $count === 1
-            ? route('album.detail', ['id' => $albums[0]['flo_id'], 'new_album' => 'true'])
+            ? route('album.detail', ['id' => $albums[0]['flo_id'], 'new_album' => 1])
             : route('main');
 
         return [

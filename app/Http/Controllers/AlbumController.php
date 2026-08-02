@@ -16,7 +16,7 @@ class AlbumController extends Controller
     public function detail(AlbumDetailRequest $request)
     {
         $albumId = $request->validated('id');
-        $isNewAlbum = $request->boolean('new_album');
+        $isNewAlbum = $request->validated('new_album');
 
         $album = $this->floApi->getAlbumByFloId($albumId);
 

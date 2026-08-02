@@ -71,7 +71,7 @@
                     @foreach($newAlbums as $newAlbum)
                         @php $artistName = implode(' & ', array_column($newAlbum['artists'], 'name')); @endphp
                         <a class="w-[200px] flex-none rounded-2xl shadow-sm border border-[#ebebf0] bg-white overflow-hidden hover:shadow-md transition-shadow"
-                           href="{{ route('album.detail', ['id' => $newAlbum['flo_id'], 'new_album' => 'true']) }}">
+                           href="{{ route('album.detail', ['id' => $newAlbum['flo_id'], 'new_album' => 1]) }}">
                             <img src="{{ $newAlbum['img_url'] }}?size=350x350" loading="lazy" class="w-full"/>
                             <div class="w-[200px] p-3">
                                 <h3 class="font-semibold truncate text-[#111]">{{ $newAlbum['title'] }}</h3>
