@@ -53,7 +53,8 @@
             @endif
         </div>
         <div class="flex justify-end w-full mx-auto mb-5 max-w-[600px]">
-            <x-music-app-open-button :url="$songInfo['song']['url']" :preferred="$preferredMusicApp"/>
+            <a href="{{ route('music-app.open', ['id' => $songInfo['song']['flo_id']]) }}"
+               class="inline-block py-[10px] px-[24px] rounded-full cursor-pointer transition-all text-white bg-primary hover:bg-primary-light font-semibold shadow-sm hover:shadow-md">내 뮤직앱에서 재생하기</a>
         </div>
         <h3 class="text-[#333] font-bold mt-[30px] mb-[15px] text-lg tracking-tight border-b border-[#ebebf0] pb-3">곡
             정보</h3>

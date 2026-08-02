@@ -90,9 +90,7 @@ class RecommendsController extends Controller
     {
         $recommend->loadMissing(['song.album', 'song.artists', 'user']);
 
-        $preferredMusicApp = session('user.id') ? User::find(session('user.id'))?->preferred_music_app : null;
-
-        return view('recommends.detail', compact('recommend', 'preferredMusicApp'));
+        return view('recommends.detail', compact('recommend'));
     }
 
     public function destroy(Recommend $recommend)

@@ -20,7 +20,8 @@
         </span>
         </div>
         <div class="flex justify-end w-full mb-5 max-w-[600px]">
-            <x-music-app-open-button :url="$recommend->url" :preferred="$preferredMusicApp"/>
+            <a href="{{ route('music-app.open', ['id' => $recommend->song->flo_id]) }}"
+               class="inline-block py-[10px] px-[24px] rounded-full cursor-pointer transition-all text-white bg-primary hover:bg-primary-light font-semibold shadow-sm hover:shadow-md">내 뮤직앱에서 재생하기</a>
         </div>
         <div class="w-full aspect-square mb-4 overflow-hidden relative rounded-2xl">
             <img src="{{ $recommend->song->album->img_url }}?size=500x500"
