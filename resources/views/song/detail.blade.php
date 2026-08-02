@@ -7,7 +7,12 @@
             <h1 class="text-2xl font-bold mb-[10px] tracking-tight text-[#111]">{{ $songInfo['song']['title'] }}</h1>
             <div>
                 @foreach($songInfo['artists'] as $artist)
-                    <a class="text-[#8b8b9a] mb-[5px] hover:text-primary cursor-pointer transition-colors font-medium" href="{{ route('artist.detail', ['id' => $artist['flo_id']]) }}">{{ $artist['name'] }}</a>
+                    <a class="text-[#8b8b9a] mb-[5px] hover:text-primary cursor-pointer transition-colors font-medium" href="{{ route('artist.detail', ['id' => $artist['flo_id']]) }}">
+                        {{ $artist['name'] }}
+                    </a>
+                    @if(!$loop->last)
+                        <span class="text-[#8b8b9a]">&</span>
+                    @endif
                 @endforeach
             </div>
             <a class="text-[#b0b0c0] transition hover:text-primary cursor-pointer mt-1" href="{{ route('album.detail', ['id' => $songInfo['album']['flo_id']]) }}">{{ $songInfo['album']['title'] }}</a>

@@ -32,6 +32,9 @@
                             <span>
                                 @foreach($song['artists'] as $artist)
                                     <span class="artist-name">{{ $artist['name'] }}</span>
+                                    @if(!$loop->last)
+                                        <span>&</span>
+                                    @endif
                                 @endforeach
                             </span>
                             <span class="inline-block w-px h-2.5 mx-1 my-0 bg-[#c8c8d8]"></span>

@@ -9,7 +9,12 @@
         <span>
             @foreach($recommend->song->artists as $artist)
                 <span class="text-sm text-[#333] font-medium cursor-pointer transition hover:text-primary artist-name"
-                      onclick="window.location.href = '{{ route('artist.detail', ['id' => $artist->flo_id]) }}'">{{ $artist->name }}</span>
+                      onclick="window.location.href = '{{ route('artist.detail', ['id' => $artist->flo_id]) }}'">
+                    {{ $artist->name }}
+                </span>
+                @if(!$loop->last)
+                    <span>&</span>
+                @endif
             @endforeach
         </span>
     </div>
