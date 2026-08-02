@@ -19,14 +19,15 @@ class UpdateNewAlbums extends Command
 {
     use DelaysApiRequests;
 
-    protected $signature   = 'albums:update-new';
+    protected $signature = 'albums:update-new';
     protected $description = '추천을 1번 이상 받은 아티스트의 새 앨범을 new_albums 테이블에 저장';
 
     public function __construct(
-        private FloApiService $floApi,
-        private ImageService $imageService,
+        private FloApiService  $floApi,
+        private ImageService   $imageService,
         private WebPushService $webPush,
-    ) {
+    )
+    {
         parent::__construct();
     }
 
@@ -50,31 +51,31 @@ class UpdateNewAlbums extends Command
         $kpopData = $this->floApi->getNewKpopAlbum();
 
         $this->delay();
-        $popData  = $this->floApi->getNewPopAlbum();
+        $popData = $this->floApi->getNewPopAlbum();
 
         $this->info("K-POP 새 앨범 수: " . count($kpopData['albums_info']));
         $this->info("POP 새 앨범 수: " . count($popData['albums_info']));
 
         return [
-            'albums_info'   => $kpopData['albums_info'] + $popData['albums_info'],
+            'albums_info' => $kpopData['albums_info'] + $popData['albums_info'],
             'artists_flo_id' => $kpopData['artists_flo_id'] + $popData['artists_flo_id'],
         ];
     }
 
     private function getRecommendedArtistsNewAlbums(Collection $artists): array
     {
-        $newAlbums       = [];
-        $newAlbumFloIds  = [];
-        $newAlbumData    = $this->getNewAlbumData();
+        $newAlbums = [];
+        $newAlbumFloIds = [];
+        $newAlbumData = $this->getNewAlbumData();
 
         $artistsFloId = $artists->pluck('flo_id')->all();
-        $matchingIds  = array_intersect(array_keys($newAlbumData['artists_flo_id']), $artistsFloId);
+        $matchingIds = array_intersect(array_keys($newAlbumData['artists_flo_id']), $artistsFloId);
         $this->info("매칭된 아티스트 수: " . count($matchingIds));
 
         foreach ($matchingIds as $artistId) {
             $newAlbum = $newAlbumData['albums_info'][$newAlbumData['artists_flo_id'][$artistId]];
             if (!in_array($newAlbum['flo_id'], $newAlbumFloIds)) {
-                $newAlbums[]      = $newAlbum;
+                $newAlbums[] = $newAlbum;
                 $newAlbumFloIds[] = $newAlbum['flo_id'];
             }
         }
@@ -84,7 +85,7 @@ class UpdateNewAlbums extends Command
 
     private function saveNewAlbums(array $albums): void
     {
-        $savedCount  = 0;
+        $savedCount = 0;
         $savedAlbums = [];
         foreach ($albums as $album) {
             if (NewAlbum::where('flo_id', $album['flo_id'])->exists()) {
@@ -92,9 +93,9 @@ class UpdateNewAlbums extends Command
             }
 
             $newAlbum = NewAlbum::create([
-                'album_title'   => $album['title'],
+                'album_title' => $album['title'],
                 'album_img_url' => $album['img_url'],
-                'flo_id'        => $album['flo_id'],
+                'flo_id' => $album['flo_id'],
             ]);
 
             $savedCount++;
@@ -103,8 +104,8 @@ class UpdateNewAlbums extends Command
             foreach ($album['artist'] as $artist) {
                 NewAlbumArtist::create([
                     'new_album_id' => $newAlbum->id,
-                    'artist_name'  => $artist['name'],
-                    'flo_id'       => $artist['flo_id'],
+                    'artist_name' => $artist['name'],
+                    'flo_id' => $artist['flo_id'],
                 ]);
 
                 $this->updateArtistImgUrl($artist['flo_id']);
@@ -181,12 +182,12 @@ class UpdateNewAlbums extends Command
     {
         $this->delay();
         $floArtist = $this->floApi->getArtistByFloId($floId);
-        $artist    = Artist::where('flo_id', $floId)->first();
+        $artist = Artist::where('flo_id', $floId)->first();
 
         if ($artist && $artist->flo_img_url !== $floArtist['img_url']) {
             $artist->update([
                 'flo_img_url' => $floArtist['img_url'],
-                'img_url'     => $this->imageService->uploadImage($floArtist['img_url'], 'artist'),
+                'img_url' => $this->imageService->uploadImage($floArtist['img_url'], 'artist'),
             ]);
         }
     }

@@ -16,8 +16,10 @@ class RecommendsController extends Controller
 {
     public function __construct(
         private FloApiService $floApi,
-        private ImageService $imageService,
-    ) {}
+        private ImageService  $imageService,
+    )
+    {
+    }
 
     public function create(RecommendCreateRequest $request)
     {
@@ -47,7 +49,7 @@ class RecommendsController extends Controller
                     $artistInfo['img_url'] . '?/dims/resize/1000x1000/quality/90', 'artist'
                 );
                 $artist = Artist::create(array_merge($artistInfo, [
-                    'img_url'     => $imgUrl,
+                    'img_url' => $imgUrl,
                     'flo_img_url' => $artistInfo['img_url'],
                 ]));
             }
@@ -76,7 +78,7 @@ class RecommendsController extends Controller
         $recommend = Recommend::create([
             'song_id' => $song->id,
             'user_id' => session('user.id'),
-            'score'   => $request->validated('score') ?? 3,
+            'score' => $request->validated('score') ?? 3,
             'comment' => $request->validated('comment'),
         ]);
 
@@ -106,7 +108,7 @@ class RecommendsController extends Controller
         $recommend->delete();
 
         // 삭제한 추천의 앨범이 프로필 앨범으로 설정되어 있었다면 함께 초기화
-        $profileReset = (bool) User::where('id', $userId)
+        $profileReset = (bool)User::where('id', $userId)
             ->where('profile_album_id', $albumId)
             ->update(['profile_album_id' => null]);
 

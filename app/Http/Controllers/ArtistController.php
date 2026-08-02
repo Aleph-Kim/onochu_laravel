@@ -7,7 +7,9 @@ use App\Services\FloApiService;
 
 class ArtistController extends Controller
 {
-    public function __construct(private FloApiService $floApi) {}
+    public function __construct(private FloApiService $floApi)
+    {
+    }
 
     public function detail(ArtistDetailRequest $request)
     {

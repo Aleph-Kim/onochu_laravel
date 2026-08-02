@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Cache;
 
 class AlbumController extends Controller
 {
-    public function __construct(private FloApiService $floApi) {}
+    public function __construct(private FloApiService $floApi)
+    {
+    }
 
     public function detail(AlbumDetailRequest $request)
     {

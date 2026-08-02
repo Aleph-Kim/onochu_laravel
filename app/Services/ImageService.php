@@ -28,7 +28,7 @@ class ImageService
 
         $response = Http::withHeaders([
             'X-Username' => config('services.img_server.username'),
-            'X-Secret'   => config('services.img_server.secret'),
+            'X-Secret' => config('services.img_server.secret'),
         ])->attach('file', $imageContent, $fileName)->post($this->serverUrl);
 
         if ($response->successful()) {

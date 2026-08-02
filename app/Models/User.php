@@ -69,7 +69,7 @@ class User extends Authenticatable
         $genreCounts = $this->recommends()
             ->with('song')
             ->get()
-            ->flatMap(fn ($recommend) => explode(',', str_replace(' ', '', $recommend->song->genre ?? '')))
+            ->flatMap(fn($recommend) => explode(',', str_replace(' ', '', $recommend->song->genre ?? '')))
             ->filter()
             ->countBy()
             ->sortDesc();

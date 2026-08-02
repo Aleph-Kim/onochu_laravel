@@ -33,15 +33,15 @@ class MainController extends Controller
         foreach ($newAlbumData as $album) {
             $albumFloId = $album->flo_id;
             $newAlbums[$albumFloId] = [
-                'id'      => $album->id,
-                'title'   => $album->album_title,
+                'id' => $album->id,
+                'title' => $album->album_title,
                 'img_url' => $album->album_img_url,
-                'flo_id'  => $albumFloId,
+                'flo_id' => $albumFloId,
                 'artists' => [],
             ];
             foreach ($album->artists as $artist) {
                 $newAlbums[$albumFloId]['artists'][] = [
-                    'name'   => $artist->artist_name,
+                    'name' => $artist->artist_name,
                     'flo_id' => $artist->flo_id,
                 ];
                 $artistFloIds[$artist->flo_id] = $albumFloId;

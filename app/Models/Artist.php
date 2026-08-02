@@ -37,7 +37,7 @@ class Artist extends Model
             ->groupBy('artists.flo_id', 'artists.name', 'artists.img_url')
             ->orderByDesc('recommend_cnt')
             ->orderByRaw('MAX(recommends.created_at) DESC')
-            ->when($limit, fn ($q) => $q->limit($limit))
+            ->when($limit, fn($q) => $q->limit($limit))
             ->get();
     }
 

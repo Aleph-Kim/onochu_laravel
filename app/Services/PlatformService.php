@@ -22,16 +22,16 @@ class PlatformService
             $youtube = $isAndroid
                 ? "vnd.youtube.music:/search?q={$keyword}"
                 : "youtubemusic:/search?q={$keyword}";
-            $flo     = "flomusic://view/content?type=TRACK&id={$floId}";
+            $flo = "flomusic://view/content?type=TRACK&id={$floId}";
             $spotify = "spotify:search:{$keyword}";
         } else {
             $youtube = "https://music.youtube.com/search?q={$keyword}";
-            $flo     = "https://www.music-flo.com/detail/track/{$floId}/details";
+            $flo = "https://www.music-flo.com/detail/track/{$floId}/details";
             $spotify = "https://open.spotify.com/search/{$keyword}/tracks";
         }
         return [
             'youtube' => $youtube,
-            'flo'     => $flo,
+            'flo' => $flo,
             'spotify' => $spotify,
             'apple_music_keyword' => $keyword,
         ];
@@ -56,11 +56,11 @@ class PlatformService
 
         try {
             $response = Http::timeout(5)->get(self::APPLE_MUSIC_SEARCH_API, [
-                'term'    => $keyword,
-                'media'   => 'music',
-                'entity'  => 'song',
+                'term' => $keyword,
+                'media' => 'music',
+                'entity' => 'song',
                 'country' => 'KR',
-                'limit'   => 1,
+                'limit' => 1,
             ]);
 
             $track = $response->json('results.0');
@@ -88,7 +88,7 @@ class PlatformService
 
     public function getYoutubeUrl(string $keyword): string
     {
-        if (! $this->isMobile()) {
+        if (!$this->isMobile()) {
             return "https://music.youtube.com/search?q={$keyword}";
         }
 
@@ -100,12 +100,12 @@ class PlatformService
     public function isMobile(): bool
     {
         $userAgent = request()->userAgent() ?? '';
-        return (bool) preg_match('/android|samsung|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i', $userAgent);
+        return (bool)preg_match('/android|samsung|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i', $userAgent);
     }
 
     public function isAndroid(): bool
     {
         $userAgent = request()->userAgent() ?? '';
-        return (bool) preg_match('/android|samsung/i', $userAgent);
+        return (bool)preg_match('/android|samsung/i', $userAgent);
     }
 }

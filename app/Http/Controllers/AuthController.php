@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Http;
 class AuthController extends Controller
 {
     private string $kakaoAuthUrl = 'https://kauth.kakao.com';
-    private string $kakaoApiUrl  = 'https://kapi.kakao.com';
+    private string $kakaoApiUrl = 'https://kapi.kakao.com';
 
     public function login(Request $request)
     {
@@ -18,10 +18,10 @@ class AuthController extends Controller
         }
 
         $params = [
-            'client_id'    => config('services.kakao.client_id'),
+            'client_id' => config('services.kakao.client_id'),
             'redirect_uri' => config('services.kakao.redirect_uri'),
             'response_type' => 'code',
-            'scope'         => 'profile_nickname',
+            'scope' => 'profile_nickname',
         ];
 
         return redirect($this->kakaoAuthUrl . '/oauth/authorize?' . http_build_query($params));
@@ -57,11 +57,11 @@ class AuthController extends Controller
     private function getAccessToken(string $code): string
     {
         $response = Http::asForm()->post($this->kakaoAuthUrl . '/oauth/token', [
-            'grant_type'   => 'authorization_code',
-            'client_id'    => config('services.kakao.client_id'),
+            'grant_type' => 'authorization_code',
+            'client_id' => config('services.kakao.client_id'),
             'client_secret' => config('services.kakao.client_secret'),
             'redirect_uri' => config('services.kakao.redirect_uri'),
-            'code'         => $code,
+            'code' => $code,
         ]);
 
         abort_unless($response->successful(), 500, '액세스 토큰 발급 실패');

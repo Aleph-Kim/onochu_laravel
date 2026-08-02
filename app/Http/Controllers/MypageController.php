@@ -42,7 +42,7 @@ class MypageController extends Controller
 
         return $this->successResponse('앨범 설정 완료', [
             'album_img_url' => $album->img_url . '?size=1000x1000',
-            'album_flo_id'  => $album->flo_id,
+            'album_flo_id' => $album->flo_id,
         ]);
     }
 
@@ -50,8 +50,8 @@ class MypageController extends Controller
     {
         $user->loadStats();
         $artistList = $user->likeArtists();
-        $genreList  = $user->likeGenres();
-        $songList   = Recommend::latestPerSong(1000, $user->id);
+        $genreList = $user->likeGenres();
+        $songList = Recommend::latestPerSong(1000, $user->id);
 
         return compact('user', 'artistList', 'genreList', 'songList');
     }

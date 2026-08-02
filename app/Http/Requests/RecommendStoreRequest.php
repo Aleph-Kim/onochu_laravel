@@ -9,7 +9,7 @@ class RecommendStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'score'   => ['nullable', 'integer', 'between:1,5'],
+            'score' => ['nullable', 'integer', 'between:1,5'],
             'comment' => ['nullable', 'string'],
         ];
     }
@@ -17,7 +17,7 @@ class RecommendStoreRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'score'   => '별점',
+            'score' => '별점',
             'comment' => '코멘트',
         ];
     }

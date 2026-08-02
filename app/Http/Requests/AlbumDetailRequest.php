@@ -12,8 +12,8 @@ class AlbumDetailRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id'         => ['required', 'integer'],
-            'new_album'  => ['nullable', 'boolean'],
+            'id' => ['required', 'integer'],
+            'new_album' => ['nullable', 'boolean'],
         ];
     }
 }

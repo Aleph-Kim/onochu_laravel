@@ -15,8 +15,8 @@ class WebPushService
     {
         return $this->webPush ??= new WebPush([
             'VAPID' => [
-                'subject'    => config('webpush.subject'),
-                'publicKey'  => config('webpush.public_key'),
+                'subject' => config('webpush.subject'),
+                'publicKey' => config('webpush.public_key'),
                 'privateKey' => config('webpush.private_key'),
             ],
         ]);
@@ -28,9 +28,9 @@ class WebPushService
         $this->client()->queueNotification(
             Subscription::create([
                 'endpoint' => $subscription->endpoint,
-                'keys'     => [
+                'keys' => [
                     'p256dh' => $subscription->public_key,
-                    'auth'   => $subscription->auth_token,
+                    'auth' => $subscription->auth_token,
                 ],
             ]),
             json_encode($payload),

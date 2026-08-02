@@ -18,19 +18,19 @@ class FloApiService
     private const REQUEST_HEADERS = [
         'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
             . '(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-        'Accept'     => 'application/json, text/plain, */*',
-        'Referer'    => self::FLO_API_BASE . '/',
+        'Accept' => 'application/json, text/plain, */*',
+        'Referer' => self::FLO_API_BASE . '/',
     ];
 
     public function getSongsByKeyword(string $keyword): array
     {
         $params = [
-            'keyword'    => $keyword,
+            'keyword' => $keyword,
             'searchType' => 'TRACK',
-            'sortType'   => 'ACCURACY',
-            'size'       => 30,
-            'page'       => 1,
-            'queryType'  => 'system',
+            'sortType' => 'ACCURACY',
+            'size' => 30,
+            'page' => 1,
+            'queryType' => 'system',
         ];
 
         return $this->fetchAndExtract(self::SEARCH_PATH, $params, 'getSongs');
@@ -49,8 +49,8 @@ class FloApiService
     public function getAlbumsByArtistFloId(int $artistId): array
     {
         $params = [
-            'page'     => '1',
-            'size'     => '100',
+            'page' => '1',
+            'size' => '100',
             'sortType' => 'RECENT',
             'roleType' => 'ALL',
         ];
@@ -219,15 +219,15 @@ class FloApiService
         $writerRoles = $this->writerClassify($songData['trackArtistList'] ?? []);
 
         return [
-            'flo_id'    => $songData['id'],
-            'title'     => $songData['name'],
+            'flo_id' => $songData['id'],
+            'title' => $songData['name'],
             'play_time' => $songData['playTime'],
-            'genre'     => $songData['album']['genreStyle'] ?? null,
-            'title_yn'  => $songData['titleYn'] ?? null,
-            'lyrics'    => $songData['lyrics'] ?? null,
-            'composer'  => implode(', ', $writerRoles['composers']),
-            'lyricist'  => implode(', ', $writerRoles['lyricists']),
-            'arranger'  => implode(', ', $writerRoles['arrangers']),
+            'genre' => $songData['album']['genreStyle'] ?? null,
+            'title_yn' => $songData['titleYn'] ?? null,
+            'lyrics' => $songData['lyrics'] ?? null,
+            'composer' => implode(', ', $writerRoles['composers']),
+            'lyricist' => implode(', ', $writerRoles['lyricists']),
+            'arranger' => implode(', ', $writerRoles['arrangers']),
         ];
     }
 
@@ -240,11 +240,11 @@ class FloApiService
         }
 
         return [
-            'flo_id'       => $album['id'] ?? null,
-            'title'        => $album['title'] ?? null,
-            'type'         => $album['albumTypeStr'] ?? null,
-            'genre'        => $album['genreStyle'] ?? null,
-            'img_url'      => strtok($album['imgList'][0]['url'] ?? '', '?'),
+            'flo_id' => $album['id'] ?? null,
+            'title' => $album['title'] ?? null,
+            'type' => $album['albumTypeStr'] ?? null,
+            'genre' => $album['genreStyle'] ?? null,
+            'img_url' => strtok($album['imgList'][0]['url'] ?? '', '?'),
             'release_date' => $releaseDate,
         ];
     }
@@ -274,11 +274,11 @@ class FloApiService
         }
 
         return [
-            'flo_id'     => $artist['id'],
-            'name'       => $artist['name'],
-            'genre'      => $artist['artistStyle'] ?? null,
+            'flo_id' => $artist['id'],
+            'name' => $artist['name'],
+            'genre' => $artist['artistStyle'] ?? null,
             'group_type' => $artist['artistGroupTypeStr'] ?? null,
-            'img_url'    => strtok($imgUrl ?? '', '?'),
+            'img_url' => strtok($imgUrl ?? '', '?'),
         ];
     }
 

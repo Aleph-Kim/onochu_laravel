@@ -20,7 +20,7 @@ class PushSubscriptionController extends Controller
         PushSubscription::updateOrCreate(
             ['endpoint' => $request->validated('endpoint')],
             [
-                'user_id'    => session('user.id'),
+                'user_id' => session('user.id'),
                 'public_key' => $request->validated('keys.p256dh'),
                 'auth_token' => $request->validated('keys.auth'),
             ],
@@ -60,10 +60,10 @@ class PushSubscriptionController extends Controller
 
         $webPush->sendToUser($user, NewAlbumPayload::build([
             [
-                'title'   => '테스트 앨범',
-                'flo_id'  => 0,
+                'title' => '테스트 앨범',
+                'flo_id' => 0,
                 'img_url' => asset('image/logo.png'),
-                'artist'  => [['name' => '테스트 아티스트', 'flo_id' => 0]],
+                'artist' => [['name' => '테스트 아티스트', 'flo_id' => 0]],
             ],
         ]));
 

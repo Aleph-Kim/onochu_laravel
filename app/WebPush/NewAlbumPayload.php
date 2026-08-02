@@ -12,7 +12,7 @@ class NewAlbumPayload
         $count = count($albums);
 
         $labels = array_map(
-            fn ($album) => "{$album['artist'][0]['name']} - {$album['title']}",
+            fn($album) => "{$album['artist'][0]['name']} - {$album['title']}",
             $albums,
         );
 
@@ -32,9 +32,9 @@ class NewAlbumPayload
 
         return [
             'title' => $title,
-            'body'  => $body,
-            'icon'  => $albums[0]['img_url'],
-            'data'  => ['url' => $url],
+            'body' => $body,
+            'icon' => $albums[0]['img_url'],
+            'data' => ['url' => $url],
         ];
     }
 }
