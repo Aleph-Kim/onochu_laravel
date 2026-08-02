@@ -77,6 +77,10 @@ function setButtonState(subscribed) {
     toggle.checked = subscribed;
 }
 
+// 아티스트별 알림 설정 화면에서 마스터 스위치 상태에 맞춰 재정의됨
+function notifyPushToggleChanged(enabled) {
+}
+
 async function togglePush() {
     const toggle = document.getElementById('pushToggle');
     const wantSubscribe = toggle.checked;
@@ -88,18 +92,19 @@ async function togglePush() {
     }
 
     toggle.disabled = true;
+    notifyPushToggleChanged(wantSubscribe);
 
     try {
         const ok = wantSubscribe ? await subscribePush() : await unsubscribePush();
-        if (ok) {
-            alert(wantSubscribe ? '신곡 알림이 켜졌습니다.' : '신곡 알림이 꺼졌습니다.');
-        } else {
+        if (!ok) {
             toggle.checked = !wantSubscribe;
+            notifyPushToggleChanged(toggle.checked);
         }
     } catch (e) {
         console.error(e);
-        toggle.checked = !wantSubscribe;
         alert('알림 설정 중 오류가 발생했습니다.');
+        toggle.checked = !wantSubscribe;
+        notifyPushToggleChanged(toggle.checked);
     } finally {
         toggle.disabled = false;
     }
@@ -113,4 +118,5 @@ document.addEventListener('DOMContentLoaded', async function () {
     const registration = await navigator.serviceWorker.register('/sw.js');
     const subscription = await registration.pushManager.getSubscription();
     setButtonState(!!subscription);
+    notifyPushToggleChanged(!!subscription);
 });

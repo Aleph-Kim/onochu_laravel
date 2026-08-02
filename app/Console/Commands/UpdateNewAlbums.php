@@ -14,6 +14,7 @@ use App\Services\WebPushService;
 use App\WebPush\NewAlbumPayload;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Log;
 
 class UpdateNewAlbums extends Command
 {
@@ -132,12 +133,17 @@ class UpdateNewAlbums extends Command
             }
         }
 
-        // 새 앨범 아티스트를 추천한 (유저, 아티스트) 쌍 조회
+        // 새 앨범 아티스트를 추천한 (유저, 아티스트) 쌍 조회, 해당 아티스트 알림을 꺼둔 유저는 제외
         $rows = Recommend::query()
             ->join('songs', 'recommends.song_id', '=', 'songs.id')
             ->join('song_artists', 'songs.id', '=', 'song_artists.song_id')
             ->join('artists', 'song_artists.artist_id', '=', 'artists.id')
+            ->leftJoin('artist_notification_mutes', function ($join) {
+                $join->on('artist_notification_mutes.artist_id', '=', 'artists.id')
+                    ->on('artist_notification_mutes.user_id', '=', 'recommends.user_id');
+            })
             ->whereIn('artists.flo_id', array_keys($artistToAlbums))
+            ->whereNull('artist_notification_mutes.id')
             ->distinct()
             ->get(['recommends.user_id', 'artists.flo_id']);
 

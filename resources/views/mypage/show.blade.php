@@ -18,14 +18,13 @@
 
         @if($isOwner)
             <div class="max-w-[1200px] mx-auto px-6 pt-6 w-full flex justify-end">
-                <div class="flex items-center gap-[10px]">
-                    <span class="text-sm font-medium text-[#555]">신곡 알림 받기</span>
-                    <label class="relative inline-block w-10 h-5">
-                        <input type="checkbox" id="pushToggle" class="peer opacity-0 w-0 h-0" onchange="togglePush()">
-                        <span
-                            class="absolute cursor-pointer inset-0 bg-[#d8d8e4] transition-all duration-300 rounded-[10px] peer-checked:bg-primary before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:transition-all before:duration-300 before:rounded-full before:shadow-[0_1px_3px_rgba(0,0,0,0.15)] peer-checked:before:translate-x-5"></span>
-                    </label>
-                </div>
+                <a href="{{ route('mypage.notifications') }}"
+                   class="flex items-center gap-1.5 py-2 px-5 rounded-full text-sm font-medium cursor-pointer bg-[#f0f0fa] text-primary hover:bg-primary/10 transition">
+                    <svg viewBox="0 0 24 24" class="w-4 h-4 fill-primary">
+                        <path d="M12 22c1.1 0 2-0.9 2-2h-4c0 1.1 0.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-0.83-0.67-1.5-1.5-1.5s-1.5 0.67-1.5 1.5v0.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+                    </svg>
+                    알림 설정
+                </a>
             </div>
         @endif
 
@@ -137,9 +136,6 @@
 @endsection
 
 @push('scripts')
-    @if($isOwner)
-        <script src="{{ asset('js/push.js') }}"></script>
-    @endif
     <script src="{{ asset('js/lib/echarts.min.js') }}"></script>
     <script>
         const genreList = {!! json_encode($genreList) !!};

@@ -31,6 +31,11 @@ class User extends Authenticatable
         return $this->hasMany(PushSubscription::class);
     }
 
+    public function mutedArtists()
+    {
+        return $this->belongsToMany(Artist::class, 'artist_notification_mutes');
+    }
+
     public function profileAlbum()
     {
         return $this->belongsTo(Album::class, 'profile_album_id');
@@ -45,9 +50,9 @@ class User extends Authenticatable
     }
 
     /**
-     * 유저가 추천한 아티스트 Top 5 (MypageController)
+     * 유저가 추천한 아티스트 Top N, limit이 null이면 전체 (MypageController, ArtistNotificationController)
      */
-    public function likeArtists(int $limit = 5): \Illuminate\Database\Eloquent\Collection
+    public function likeArtists(?int $limit = 5): \Illuminate\Database\Eloquent\Collection
     {
         return Artist::select('artists.id', 'artists.flo_id', 'artists.name', 'artists.img_url')
             ->selectRaw('COUNT(artists.id) as count')
@@ -57,7 +62,7 @@ class User extends Authenticatable
             ->where('recommends.user_id', $this->id)
             ->groupBy('artists.id', 'artists.flo_id', 'artists.name', 'artists.img_url')
             ->orderByDesc('count')
-            ->limit($limit)
+            ->when($limit, fn($q) => $q->limit($limit))
             ->get();
     }
 

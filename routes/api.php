@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArtistNotificationController;
 use App\Http\Controllers\MypageController;
 use App\Http\Controllers\PushSubscriptionController;
 use App\Http\Controllers\RecommendsController;
@@ -15,3 +16,5 @@ Route::get('/apple-music-url', [RedirectController::class, 'appleMusicUrl'])->na
 Route::post('/push/subscribe', [PushSubscriptionController::class, 'subscribe']);
 Route::post('/push/unsubscribe', [PushSubscriptionController::class, 'unsubscribe']);
 //Route::get('/push/test', [PushSubscriptionController::class, 'test']);
+
+Route::post('/artists/{artist}/notification-toggle', [ArtistNotificationController::class, 'toggle']);

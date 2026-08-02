@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlbumController;
 use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\ArtistNotificationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\MypageController;
@@ -32,6 +33,7 @@ Route::get('/login', [AuthController::class, 'login']);
 Route::middleware('check.login')->group(function () {
     Route::resource('recommends', RecommendsController::class)->only(['create', 'store']);
     Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
+    Route::get('/mypage/notifications', [ArtistNotificationController::class, 'index'])->name('mypage.notifications');
 });
 Route::resource('recommends', RecommendsController::class)->only(['show']);
 
