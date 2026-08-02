@@ -44,6 +44,39 @@ function renderAlbums() {
 }
 
 /**
+ * 모바일 화면에서 앨범 검색창을 펼치는 함수
+ */
+function showAlbumSearch() {
+    document.getElementById('albumTypeFilter').style.display = 'none';
+    document.getElementById('albumSortToggle').style.display = 'none';
+    document.getElementById('albumSearchIconBtn').style.display = 'none';
+
+    const searchWrap = document.getElementById('albumSearchWrap');
+    searchWrap.style.display = 'flex';
+    searchWrap.style.width = '100%';
+    searchWrap.style.maxWidth = 'none';
+
+    document.getElementById('albumSearchHideBtn').style.display = 'block';
+    document.getElementById('albumSearch').focus();
+}
+
+/**
+ * 모바일 화면에서 앨범 검색창을 접는 함수
+ */
+function hideAlbumSearch() {
+    document.getElementById('albumTypeFilter').style.display = '';
+    document.getElementById('albumSortToggle').style.display = '';
+    document.getElementById('albumSearchIconBtn').style.display = '';
+
+    const searchWrap = document.getElementById('albumSearchWrap');
+    searchWrap.style.display = '';
+    searchWrap.style.width = '';
+    searchWrap.style.maxWidth = '';
+
+    document.getElementById('albumSearchHideBtn').style.display = 'none';
+}
+
+/**
  * 이벤트 리스너 설정
  */
 function bindEvents() {
