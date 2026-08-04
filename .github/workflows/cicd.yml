@@ -64,6 +64,7 @@ jobs:
             --name ${{ secrets.PROJECT_NAME }} \
             --restart unless-stopped \
             -v ${{ secrets.ENV_PATH }}:/var/www/html/.env \
+            -v ${{ secrets.LOG_DIR_PATH }}:/var/www/html/storage/logs \
             --network ${{ secrets.NETWORK_NAME }} \
             ${{ secrets.DOCKER_USERNAME }}/${{ secrets.PROJECT_NAME }}:latest
 
