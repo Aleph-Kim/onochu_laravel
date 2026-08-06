@@ -18,21 +18,20 @@ class PlatformService
         $keyword = "{$artistsName} {$song['title']}";
         $floId = $song['flo_id'];
 
-        if ($isMobile) {
-            $youtube = $isAndroid
-                ? "vnd.youtube.music:/search?q={$keyword}"
-                : "youtubemusic:/search?q={$keyword}";
-            $flo = "flomusic://view/content?type=TRACK&id={$floId}";
-            $spotify = "spotify:search:{$keyword}";
-        } else {
-            $youtube = "https://music.youtube.com/search?q={$keyword}";
-            $flo = "https://www.music-flo.com/detail/track/{$floId}/details";
-            $spotify = "https://open.spotify.com/search/{$keyword}/tracks";
-        }
         return [
-            'youtube' => $youtube,
-            'flo' => $flo,
-            'spotify' => $spotify,
+            'youtube' => [
+                'app' => !$isMobile ? null :
+                    ($isAndroid ? "vnd.youtube.music:/search?q={$keyword}" : "youtubemusic:/search?q={$keyword}"),
+                'web' => "https://music.youtube.com/search?q={$keyword}",
+            ],
+            'flo' => [
+                'app' => $isMobile ? "flomusic://view/content?type=TRACK&id={$floId}" : null,
+                'web' => "https://www.music-flo.com/detail/track/{$floId}/details",
+            ],
+            'spotify' => [
+                'app' => $isMobile ? "spotify:search:{$keyword}" : null,
+                'web' => "https://open.spotify.com/search/{$keyword}/tracks",
+            ],
             'apple_music_keyword' => $keyword,
         ];
     }

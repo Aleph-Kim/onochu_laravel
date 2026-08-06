@@ -28,11 +28,15 @@ class MusicAppOpenController extends Controller
         $url = $songInfo['song']['url'];
 
         if ($user->preferred_music_app === MusicApp::AppleMusic) {
-            $resolved = $this->platform->resolveAppleMusicUrl($url['apple_music_keyword']);
-
-            return view('music-app.apple-redirect', ['appUrl' => $resolved['app'], 'webUrl' => $resolved['web']]);
+            $platformUrl = $this->platform->resolveAppleMusicUrl($url['apple_music_keyword']);
+        } else {
+            $platformUrl = $url[$user->preferred_music_app->value];
         }
 
-        return redirect()->away($url[$user->preferred_music_app->value]);
+        if (!$platformUrl['app']) {
+            return redirect()->away($platformUrl['web']);
+        }
+
+        return view('music-app.redirect', ['appUrl' => $platformUrl['app'], 'webUrl' => $platformUrl['web']]);
     }
 }

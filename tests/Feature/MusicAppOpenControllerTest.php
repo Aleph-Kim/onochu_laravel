@@ -76,6 +76,31 @@ class MusicAppOpenControllerTest extends TestCase
         $response = $this->withSession($this->loginSession($user))->get('/music-app/open?id=123');
 
         $response->assertOk();
-        $response->assertViewIs('music-app.apple-redirect');
+        $response->assertViewIs('music-app.redirect');
+    }
+
+    #[TestDox('모바일에서 저장된 앱이 flo면 앱 스킴으로 이동하는 트랜지션 화면을 보여준다')]
+    public function test_shows_transition_page_when_flo_preferred_on_mobile(): void
+    {
+        $user = User::factory()->create(['preferred_music_app' => MusicApp::Flo]);
+
+        $this->mock(FloApiService::class, function ($mock) {
+            $mock->shouldReceive('getSongByFloId')
+                ->with(123)
+                ->andReturn($this->fakeTrackInfo(['flo_id' => 123, 'url' => [
+                    'youtube' => ['app' => null, 'web' => 'https://music.youtube.com/search?q=test'],
+                    'flo' => ['app' => 'flomusic://view/content?type=TRACK&id=123', 'web' => 'https://www.music-flo.com/detail/track/123/details'],
+                    'spotify' => ['app' => null, 'web' => 'https://open.spotify.com/search/test/tracks'],
+                    'apple_music_keyword' => 'test',
+                ]]));
+        });
+
+        $response = $this->withSession($this->loginSession($user))
+            ->withHeader('User-Agent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X)')
+            ->get('/music-app/open?id=123');
+
+        $response->assertOk();
+        $response->assertViewIs('music-app.redirect');
+        $response->assertViewHas('appUrl', 'flomusic://view/content?type=TRACK&id=123');
     }
 }
