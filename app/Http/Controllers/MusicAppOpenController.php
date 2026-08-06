@@ -11,9 +11,10 @@ use App\Services\PlatformService;
 class MusicAppOpenController extends Controller
 {
     public function __construct(
-        private FloApiService $floApi,
+        private FloApiService   $floApi,
         private PlatformService $platform,
-    ) {
+    )
+    {
     }
 
     public function show(SongDetailRequest $request)
@@ -27,11 +28,11 @@ class MusicAppOpenController extends Controller
         $songInfo = $this->floApi->getSongByFloId($request->validated('id'));
         $url = $songInfo['song']['url'];
 
-        if ($user->preferred_music_app === MusicApp::AppleMusic) {
-            $platformUrl = $this->platform->resolveAppleMusicUrl($url['apple_music_keyword']);
-        } else {
-            $platformUrl = $url[$user->preferred_music_app->value];
-        }
+        $platformUrl = match ($user->preferred_music_app) {
+            MusicApp::AppleMusic => $this->platform->resolveAppleMusicUrl($url['apple_music_keyword']),
+            MusicApp::Melon => $this->platform->resolveMelonUrl($url['melon_keyword']),
+            default => $url[$user->preferred_music_app->value]
+        };
 
         if (!$platformUrl['app']) {
             return redirect()->away($platformUrl['web']);

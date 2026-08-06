@@ -98,7 +98,7 @@ class MusicAppPreferenceControllerTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->withSession($this->loginSession($user))
-            ->postJson('/api/music-app-preference', ['app' => 'melon']);
+            ->postJson('/api/music-app-preference', ['app' => 'bugs']);
 
         $response->assertStatus(422);
     }

@@ -44,6 +44,7 @@ trait FakesFloApi
                 'flo'                 => ['app' => null, 'web' => 'https://www.music-flo.com/detail/track/1/details'],
                 'spotify'             => ['app' => null, 'web' => 'https://open.spotify.com/search/test/tracks'],
                 'apple_music_keyword' => 'test',
+                'melon_keyword'       => 'test',
             ],
         ], $overrides);
     }

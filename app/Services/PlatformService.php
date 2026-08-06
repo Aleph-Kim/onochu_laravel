@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Http;
 class PlatformService
 {
     private const APPLE_MUSIC_SEARCH_API = 'https://itunes.apple.com/search';
-    private const APPLE_MUSIC_CACHE_TTL = 604800; // 7일
+    private const MELON_SEARCH_URL = 'https://www.melon.com/search/song/index.htm';
+    private const MUSIC_CACHE_TTL = 604800; // 7일
 
     public function getPlatformUrl(array $song, array $artists): array
     {
@@ -33,13 +34,13 @@ class PlatformService
                 'web' => "https://open.spotify.com/search/{$keyword}/tracks",
             ],
             'apple_music_keyword' => $keyword,
+            'melon_keyword' => $keyword,
         ];
     }
 
     /**
      * iTunes Search API로 실제 트랙/앨범 ID를 찾아 music:// 딥링크를 만든다.
-     * Apple Music은 search 경로용 앱 스킴을 지원하지 않아, 검색 결과로 얻은
-     * album/song ID 기반 경로(공식 지원)로만 앱이 열린다.
+     * Apple Music은 search 경로용 앱 스킴을 지원하지 않아, 검색 결과로 얻은 album/song ID 기반 경로(공식 지원)로만 앱이 열린다.
      */
     public function resolveAppleMusicUrl(string $keyword): array
     {
@@ -73,7 +74,42 @@ class PlatformService
             // iTunes API 실패 시 검색 링크로 폴백
         }
 
-        Cache::put($cacheKey, $result, self::APPLE_MUSIC_CACHE_TTL);
+        Cache::put($cacheKey, $result, self::MUSIC_CACHE_TTL);
+
+        return $result;
+    }
+
+    /**
+     * 멜론 검색 페이지를 스크래핑해 실제 songId를 찾아 melonapp:// 딥링크를 만든다.
+     * 멜론 앱 스킴은 검색이 아닌 songId 기반 재생만 지원하기 때문에 멜론 songId를 검색 결과에서 직접 파싱해야 한다.
+     */
+    public function resolveMelonUrl(string $keyword): array
+    {
+        $webFallback = "https://www.melon.com/search/total/index.htm?q=" . urlencode($keyword);
+        $cacheKey = 'melon:track:' . md5($keyword);
+
+        $cached = Cache::get($cacheKey);
+        if ($cached !== null) {
+            return $cached;
+        }
+
+        $result = ['web' => $webFallback, 'app' => null];
+
+        try {
+            $response = Http::timeout(5)->get(self::MELON_SEARCH_URL, ['q' => $keyword]);
+
+            if ($response->successful() && preg_match("/goSongDetail\('(\d+)'\)/", $response->body(), $matches)) {
+                $songId = $matches[1];
+                $result = [
+                    'web' => "https://www.melon.com/song/detail.htm?songId={$songId}",
+                    'app' => "melonapp://play?ctype=1&menuid=0&cid={$songId}",
+                ];
+            }
+        } catch (\Throwable $e) {
+            // 멜론 검색 실패 시 검색 링크로 폴백
+        }
+
+        Cache::put($cacheKey, $result, self::MUSIC_CACHE_TTL);
 
         return $result;
     }
