@@ -78,7 +78,7 @@ class RecommendsController extends Controller
         $recommend = Recommend::create([
             'song_id' => $song->id,
             'user_id' => session('user.id'),
-            'score' => $request->validated('score') ?? 3,
+            'score' => $request->validated('score'),
             'comment' => $request->validated('comment'),
         ]);
 

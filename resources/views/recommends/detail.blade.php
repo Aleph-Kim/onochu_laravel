@@ -51,14 +51,16 @@
             </p>
         </div>
         <div class="w-full flex flex-col items-center">
-            <div class="[direction:rtl] text-[40px] my-4 mx-0">
-                @foreach([5,4,3,2,1] as $star)
-                    <input type="radio" id="star{{ $star }}" name="score" value="{{ $star }}"
-                           {{ $recommend->score == $star ? 'checked' : '' }} disabled class="peer hidden">
-                    <label for="star{{ $star }}"
-                           class="peer text-[#e0e0e0] cursor-default hover:text-amber-500 peer-checked:text-amber-500 peer-hover:text-amber-500">★</label>
-                @endforeach
-            </div>
+            @if($recommend->score)
+                <div class="[direction:rtl] text-[40px] my-4 mx-0">
+                    @foreach([5,4,3,2,1] as $star)
+                        <input type="radio" id="star{{ $star }}" name="score" value="{{ $star }}"
+                               {{ $recommend->score == $star ? 'checked' : '' }} disabled class="peer hidden">
+                        <label for="star{{ $star }}"
+                               class="peer text-[#e0e0e0] cursor-default hover:text-amber-500 peer-checked:text-amber-500 peer-hover:text-amber-500">★</label>
+                    @endforeach
+                </div>
+            @endif
             <textarea name="comment" disabled
                       class="w-full h-[120px] p-4 border-0 rounded-2xl bg-[#f0f0f8] resize-none text-sm mb-4 placeholder:text-[#b0b0c0] focus:outline-none"
                       placeholder="작성된 코멘트가 없습니다.">{{ $recommend->comment }}</textarea>

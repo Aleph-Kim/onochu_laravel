@@ -20,8 +20,10 @@
                                 class="flex items-start justify-between gap-3 {{ !$loop->last ? 'border-b border-[#ebebf0]' : '' }}">
                                 <div class="min-w-0">
                                     <div class="flex items-center gap-2 mb-1">
-                                        <span
-                                            class="text-amber-500 text-base tracking-tight">{{ str_repeat('★', $previous->score) }}{{ str_repeat('☆', 5 - $previous->score) }}</span>
+                                        @if($previous->score)
+                                            <span
+                                                class="text-amber-500 text-base tracking-tight">{{ str_repeat('★', $previous->score) }}{{ str_repeat('☆', 5 - $previous->score) }}</span>
+                                        @endif
                                         <span
                                             class="text-[#b0b0c0] text-xs">{{ $previous->created_at->format('Y.m.d') }}</span>
                                     </div>
@@ -71,7 +73,7 @@
                 <input type="radio" id="star4" name="score" value="4" class="peer hidden">
                 <label for="star4"
                        class="peer text-[#e0e0e0] cursor-pointer hover:text-amber-500 peer-checked:text-amber-500 peer-hover:text-amber-500">★</label>
-                <input type="radio" id="star3" name="score" value="3" checked class="peer hidden">
+                <input type="radio" id="star3" name="score" value="3" class="peer hidden">
                 <label for="star3"
                        class="peer text-[#e0e0e0] cursor-pointer hover:text-amber-500 peer-checked:text-amber-500 peer-hover:text-amber-500">★</label>
                 <input type="radio" id="star2" name="score" value="2" class="peer hidden">
