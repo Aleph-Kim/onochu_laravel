@@ -21,7 +21,21 @@ function hiddenSearchForm() {
     searchFormWrap.style.width = "auto";
 }
 
-searchForm.addEventListener('submit', showLoader);
+searchForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    showLoader();
+
+    // Safari는 네비게이션이 시작되면 로더 애니메이션이 멈춰버려 fetch로 먼저 받아온 뒤 이동한다
+    const url = `${searchForm.action}?${new URLSearchParams(new FormData(searchForm))}`;
+
+    fetch(url)
+        .then(response => {
+            window.location.href = response.url;
+        })
+        .catch(() => {
+            window.location.href = url;
+        });
+});
 
 window.addEventListener('pageshow', (event) => {
     if (event.persisted) {
