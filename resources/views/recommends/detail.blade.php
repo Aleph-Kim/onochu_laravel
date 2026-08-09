@@ -64,12 +64,14 @@
             <textarea name="comment" disabled
                       class="w-full h-[120px] p-4 border-0 rounded-2xl bg-[#f0f0f8] resize-none text-sm mb-4 placeholder:text-[#b0b0c0] focus:outline-none"
                       placeholder="작성된 코멘트가 없습니다.">{{ $recommend->comment }}</textarea>
-            <div class="w-full text-sm text-[#8b8b9a] text-right">추천인:
-                <a href="{{ route('mypage.user', $recommend->user) }}"
-                   class="hover:text-primary transition-colors font-medium">{{ $recommend->user->nickname }}</a>
+            <div class="w-full flex items-center justify-between pt-3 mt-1 border-t border-[#eeeef2] text-sm">
+                <a href="{{ route('mypage.user', $recommend->user) }}" class="flex items-center gap-2 group">
+                    <div class="w-7 h-7 rounded-full bg-center bg-cover shrink-0 {{ !$recommend->user->profileAlbum ? 'bg-[#d8d8e8]' : '' }}"
+                         @if($recommend->user->profileAlbum) style="background-image: url('{{ $recommend->user->profileAlbum->img_url }}?size=200x200');" @endif></div>
+                    <span class="text-[#8b8b9a]">추천인 <span class="text-[#333] font-semibold group-hover:text-primary transition-colors">{{ $recommend->user->nickname }}</span></span>
+                </a>
+                <span class="text-[#8b8b9a]">{{ $recommend->created_at->format('Y년 m월 d일') }}</span>
             </div>
-            <div class="w-full text-sm text-[#8b8b9a] text-right">
-                추천일: {{ $recommend->created_at->format('Y년 m월 d일') }}</div>
         </div>
     </div>
 @endsection
