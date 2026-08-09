@@ -19,7 +19,8 @@
         <div class="ml-[30px] max-sm:ml-0">
             @foreach($songsInfo as $song)
                 <div
-                    class="song-box group flex justify-between h-[110px] w-full p-5 mb-2 rounded-2xl bg-white border border-[#ebebf0] transition-all hover:shadow-md hover:border-[#d8d8e8] cursor-pointer">
+                    class="song-box group flex justify-between h-[110px] w-full p-5 mb-2 rounded-2xl bg-white border border-[#ebebf0] transition-all hover:shadow-md hover:border-[#d8d8e8] cursor-pointer"
+                    onclick="window.location.href = '{{ route('song.detail', ['id' => $song['song']['flo_id']]) }}'">
                     <div class="flex flex-1 min-w-0 overflow-hidden">
                     <span class="w-[70px] mr-[10px] flex-shrink-0 max-sm:mr-0">
                         <img src="{{ $albumInfo['img_url'] }}?/dims/resize/350x350/quality/90" alt=""
@@ -36,20 +37,23 @@
                             <div class="overflow-hidden text-ellipsis whitespace-nowrap text-[#8b8b9a] text-sm">
                             <span>
                                 @foreach($song['artists'] as $artist)
-                                    <span class="artist-name">{{ $artist['name'] }}</span>
+                                    <span class="artist-name cursor-pointer hover:text-primary transition-colors"
+                                          onclick="event.stopPropagation(); window.location.href = '{{ route('artist.detail', ['id' => $artist['flo_id']]) }}'">{{ $artist['name'] }}</span>
                                     @if(!$loop->last)
                                         <span>&</span>
                                     @endif
                                 @endforeach
                             </span>
                                 <span class="inline-block w-px h-2.5 mx-1 my-0 bg-[#c8c8d8]"></span>
-                                <span>{{ $song['album']['title'] }}</span>
+                                <span class="cursor-pointer hover:text-primary transition-colors"
+                                      onclick="event.stopPropagation(); window.location.href = '{{ route('album.detail', ['id' => $song['album']['flo_id']]) }}'">{{ $song['album']['title'] }}</span>
                                 <span class="inline-block w-px h-2.5 mx-1 my-0 bg-[#c8c8d8]"></span>
                                 <span>{{ $song['song']['play_time'] }}</span>
                             </div>
                         </div>
                     </div>
-                    <div class="icon-box hidden items-center flex-shrink-0 gap-[5px] group-hover:flex">
+                    <div class="icon-box hidden items-center flex-shrink-0 gap-[5px] group-hover:flex"
+                         onclick="event.stopPropagation()">
                         <a href="{{ route('recommends.create', ['id' => $song['song']['flo_id']]) }}"
                            class="flex p-[7px] fill-[#8b8b9a] cursor-pointer rounded-full transition-all hover:fill-[#5b5bd6] hover:bg-[#f0f0fa]">
                             <svg viewBox="0 0 24 24" class="h-[35px]">
