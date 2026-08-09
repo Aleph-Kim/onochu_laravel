@@ -108,7 +108,15 @@
                                 <div class="flex-grow min-w-0"
                                      onclick="window.location.href='{{ route('recommends.show', $recommend) }}'">
                                     <h3 class="song-title font-semibold text-lg text-[#111] line-clamp-2 break-keep">{{ $recommend->song->title }}</h3>
-                                    <p class="text-[#8b8b9a] text-sm truncate">{{ $recommend->song->artists->pluck('name')->implode(' & ') }}</p>
+                                    <p class="text-[#8b8b9a] text-sm truncate">
+                                        @foreach($recommend->song->artists as $artist)
+                                            <span class="cursor-pointer hover:text-primary transition-colors"
+                                                  onclick="event.stopPropagation(); window.location.href = '{{ route('artist.detail', ['id' => $artist->flo_id]) }}'">{{ $artist->name }}</span>
+                                            @if(!$loop->last)
+                                                <span>&</span>
+                                            @endif
+                                        @endforeach
+                                    </p>
                                     <p class="recommend-date text-[#b0b0c0] text-xs mt-1">{{ $recommend->created_at->format('Y.m.d') }}</p>
                                 </div>
                                 @if($isOwner)

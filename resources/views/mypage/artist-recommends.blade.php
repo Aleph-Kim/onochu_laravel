@@ -34,7 +34,15 @@
                                  alt="앨범커버" class="w-20 h-20 rounded-xl object-cover mr-4 flex-none" loading="lazy">
                             <div class="flex-grow min-w-0">
                                 <h3 class="font-semibold text-lg text-[#111] line-clamp-2 break-keep">{{ $recommend->song->title }}</h3>
-                                <p class="text-[#8b8b9a] text-sm truncate">{{ $recommend->song->artists->pluck('name')->implode(' & ') }}</p>
+                                <p class="text-[#8b8b9a] text-sm truncate">
+                                    @foreach($recommend->song->artists as $artist)
+                                        <span class="cursor-pointer hover:text-primary transition-colors"
+                                              onclick="event.stopPropagation(); window.location.href = '{{ route('artist.detail', ['id' => $artist->flo_id]) }}'">{{ $artist->name }}</span>
+                                        @if(!$loop->last)
+                                            <span>&</span>
+                                        @endif
+                                    @endforeach
+                                </p>
                                 <p class="text-[#b0b0c0] text-xs mt-1">{{ $recommend->created_at->format('Y.m.d') }}</p>
                             </div>
                         </div>

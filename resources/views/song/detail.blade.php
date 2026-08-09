@@ -22,7 +22,8 @@
             @if($songInfo['artists'][0]['img_url'])
                 <div
                     class="w-[60px] h-[60px] rounded-full overflow-hidden flex-none shadow-[0_4px_12px_rgba(0,0,20,0.12)]">
-                    <a href="{{ route('artist.detail', ['id' => $songInfo['artists'][0]['flo_id']]) }}">
+                    <a class="block transition hover:opacity-80"
+                       href="{{ route('artist.detail', ['id' => $songInfo['artists'][0]['flo_id']]) }}">
                         <img src="{{ $songInfo['artists'][0]['img_url'] }}?/dims/resize/200x200/quality/90"
                              alt="Artist Profile" class="w-full h-full object-cover">
                     </a>

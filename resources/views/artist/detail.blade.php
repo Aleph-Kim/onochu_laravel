@@ -84,8 +84,15 @@
                          class="max-w-[200px] rounded-xl max-sm:w-full max-sm:h-auto max-sm:max-w-[150px] aspect-square object-cover">
                     <div class="flex flex-col justify-center flex-1">
                         <div class="album-title font-bold text-[16px] mb-1 text-[#111]">{{ $album['title'] }}</div>
-                        <div
-                            class="text-sm text-[#555]">{{ implode(' & ', array_column($album['artists'], 'name')) }}</div>
+                        <div class="text-sm text-[#555]">
+                            @foreach($album['artists'] as $artist)
+                                <span class="cursor-pointer hover:text-primary transition-colors"
+                                      onclick="event.stopPropagation(); window.location.href = '{{ route('artist.detail', ['id' => $artist['flo_id']]) }}'">{{ $artist['name'] }}</span>
+                                @if(!$loop->last)
+                                    <span>&</span>
+                                @endif
+                            @endforeach
+                        </div>
                         <div class="pt-[10px] max-sm:pt-0">
                             <div class="album-type text-[13px] text-[#8b8b9a] leading-[1.4]">{{ $album['type'] }}</div>
                             <div

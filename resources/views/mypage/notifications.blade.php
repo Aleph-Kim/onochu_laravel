@@ -47,7 +47,7 @@
                 </div>
                 <div class="artists-list flex flex-col gap-3">
                     @foreach($artistList as $artist)
-                        <div class="artist-row flex items-center p-4 rounded-2xl border border-[#ebebf0] cursor-pointer"
+                        <div class="artist-row flex items-center p-4 rounded-2xl border border-[#ebebf0] cursor-pointer transition-all hover:shadow-md hover:border-[#d8d8e8]"
                              onclick="window.location.href = '{{ route('artist.detail', ['id' => $artist->flo_id]) }}'">
                             <img src="{{ $artist->img_url }}?/dims/resize/200x200/quality/90" alt="아티스트"
                                  class="w-14 h-14 rounded-full object-cover mr-4 shadow-sm">
