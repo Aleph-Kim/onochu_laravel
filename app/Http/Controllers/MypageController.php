@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Artist;
 use App\Models\Recommend;
 use App\Models\User;
 
@@ -24,6 +25,18 @@ class MypageController extends Controller
         $data = $this->getMypageInfo($user);
 
         return view('mypage.show', $data + ['isOwner' => false]);
+    }
+
+    public function artistRecommends(Artist $artist)
+    {
+        $user = User::findOrFail(session('user.id'));
+        $songList = Recommend::latestPerSong(1000, $user->id)
+            ->filter(fn($recommend) => $recommend->song->artists->contains('id', $artist->id))
+            ->values();
+
+        if ($songList->isEmpty()) abort(404);
+
+        return view('mypage.artist-recommends', compact('artist', 'songList'));
     }
 
     public function setProfileAlbum(Recommend $recommend)

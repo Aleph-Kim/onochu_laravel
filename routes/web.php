@@ -37,6 +37,7 @@ Route::middleware('check.login')->group(function () {
     Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
     Route::get('/mypage/notifications', [ArtistNotificationController::class, 'index'])->name('mypage.notifications');
     Route::get('/mypage/music-app', [MusicAppPreferenceController::class, 'index'])->name('mypage.music-app');
+    Route::get('/mypage/artist-recommends/{artist}', [MypageController::class, 'artistRecommends'])->name('mypage.artist-recommends');
     Route::get('/music-app/open', [MusicAppOpenController::class, 'show'])->name('music-app.open');
 });
 Route::resource('recommends', RecommendsController::class)->only(['show']);

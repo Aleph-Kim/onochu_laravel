@@ -47,17 +47,18 @@
                 </div>
                 <div class="artists-list flex flex-col gap-3">
                     @foreach($artistList as $artist)
-                        <div class="artist-row flex items-center p-4 rounded-2xl border border-[#ebebf0]">
-                            <a href="{{ route('artist.detail', ['id' => $artist->flo_id]) }}"
-                               class="flex items-center flex-grow min-w-0">
-                                <img src="{{ $artist->img_url }}?/dims/resize/200x200/quality/90" alt="아티스트"
-                                     class="w-14 h-14 rounded-full object-cover mr-4 shadow-sm">
-                                <div class="flex-grow min-w-0">
-                                    <h3 class="artist-row-name font-semibold text-lg text-[#111]">{{ $artist->name }}</h3>
-                                    <p class="text-[#8b8b9a] text-sm">추천한 노래 {{ $artist->count }}개</p>
-                                </div>
-                            </a>
-                            <label class="relative inline-block w-10 h-5 flex-none">
+                        <div class="artist-row flex items-center p-4 rounded-2xl border border-[#ebebf0] cursor-pointer"
+                             onclick="window.location.href = '{{ route('artist.detail', ['id' => $artist->flo_id]) }}'">
+                            <img src="{{ $artist->img_url }}?/dims/resize/200x200/quality/90" alt="아티스트"
+                                 class="w-14 h-14 rounded-full object-cover mr-4 shadow-sm">
+                            <div class="flex-grow min-w-0">
+                                <h3 class="artist-row-name font-semibold text-lg text-[#111]">{{ $artist->name }}</h3>
+                                <a href="{{ route('mypage.artist-recommends', $artist) }}"
+                                   onclick="event.stopPropagation()"
+                                   class="text-[#8b8b9a] text-sm hover:text-primary transition-colors">추천한
+                                    노래 {{ $artist->count }}개</a>
+                            </div>
+                            <label class="relative inline-block w-10 h-5 flex-none" onclick="event.stopPropagation()">
                                 <input type="checkbox" class="artist-notification-toggle peer opacity-0 w-0 h-0"
                                        data-artist-id="{{ $artist->id }}"
                                        data-muted="{{ in_array($artist->id, $mutedArtistIds) ? '1' : '0' }}"

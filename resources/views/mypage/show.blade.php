@@ -43,15 +43,18 @@
                             <h2 class="text-2xl font-bold mb-6 tracking-tight text-[#111]">좋아하는 아티스트</h2>
                             <div class="flex flex-col gap-3 max-h-[400px] overflow-y-auto scrollbar-hide">
                                 @foreach($artistList as $artist)
-                                    <a class="flex items-center p-4 rounded-2xl border border-[#ebebf0] transition-all hover:shadow-md hover:border-[#d8d8e8]"
-                                       href="{{ route('artist.detail', ['id' => $artist->flo_id]) }}">
+                                    <div class="flex items-center p-4 rounded-2xl border border-[#ebebf0] transition-all hover:shadow-md hover:border-[#d8d8e8] cursor-pointer"
+                                         onclick="window.location.href = '{{ route('artist.detail', ['id' => $artist->flo_id]) }}'">
                                         <img src="{{ $artist->img_url }}?/dims/resize/200x200/quality/90" alt="아티스트"
                                              class="w-16 h-16 rounded-full object-cover mr-4 shadow-sm">
                                         <div class="flex-grow">
                                             <h3 class="font-semibold text-lg text-[#111]">{{ $artist->name }}</h3>
-                                            <p class="text-[#8b8b9a] text-sm">추천한 노래 {{ $artist->count }}개</p>
+                                            <a href="{{ route('mypage.artist-recommends', $artist) }}"
+                                               onclick="event.stopPropagation()"
+                                               class="text-[#8b8b9a] text-sm hover:text-primary transition-colors">추천한
+                                                노래 {{ $artist->count }}개</a>
                                         </div>
-                                    </a>
+                                    </div>
                                 @endforeach
                             </div>
                         </div>
