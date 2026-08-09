@@ -41,15 +41,19 @@
             </div>
         @else
             <div class="max-w-[1200px] mx-auto px-6 pb-12 w-full">
-                <div class="flex flex-col gap-3">
+                <div class="mb-4">
+                    <input type="text" id="artistSearch" placeholder="아티스트 검색"
+                           class="w-full py-[9px] px-[14px] bg-[#f0f0f8] border-0 rounded-full text-sm transition-shadow focus:shadow-[0_0_0_2px_rgba(91,91,214,0.15)] focus:outline-none placeholder:text-[#b0b0c0]">
+                </div>
+                <div class="artists-list flex flex-col gap-3">
                     @foreach($artistList as $artist)
-                        <div class="flex items-center p-4 rounded-2xl border border-[#ebebf0]">
+                        <div class="artist-row flex items-center p-4 rounded-2xl border border-[#ebebf0]">
                             <a href="{{ route('artist.detail', ['id' => $artist->flo_id]) }}"
                                class="flex items-center flex-grow min-w-0">
                                 <img src="{{ $artist->img_url }}?/dims/resize/200x200/quality/90" alt="아티스트"
                                      class="w-14 h-14 rounded-full object-cover mr-4 shadow-sm">
                                 <div class="flex-grow min-w-0">
-                                    <h3 class="font-semibold text-lg text-[#111]">{{ $artist->name }}</h3>
+                                    <h3 class="artist-row-name font-semibold text-lg text-[#111]">{{ $artist->name }}</h3>
                                     <p class="text-[#8b8b9a] text-sm">추천한 노래 {{ $artist->count }}개</p>
                                 </div>
                             </a>
