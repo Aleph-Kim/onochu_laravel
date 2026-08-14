@@ -13,6 +13,7 @@ class SongDetailRequest extends FormRequest
     {
         return [
             'id' => ['required', 'integer'],
+            'recommend' => ['nullable', 'integer'],
         ];
     }
 }

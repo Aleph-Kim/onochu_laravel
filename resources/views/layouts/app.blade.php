@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <meta name="vapid-public-key" content="{{ config('webpush.public_key') }}"/>
     <link rel="icon" type="image/png" href="{{ asset('image/logo.png') }}">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
     <link rel="apple-touch-icon" href="{{ asset('image/logo.png') }}">
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
@@ -91,6 +91,53 @@
     <div
         class="loader relative w-[120px] h-[90px] mx-auto my-0 before:content-[''] before:absolute before:bottom-[30px] before:left-[50px] before:h-[30px] before:w-[30px] before:rounded-full before:bg-primary before:animate-[loading-bounce_0.5s_ease-in-out_infinite_alternate] after:content-[''] after:absolute after:right-0 after:top-0 after:h-[7px] after:w-[45px] after:rounded after:shadow-[0_5px_0_#f2f2f2,-35px_50px_0_#f2f2f2,-70px_95px_0_#f2f2f2] after:animate-[loading-step_1s_ease-in-out_infinite]"></div>
 </div>
+
+@if($recommendToRate)
+    <div id="song-rate-modal" onclick="if (event.target === this) this.remove()"
+         class="fixed top-0 left-0 w-screen h-screen z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl p-6 max-w-[340px] w-full shadow-[0_8px_24px_rgba(0,0,40,0.12)]">
+            <p class="text-sm text-[#8b8b9a] mb-4 text-center">이전에 들었던 노래, 어떠셨나요?</p>
+            <div class="flex items-center gap-3 mb-4">
+                <a href="{{ route('song.detail', ['id' => $recommendToRate->song->flo_id]) }}">
+                    <img src="{{ $recommendToRate->song->album->img_url }}?size=200x200"
+                         class="w-16 h-16 rounded-xl object-cover shrink-0 shadow-sm">
+                </a>
+                <div class="min-w-0">
+                    <a href="{{ route('song.detail', ['id' => $recommendToRate->song->flo_id]) }}"
+                       class="block font-bold text-[#111] truncate hover:text-primary transition-colors">{{ $recommendToRate->song->title }}</a>
+                    <p class="text-sm text-[#8b8b9a] truncate">
+                        @foreach($recommendToRate->song->artists as $artist)
+                            <a href="{{ route('artist.detail', ['id' => $artist->flo_id]) }}"
+                               class="hover:text-primary transition-colors">{{ $artist->name }}</a>{{ !$loop->last ? ' & ' : '' }}
+                        @endforeach
+                    </p>
+                </div>
+            </div>
+            <a href="{{ route('mypage.user', $recommendToRate->user) }}"
+               class="flex items-center justify-end gap-2 group mb-5 pb-5 border-b border-[#eeeef2]">
+                <div
+                    class="w-6 h-6 rounded-full bg-center bg-cover shrink-0 {{ !$recommendToRate->user->profileAlbum ? 'bg-[#d8d8e8]' : '' }}"
+                    @if($recommendToRate->user->profileAlbum) style="background-image: url('{{ $recommendToRate->user->profileAlbum->img_url }}?size=200x200');" @endif></div>
+                <span class="text-sm text-[#8b8b9a]">
+                    추천인
+                    <span class="text-[#333] font-semibold group-hover:text-primary transition-colors">
+                        {{ $recommendToRate->user->nickname }}
+                    </span>
+                </span>
+            </a>
+            <div class="flex gap-3">
+                <button type="button" onclick="document.getElementById('song-rate-modal').remove()"
+                        class="flex-1 py-[10px] rounded-full border border-[#ebebf0] text-[#8b8b9a] font-semibold transition hover:bg-[#f7f7fa]">
+                    닫기
+                </button>
+                <a href="{{ route('recommends.create', ['id' => $recommendToRate->song->flo_id]) }}"
+                   class="flex-1 py-[10px] rounded-full text-center cursor-pointer transition-all text-white bg-primary hover:bg-primary-light font-semibold shadow-sm hover:shadow-md">
+                    추천하기
+                </a>
+            </div>
+        </div>
+    </div>
+@endif
 <script src="{{ asset('js/util.js') }}"></script>
 <script src="{{ asset('js/layout.js') }}"></script>
 @stack('scripts')

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Enums\MusicApp;
 use App\Http\Requests\SongDetailRequest;
+use App\Models\Recommend;
+use App\Models\RecommendPlay;
 use App\Models\User;
 use App\Services\FloApiService;
 use App\Services\PlatformService;
@@ -23,6 +25,15 @@ class MusicAppOpenController extends Controller
 
         if (!$user->preferred_music_app) {
             return redirect()->route('mypage.music-app', ['redirect' => $request->getRequestUri()]);
+        }
+
+        $recommendId = $request->validated('recommend');
+        if (
+            $recommendId
+            && ($recommend = Recommend::find($recommendId))
+            && $recommend->user_id !== $user->id
+        ) {
+            RecommendPlay::create(['user_id' => $user->id, 'recommend_id' => $recommend->id]);
         }
 
         $songInfo = $this->floApi->getSongByFloId($request->validated('id'));

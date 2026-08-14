@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Enums\MusicApp;
+use App\Models\Recommend;
+use App\Models\Song;
 use App\Models\User;
 use App\Services\FloApiService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -146,5 +148,64 @@ class MusicAppOpenControllerTest extends TestCase
         $response = $this->withSession($this->loginSession($user))->get('/music-app/open?id=123');
 
         $response->assertRedirect('https://www.genie.co.kr/detail/songInfo?xgnm=30314784');
+    }
+
+    #[TestDox('다른 회원의 추천곡을 재생하면 재생 기록이 생성된다')]
+    public function test_creates_recommend_play_when_playing_others_recommend(): void
+    {
+        $listener = User::factory()->create(['preferred_music_app' => MusicApp::Youtube]);
+        $recommender = User::factory()->create();
+        $song = Song::factory()->create(['flo_id' => 123]);
+        $recommend = Recommend::factory()->create(['song_id' => $song->id, 'user_id' => $recommender->id]);
+
+        $this->mock(FloApiService::class, function ($mock) {
+            $mock->shouldReceive('getSongByFloId')
+                ->with(123)
+                ->andReturn($this->fakeTrackInfo(['flo_id' => 123]));
+        });
+
+        $this->withSession($this->loginSession($listener))
+            ->get("/music-app/open?id=123&recommend={$recommend->id}");
+
+        $this->assertDatabaseHas('recommend_plays', [
+            'user_id' => $listener->id,
+            'recommend_id' => $recommend->id,
+            'notified_at' => null,
+        ]);
+    }
+
+    #[TestDox('본인이 작성한 추천을 재생하면 재생 기록이 생성되지 않는다')]
+    public function test_does_not_create_recommend_play_for_own_recommend(): void
+    {
+        $user = User::factory()->create(['preferred_music_app' => MusicApp::Youtube]);
+        $song = Song::factory()->create(['flo_id' => 123]);
+        $recommend = Recommend::factory()->create(['song_id' => $song->id, 'user_id' => $user->id]);
+
+        $this->mock(FloApiService::class, function ($mock) {
+            $mock->shouldReceive('getSongByFloId')
+                ->with(123)
+                ->andReturn($this->fakeTrackInfo(['flo_id' => 123]));
+        });
+
+        $this->withSession($this->loginSession($user))
+            ->get("/music-app/open?id=123&recommend={$recommend->id}");
+
+        $this->assertDatabaseCount('recommend_plays', 0);
+    }
+
+    #[TestDox('recommend 파라미터가 없으면 재생 기록이 생성되지 않는다')]
+    public function test_does_not_create_recommend_play_without_recommend_param(): void
+    {
+        $user = User::factory()->create(['preferred_music_app' => MusicApp::Youtube]);
+
+        $this->mock(FloApiService::class, function ($mock) {
+            $mock->shouldReceive('getSongByFloId')
+                ->with(123)
+                ->andReturn($this->fakeTrackInfo(['flo_id' => 123]));
+        });
+
+        $this->withSession($this->loginSession($user))->get('/music-app/open?id=123');
+
+        $this->assertDatabaseCount('recommend_plays', 0);
     }
 }
