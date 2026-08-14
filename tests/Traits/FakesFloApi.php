@@ -45,6 +45,7 @@ trait FakesFloApi
                 'spotify'             => ['app' => null, 'web' => 'https://open.spotify.com/search/test/tracks'],
                 'apple_music_keyword' => 'test',
                 'melon_keyword'       => 'test',
+                'genie_keyword'       => 'test',
             ],
         ], $overrides);
     }

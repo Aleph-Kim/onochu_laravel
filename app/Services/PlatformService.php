@@ -9,6 +9,7 @@ class PlatformService
 {
     private const APPLE_MUSIC_SEARCH_API = 'https://itunes.apple.com/search';
     private const MELON_SEARCH_URL = 'https://www.melon.com/search/song/index.htm';
+    private const GENIE_SEARCH_URL = 'https://www.genie.co.kr/search/searchMain';
     private const MUSIC_CACHE_TTL = 604800; // 7일
 
     public function getPlatformUrl(array $song, array $artists): array
@@ -35,6 +36,7 @@ class PlatformService
             ],
             'apple_music_keyword' => $keyword,
             'melon_keyword' => $keyword,
+            'genie_keyword' => $keyword,
         ];
     }
 
@@ -107,6 +109,41 @@ class PlatformService
             }
         } catch (\Throwable $e) {
             // 멜론 검색 실패 시 검색 링크로 폴백
+        }
+
+        Cache::put($cacheKey, $result, self::MUSIC_CACHE_TTL);
+
+        return $result;
+    }
+
+    /**
+     * 지니뮤직 검색 페이지를 스크래핑해 실제 songId를 찾아 상세페이지 URL을 만든다.
+     * 지니 앱의 URI 스킴은 공식적으로 문서화되어 있지 않고 검증할 방법이 없어, app은 항상 null로 두고 웹으로만 연결한다.
+     */
+    public function resolveGenieUrl(string $keyword): array
+    {
+        $webFallback = "https://www.genie.co.kr/search/searchMain?query=" . urlencode($keyword);
+        $cacheKey = 'genie:track:' . md5($keyword);
+
+        $cached = Cache::get($cacheKey);
+        if ($cached !== null) {
+            return $cached;
+        }
+
+        $result = ['web' => $webFallback, 'app' => null];
+
+        try {
+            $response = Http::timeout(5)->get(self::GENIE_SEARCH_URL, ['query' => $keyword]);
+
+            if ($response->successful() && preg_match("/fnViewSongInfo\('(\d+)'\)/", $response->body(), $matches)) {
+                $songId = $matches[1];
+                $result = [
+                    'web' => "https://www.genie.co.kr/detail/songInfo?xgnm={$songId}",
+                    'app' => null,
+                ];
+            }
+        } catch (\Throwable $e) {
+            // 지니 검색 실패 시 검색 링크로 폴백
         }
 
         Cache::put($cacheKey, $result, self::MUSIC_CACHE_TTL);

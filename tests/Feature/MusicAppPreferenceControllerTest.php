@@ -92,6 +92,18 @@ class MusicAppPreferenceControllerTest extends TestCase
         $this->assertSame(MusicApp::Spotify, $user->fresh()->preferred_music_app);
     }
 
+    #[TestDox('지니도 저장할 수 있다')]
+    public function test_genie_is_a_valid_app_value(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->withSession($this->loginSession($user))
+            ->postJson('/api/music-app-preference', ['app' => 'genie']);
+
+        $response->assertOk();
+        $this->assertSame(MusicApp::Genie, $user->fresh()->preferred_music_app);
+    }
+
     #[TestDox('지원하지 않는 앱 값이면 검증 오류를 반환한다')]
     public function test_invalid_app_value_fails_validation(): void
     {

@@ -31,6 +31,7 @@ class MusicAppOpenController extends Controller
         $platformUrl = match ($user->preferred_music_app) {
             MusicApp::AppleMusic => $this->platform->resolveAppleMusicUrl($url['apple_music_keyword']),
             MusicApp::Melon => $this->platform->resolveMelonUrl($url['melon_keyword']),
+            MusicApp::Genie => $this->platform->resolveGenieUrl($url['genie_keyword']),
             default => $url[$user->preferred_music_app->value]
         };
 

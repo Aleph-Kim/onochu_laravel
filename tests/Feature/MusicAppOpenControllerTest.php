@@ -127,4 +127,24 @@ class MusicAppOpenControllerTest extends TestCase
         $response->assertViewIs('music-app.redirect');
         $response->assertViewHas('appUrl', 'melonapp://play?ctype=1&menuid=0&cid=30314784');
     }
+
+    #[TestDox('저장된 앱이 genie면 지니 상세페이지 웹 URL로 리다이렉트한다')]
+    public function test_redirects_to_genie_web_url_when_preferred(): void
+    {
+        $user = User::factory()->create(['preferred_music_app' => MusicApp::Genie]);
+
+        Http::fake([
+            'www.genie.co.kr/search/searchMain*' => Http::response("fnViewSongInfo('30314784')"),
+        ]);
+
+        $this->mock(FloApiService::class, function ($mock) {
+            $mock->shouldReceive('getSongByFloId')
+                ->with(123)
+                ->andReturn($this->fakeTrackInfo(['flo_id' => 123]));
+        });
+
+        $response = $this->withSession($this->loginSession($user))->get('/music-app/open?id=123');
+
+        $response->assertRedirect('https://www.genie.co.kr/detail/songInfo?xgnm=30314784');
+    }
 }
