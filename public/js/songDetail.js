@@ -1,8 +1,4 @@
-/**
- * 앨범 커버와 가사 태그 toggle 함수
- * 
- * @param {String} view 노출할 요소 (cover || lyrics)
- */
+// view는 'cover' 또는 'lyrics'
 function toggleView(view) {
     const overlay = document.querySelector('.lyrics-overlay');
     const coverBtn = document.querySelector('.cover-btn');

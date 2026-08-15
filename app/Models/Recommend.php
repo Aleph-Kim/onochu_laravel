@@ -29,7 +29,7 @@ class Recommend extends Model
     }
 
     /**
-     * 곡별 최신 추천 목록 (MainController, MypageController 공통)
+     * 곡별 최신 추천 목록
      */
     public static function latestPerSong(int $limit = 10, ?int $userId = null): Collection
     {
@@ -45,7 +45,7 @@ class Recommend extends Model
     }
 
     /**
-     * 공유용 플랫폼 딥링크 (RecommendsController::show)
+     * 공유용 플랫폼 딥링크
      */
     public function getUrlAttribute(): array
     {

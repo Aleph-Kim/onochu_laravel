@@ -30,6 +30,7 @@
             var webUrl = @json($webUrl);
             var openBtn = document.getElementById('open-app-btn');
 
+            // 앱이 실제로 열리면 blur 이벤트가 발생해 폴백을 취소, 앱이 없으면 1.5초 후 웹으로 대체 이동
             function openApp() {
                 var fallback = setTimeout(function () {
                     window.location.replace(webUrl);

@@ -46,7 +46,7 @@ class User extends Authenticatable
     }
 
     /**
-     * 추천 수, 프로필 앨범을 함께 로드 (MypageController 공통)
+     * 추천 수, 프로필 앨범을 함께 로드
      */
     public function loadStats(): static
     {
@@ -54,7 +54,7 @@ class User extends Authenticatable
     }
 
     /**
-     * 유저가 추천한 아티스트 Top N, limit이 null이면 전체 (MypageController, ArtistNotificationController)
+     * 유저가 추천한 아티스트 Top N, limit이 null이면 전체
      */
     public function likeArtists(?int $limit = 5): \Illuminate\Database\Eloquent\Collection
     {
@@ -71,7 +71,7 @@ class User extends Authenticatable
     }
 
     /**
-     * 유저가 추천한 장르 통계 (MypageController)
+     * 유저가 추천한 장르 통계
      */
     public function likeGenres(): array
     {

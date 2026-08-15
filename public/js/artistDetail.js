@@ -3,9 +3,6 @@ let currentType = 'all';
 let currentSort = 'latest';
 let searchQuery = '';
 
-/**
- * HTML에서 앨범 데이터 파싱
- */
 function initAlbums() {
     const albumElements = document.querySelectorAll('.album');
     if (!albumElements.length) return;
@@ -18,9 +15,6 @@ function initAlbums() {
     }));
 }
 
-/**
- * 앨범을 필터링 / 정렬하여 렌더링
- */
 function renderAlbums() {
     const albumList = document.querySelector('.albums');
     const decomposedQuery = separateKoreanCharacters(searchQuery);
@@ -43,9 +37,7 @@ function renderAlbums() {
     filteredAlbums.forEach(album => albumList.appendChild(album.element));
 }
 
-/**
- * 모바일 화면에서 앨범 검색창을 펼치는 함수
- */
+// 모바일 화면 전용 검색창 펼치기
 function showAlbumSearch() {
     document.getElementById('albumTypeFilter').style.display = 'none';
     document.getElementById('albumSortToggle').style.display = 'none';
@@ -60,9 +52,7 @@ function showAlbumSearch() {
     document.getElementById('albumSearch').focus();
 }
 
-/**
- * 모바일 화면에서 앨범 검색창을 접는 함수
- */
+// 모바일 화면 전용 검색창 접기
 function hideAlbumSearch() {
     document.getElementById('albumTypeFilter').style.display = '';
     document.getElementById('albumSortToggle').style.display = '';
@@ -76,9 +66,6 @@ function hideAlbumSearch() {
     document.getElementById('albumSearchHideBtn').style.display = 'none';
 }
 
-/**
- * 이벤트 리스너 설정
- */
 function bindEvents() {
     const selector = document.querySelector('.custom-selector');
     const selectedOption = selector.querySelector('.selected-option');

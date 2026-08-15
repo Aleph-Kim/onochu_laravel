@@ -9,7 +9,7 @@ document.querySelector('.recommends-form').addEventListener('submit', function (
     }
 
     showLoader();
-    submitBtn.disabled = true; // 버튼 비활성화
+    submitBtn.disabled = true;
     submitBtn.textContent = '처리 중';
 
     fetch(form.action, {

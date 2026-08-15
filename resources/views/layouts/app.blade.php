@@ -92,6 +92,7 @@
         class="loader relative w-[120px] h-[90px] mx-auto my-0 before:content-[''] before:absolute before:bottom-[30px] before:left-[50px] before:h-[30px] before:w-[30px] before:rounded-full before:bg-primary before:animate-[loading-bounce_0.5s_ease-in-out_infinite_alternate] after:content-[''] after:absolute after:right-0 after:top-0 after:h-[7px] after:w-[45px] after:rounded after:shadow-[0_5px_0_#f2f2f2,-35px_50px_0_#f2f2f2,-70px_95px_0_#f2f2f2] after:animate-[loading-step_1s_ease-in-out_infinite]"></div>
 </div>
 
+{{-- 추천곡 재생 후 재방문 시 평가 유도 모달 --}}
 @if($recommendToRate)
     <div id="song-rate-modal" onclick="if (event.target === this) this.remove()"
          class="fixed top-0 left-0 w-screen h-screen z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">

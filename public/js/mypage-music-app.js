@@ -1,5 +1,4 @@
-// 자주 쓰는 뮤직앱 저장 (마이페이지 '뮤직앱 설정' 화면)
-
+// 자주 쓰는 뮤직앱 저장
 function bindMusicAppOptions() {
     const container = document.querySelector('[data-redirect-url]');
     const redirectUrl = container ? container.dataset.redirectUrl : null;

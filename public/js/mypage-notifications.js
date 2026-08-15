@@ -1,5 +1,3 @@
-// 아티스트별 신곡 알림 on/off (마이페이지 '알림 설정' 화면)
-
 function bindArtistNotificationToggles() {
     document.querySelectorAll('.artist-notification-toggle').forEach(toggle => {
         toggle.addEventListener('change', () => {
@@ -35,7 +33,7 @@ function notifyPushToggleChanged(enabled) {
     });
 }
 
-// 아티스트 목록 내 이름 검색/필터링 (마이페이지 '추천하는 노래' 검색과 동일한 방식, 초성 검색 지원)
+// 초성 단위 검색 지원 (예: 'ㄱㅅ'로 '가수' 검색)
 let artists = [];
 let artistSearchQuery = '';
 

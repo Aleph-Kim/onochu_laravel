@@ -2,7 +2,6 @@ function getMeta(name) {
     return document.querySelector(`meta[name="${name}"]`)?.content;
 }
 
-// 전역 로딩 화면 표시/숨김
 function showLoader() {
     document.querySelector('.loader-container').style.display = 'flex';
     document.body.style.overflow = 'hidden';
@@ -13,7 +12,6 @@ function hideLoader() {
     document.body.style.overflow = '';
 }
 
-// 공통 fetch 함수
 function fetchApi(url, data = null, method = 'POST') {
     const isFormData = data instanceof FormData;
 

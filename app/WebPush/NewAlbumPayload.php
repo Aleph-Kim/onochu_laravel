@@ -4,9 +4,6 @@ namespace App\WebPush;
 
 class NewAlbumPayload
 {
-    /**
-     * @param array $albums 각 원소: ['title','flo_id','img_url','artist'=>[['name','flo_id'],...]]
-     */
     public static function build(array $albums): array
     {
         $count = count($albums);

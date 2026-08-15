@@ -23,6 +23,7 @@ class MainController extends Controller
 
     private function getNewAlbumsForUser(Collection $artists): array
     {
+        // 신규 앨범 노출 기간은 등록 후 7일까지
         $newAlbumData = NewAlbum::with('artists')
             ->where('created_at', '>=', now()->subDays(7))
             ->orderByDesc('created_at')

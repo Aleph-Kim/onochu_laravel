@@ -27,6 +27,7 @@ class MusicAppOpenController extends Controller
             return redirect()->route('mypage.music-app', ['redirect' => $request->getRequestUri()]);
         }
 
+        // 본인이 아닌 다른 사용자의 추천을 재생한 경우에만 재생 기록 저장
         $recommendId = $request->validated('recommend');
         if (
             $recommendId

@@ -1,10 +1,7 @@
-// 웹 푸시 구독 처리 (마이페이지 '신곡 알림' 버튼)
-
 function pushSupported() {
     return 'serviceWorker' in navigator && 'PushManager' in window;
 }
 
-// 지원되지 않을 때 사용자에게 보여줄 안내 메시지
 function unsupportedReason() {
     const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent)
         || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); // iPadOS
@@ -77,7 +74,7 @@ function setButtonState(subscribed) {
     toggle.checked = subscribed;
 }
 
-// 아티스트별 알림 설정 화면에서 마스터 스위치 상태에 맞춰 재정의됨
+// 다른 스크립트가 동명 함수로 재정의해 실제 동작을 채워 넣는 빈 훅
 function notifyPushToggleChanged(enabled) {
 }
 

@@ -40,12 +40,7 @@ class PushSubscriptionController extends Controller
         return $this->successResponse('알림 구독 해제 완료');
     }
 
-    /**
-     * 로그인한 본인에게 테스트 푸시 발송
-     *
-     * @param WebPushService $webPush
-     * @return \Illuminate\Http\JsonResponse
-     */
+    // 로그인한 본인에게 테스트 푸시 발송
     public function test(WebPushService $webPush)
     {
         if (!session('user')) {

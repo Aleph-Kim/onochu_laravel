@@ -164,6 +164,7 @@ class FloApiService
             $albumInfo = $this->extractAlbum($album);
             $albumInfo['artists'] = $this->extractArtists($album['artistList']);
 
+            // 조회 대상 아티스트가 앨범의 대표 아티스트가 아니면 참여 앨범으로 분류
             if (count($albumInfo['artists']) > 1 || $artistId != $albumInfo['artists'][0]['flo_id']) {
                 $albumInfo['type'] = '참여';
             }
@@ -267,6 +268,7 @@ class FloApiService
         $cacheKey = 'flo:artist-img:' . ($artist['id'] ?? '');
         $imgUrl = $artist['imgList'][0]['url'] ?? null;
 
+        // 응답에 이미지가 없으면 이전에 캐시해둔 이미지로 폴백
         if ($imgUrl) {
             Cache::put($cacheKey, $imgUrl, 86400);
         } else {

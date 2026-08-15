@@ -68,9 +68,6 @@ function editProfile(albumFloId, albumImgUrl) {
     profileBackground.style.backgroundImage = `url(${albumImgUrl})`;
 }
 
-/**
- * HTML에서 앨범 데이터 파싱
- */
 function initSongs() {
     const songElements = document.querySelectorAll('.song-card');
     if (!songElements.length) return;
@@ -82,9 +79,6 @@ function initSongs() {
     }));
 }
 
-/**
- * 앨범을 필터링 / 정렬하여 렌더링
- */
 function renderSongs() {
     const songList = document.querySelector('.songs-grid');
     const decomposedQuery = separateKoreanCharacters(searchQuery);
@@ -106,16 +100,12 @@ function renderSongs() {
     filteredSongs.forEach(song => songList.appendChild(song.element));
 }
 
-/**
- * 이벤트 리스너 설정
- */
 function bindEvents() {
     const sortToggle = document.getElementById('sortToggle');
     const latestLabel = document.querySelector('.toggle-label.latest');
     const oldestLabel = document.querySelector('.toggle-label.oldest');
     const searchInput = document.getElementById('songSearch');
 
-    // 정렬 토글
     sortToggle.addEventListener('change', () => {
         currentSort = sortToggle.checked ? 'oldest' : 'latest';
         setToggleLabelActive(latestLabel, !sortToggle.checked);
@@ -123,7 +113,6 @@ function bindEvents() {
         renderSongs();
     });
 
-    // 검색 입력
     searchInput.addEventListener('input', e => {
         searchQuery = e.target.value.toLowerCase().trim();
         renderSongs();
@@ -156,9 +145,6 @@ function createChartData() {
     return chartData;
 }
 
-/**
- * 장르 차트 초기화
- */
 function initChart() {
     genreChart = echarts.init(document.getElementById("genreChart"));
     const option = {
@@ -187,9 +173,6 @@ function initChart() {
     genreChart.setOption(option);
 }
 
-/**
- * 페이지 로드 시 초기화
- */
 function initialize() {
     initChart();
     initSongs();

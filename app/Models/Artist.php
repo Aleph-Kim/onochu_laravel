@@ -25,7 +25,7 @@ class Artist extends Model
     }
 
     /**
-     * 추천 수 기준 인기 아티스트 (MainController - 비로그인, UpdateNewAlbums - 전체)
+     * 추천 수 기준 인기 아티스트
      */
     public static function popularByRecommends(?int $limit = 20): Collection
     {
@@ -42,7 +42,7 @@ class Artist extends Model
     }
 
     /**
-     * 특정 유저의 추천 아티스트 목록 (MainController - 로그인)
+     * 특정 유저의 추천 아티스트 목록
      */
     public static function byUser(int $userId): Collection
     {

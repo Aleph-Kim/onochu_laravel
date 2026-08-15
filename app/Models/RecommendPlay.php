@@ -26,7 +26,7 @@ class RecommendPlay extends Model
     }
 
     /**
-     * 아직 모달로 노출하지 않은 재생 기록 (AppServiceProvider 뷰 컴포저)
+     * 아직 모달로 노출하지 않은 재생 기록
      */
     public static function pendingFor(int $userId): Collection
     {

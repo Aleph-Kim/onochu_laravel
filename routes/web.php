@@ -40,6 +40,7 @@ Route::middleware('check.login')->group(function () {
     Route::get('/mypage/artist-recommends/{artist}', [MypageController::class, 'artistRecommends'])->name('mypage.artist-recommends');
     Route::get('/music-app/open', [MusicAppOpenController::class, 'show'])->name('music-app.open');
 });
+
 Route::resource('recommends', RecommendsController::class)->only(['show']);
 
 Route::get('/mypage/{user}', [MypageController::class, 'user'])->name('mypage.user');

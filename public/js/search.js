@@ -12,16 +12,15 @@ document.addEventListener("DOMContentLoaded", () => {
         iconBox.classList.add('hidden');
     };
 
-    // .song-box 클릭 이벤트
     songBoxes.forEach(songBox => {
         songBox.addEventListener('click', event => {
-            songBoxes.forEach(hideIconBox); // 모두 숨기기
-            showIconBox(songBox); // 클릭한 것만 보이기
-            event.stopPropagation(); // 전파 방지
+            songBoxes.forEach(hideIconBox);
+            showIconBox(songBox);
+            // 아래 document 클릭 리스너로 전파돼 방금 연 아이콘이 바로 닫히지 않도록 방지
+            event.stopPropagation();
         });
     });
 
-    // 다른 곳 클릭 시 모두 숨기기
     document.addEventListener('click', event => {
         if (!event.target.closest('.song-box')) {
             songBoxes.forEach(hideIconBox);
