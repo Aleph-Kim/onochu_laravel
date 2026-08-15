@@ -12,8 +12,47 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  test:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout repository # 저장소 체크아웃
+      uses: actions/checkout@v4
+
+    - name: Set up PHP # PHP 8.3 및 확장 모듈 설치
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        extensions: mbstring, pdo_sqlite, sqlite3, bcmath, exif, pcntl
+        coverage: none
+
+    - name: Install Composer dependencies # composer 의존성 설치
+      run: composer install --no-interaction --prefer-dist
+
+    - name: Prepare environment file # .env 준비 및 APP_KEY 생성
+      run: |
+        cp .env.example .env
+        php artisan key:generate
+
+    - name: Create fake Vite manifest # 뷰 렌더링 테스트용 최소 manifest (실제 프론트엔드 빌드는 build 잡의 Docker 이미지 안에서 한 번만 수행)
+      run: |
+        mkdir -p public/build
+        cat > public/build/manifest.json << 'EOF'
+        {
+          "resources/css/app.css": { "file": "assets/app.css", "src": "resources/css/app.css", "isEntry": true },
+          "resources/js/app.js": { "file": "assets/app.js", "src": "resources/js/app.js", "isEntry": true }
+        }
+        EOF
+
+    - name: Run tests # phpunit 테스트 실행 (SQLite 인메모리 DB 사용)
+      run: composer test
+      env:
+        DB_CONNECTION: sqlite
+        DB_DATABASE: ":memory:"
+
   build:
     runs-on: ubuntu-22.04
+    needs: test # 테스트 통과 후 빌드
 
     steps:
     - name: Checkout repository # 저장소 체크아웃
