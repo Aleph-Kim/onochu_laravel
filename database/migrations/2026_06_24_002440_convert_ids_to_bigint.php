@@ -18,22 +18,6 @@ return new class extends Migration
             return;
         }
 
-        // FK 제약 제거 (부모/자식 컬럼 타입 변경을 위한 선행 작업)
-        Schema::table('songs', function (Blueprint $table) {
-            $table->dropForeign(['album_id']);
-        });
-        Schema::table('song_artists', function (Blueprint $table) {
-            $table->dropForeign(['song_id']);
-            $table->dropForeign(['artist_id']);
-        });
-        Schema::table('new_album_artists', function (Blueprint $table) {
-            $table->dropForeign(['new_album_id']);
-        });
-        Schema::table('recommends', function (Blueprint $table) {
-            $table->dropForeign(['song_id']);
-            $table->dropForeign(['user_id']);
-        });
-
         // 부모 테이블 id: int → bigint unsigned (auto increment, 라라벨 표준 $table->id())
         // Blueprint::change()는 이미 PRIMARY KEY인 컬럼에도 auto_increment primary key를 다시 붙여 Multiple primary key defined 에러가 나므로 raw SQL로 처리
         foreach ([
