@@ -8,13 +8,13 @@ use App\Models\NewAlbum;
 use App\Models\NewAlbumArtist;
 use App\Models\Recommend;
 use App\Models\User;
+use App\Notifications\NewAlbumNotification;
 use App\Services\FloApiService;
 use App\Services\ImageService;
 use App\Services\WebPushService;
 use App\WebPush\NewAlbumPayload;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Log;
 
 class UpdateNewAlbums extends Command
 {
@@ -100,6 +100,7 @@ class UpdateNewAlbums extends Command
             ]);
 
             $savedCount++;
+            $album['new_album_id'] = $newAlbum->id;
             $savedAlbums[] = $album;
 
             foreach ($album['artist'] as $artist) {
@@ -118,7 +119,7 @@ class UpdateNewAlbums extends Command
         $this->notifyRecommenders($savedAlbums);
     }
 
-    // 새 앨범을 추천 아티스트로 둔 유저에게 웹 푸시 발송 (유저당 1회로 묶음)
+    // 새 앨범을 추천 아티스트로 둔 유저에게 알림 생성 및 웹 푸시 발송 (유저당 1회로 묶음)
     private function notifyRecommenders(array $savedAlbums): void
     {
         if (empty($savedAlbums)) {
@@ -159,12 +160,16 @@ class UpdateNewAlbums extends Command
             return;
         }
 
+        // 헤더 알림 탭에 표시할 NewAlbum 모델 (아티스트 포함) 캐시
+        $newAlbumIds = array_unique(array_column($savedAlbums, 'new_album_id'));
+        $newAlbumModels = NewAlbum::with('artists')->whereIn('id', $newAlbumIds)->get()->keyBy('id');
+
         $users = User::whereIn('id', array_keys($userAlbums))
-            ->whereHas('pushSubscriptions')
             ->with('pushSubscriptions')
             ->get()
             ->keyBy('id');
 
+        $notified = 0;
         $sent = 0;
         foreach ($userAlbums as $userId => $albums) {
             $user = $users->get($userId);
@@ -172,16 +177,27 @@ class UpdateNewAlbums extends Command
                 continue;
             }
 
-            $payload = NewAlbumPayload::build(array_values($albums));
-            foreach ($user->pushSubscriptions as $subscription) {
-                $this->webPush->queue($subscription, $payload);
+            // 헤더 알림 탭에 표시할 인앱 알림 생성 (유저 전원 대상, 푸시 구독 여부 무관)
+            foreach ($albums as $album) {
+                $newAlbumModel = $newAlbumModels->get($album['new_album_id']);
+                if ($newAlbumModel) {
+                    $user->notify(new NewAlbumNotification($newAlbumModel));
+                    $notified++;
+                }
             }
-            $sent++;
+
+            if ($user->pushSubscriptions->isNotEmpty()) {
+                $payload = NewAlbumPayload::build(array_values($albums));
+                foreach ($user->pushSubscriptions as $subscription) {
+                    $this->webPush->queue($subscription, $payload);
+                }
+                $sent++;
+            }
         }
 
         $this->webPush->flush();
 
-        $this->info("알림 발송: {$sent}명");
+        $this->info("헤더 알림 생성: {$notified}건, 웹 푸시 발송: {$sent}명");
     }
 
     private function updateArtistImgUrl(int $floId): void

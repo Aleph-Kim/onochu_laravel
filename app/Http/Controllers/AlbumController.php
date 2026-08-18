@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AlbumDetailRequest;
 use App\Models\Artist;
+use App\Models\User;
 use App\Services\FloApiService;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Cache;
 
 class AlbumController extends Controller
@@ -27,6 +29,15 @@ class AlbumController extends Controller
             if ($artist) {
                 Cache::put('flo:artist-img:' . $artistFloId, $artist->flo_img_url, 86400);
             }
+        }
+
+        // 신곡 알림을 통해 유입된 경우 해당 알림을 읽음 처리
+        if ($isNewAlbum && session('user')) {
+            DatabaseNotification::where('notifiable_type', User::class)
+                ->where('notifiable_id', session('user.id'))
+                ->where('data->new_album_flo_id', $albumId)
+                ->whereNull('read_at')
+                ->update(['read_at' => now()]);
         }
 
         return view('album.detail', [

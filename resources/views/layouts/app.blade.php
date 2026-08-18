@@ -63,7 +63,8 @@
                     </g>
                 </svg>
             </button>
-            <div class="ml-[30px] max-sm:ml-0">
+
+            <div class="flex ml-[30px] max-sm:ml-0">
                 @if(session('user'))
                     @if(request()->is('mypage'))
                         <a href="{{ route('logout') }}" type="button"
@@ -72,6 +73,34 @@
                         <a href="{{ route('mypage.index') }}" type="button"
                            class="px-4 py-1.5 text-[#555] text-sm font-medium cursor-pointer hover:text-primary transition-colors duration-150">마이페이지</a>
                     @endif
+
+                    <div id="notificationBox" class="relative ml-[20px] max-sm:ml-[10px]">
+                        <button id="notificationBtn" type="button"
+                                class="relative h-[34px] w-[34px] flex items-center justify-center"
+                                onclick="toggleNotificationDropdown()" aria-label="알림">
+                            <svg viewBox="0 0 24 24" class="w-[22px] h-[22px] fill-[#555]">
+                                <path
+                                    d="M12 2a6 6 0 0 0-6 6v3.09c0 .48-.17.94-.47 1.31L4 14.5c-.86 1.07-.14 2.67 1.22 2.67h13.56c1.36 0 2.08-1.6 1.22-2.67l-1.53-1.9c-.3-.37-.47-.83-.47-1.31V8a6 6 0 0 0-6-6zm0 20a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22z"/>
+                            </svg>
+                            <span id="notificationBadge"
+                                  class="{{ $unreadNotificationCount > 0 ? '' : 'hidden' }} absolute top-0 right-0 min-w-[16px] h-[16px] px-[3px] rounded-full bg-[#ff3b30] text-white text-[10px] font-bold leading-[16px] text-center">{{ $unreadNotificationCount > 99 ? '99+' : $unreadNotificationCount }}</span>
+                        </button>
+                        <div id="notificationDropdown"
+                             class="hidden absolute right-0 top-[44px] w-[320px] max-h-[440px] flex flex-col bg-white rounded-2xl border border-[#ebebf0] shadow-[0_8px_24px_rgba(0,0,0,0.12)] z-[1000] max-[360px]:w-[280px]">
+                            <div class="flex items-center justify-between px-4 py-3 border-b border-[#f0f0f8] flex-none">
+                                <span class="text-sm font-bold text-[#111]">알림</span>
+                                <button id="markAllReadBtn" type="button"
+                                        class="text-xs text-[#8b8b9a] hover:text-primary transition-colors"
+                                        onclick="markAllNotificationsRead()">모두 읽음</button>
+                            </div>
+                            <div class="overflow-y-auto">
+                                <div id="notificationList" class="flex flex-col divide-y divide-[#f0f0f8]"></div>
+                                <div id="notificationEmpty" class="hidden py-10 text-center text-[#8b8b9a] text-sm">
+                                    모든 알림을 확인했습니다!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 @else
                     <a href="{{ route('login') }}" type="button"
                        class="px-4 py-1.5 text-[#555] text-sm font-medium cursor-pointer hover:text-primary transition-colors duration-150">로그인</a>
@@ -141,6 +170,9 @@
 @endif
 <script src="{{ asset('js/util.js') }}"></script>
 <script src="{{ asset('js/layout.js') }}"></script>
+@if(session('user'))
+    <script src="{{ asset('js/notifications.js') }}"></script>
+@endif
 @stack('scripts')
 </body>
 
