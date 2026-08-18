@@ -12,6 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // SQLite(테스트 DB)는 컬럼 타입을 엄격히 구분하지 않아 int/bigint 차이가 없고,
+        // dropForeign·raw MODIFY 구문도 지원하지 않으므로 운영 MySQL 서버에서만 실행한다
+        if (DB::connection()->getDriverName() === 'sqlite') {
+            return;
+        }
+
         // FK 제약 제거 (부모/자식 컬럼 타입 변경을 위한 선행 작업)
         Schema::table('songs', function (Blueprint $table) {
             $table->dropForeign(['album_id']);
@@ -71,6 +77,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        if (DB::connection()->getDriverName() === 'sqlite') {
+            return;
+        }
+
         // FK 제약 제거
         Schema::table('songs', function (Blueprint $table) {
             $table->dropForeign(['album_id']);

@@ -29,7 +29,7 @@ class SearchControllerTest extends TestCase
                 ->andReturn([$this->fakeTrackInfo()]);
         });
 
-        $response = $this->get('/search?q=아이유');
+        $response = $this->get('/search?q=' . urlencode('아이유'));
 
         $response->assertOk();
         $response->assertViewIs('search.index');

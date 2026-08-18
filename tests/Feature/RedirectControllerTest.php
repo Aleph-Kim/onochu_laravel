@@ -38,7 +38,7 @@ class RedirectControllerTest extends TestCase
     #[TestDox('검색어가 있으면 유튜브 URL로 리다이렉트한다')]
     public function test_youtube_redirects_to_youtube_url(): void
     {
-        $response = $this->get('/redirect/youtube?q=아이유');
+        $response = $this->get('/redirect/youtube?q=' . urlencode('아이유'));
 
         $response->assertRedirect('https://music.youtube.com/search?q=아이유');
     }
