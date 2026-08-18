@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('artists', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('name')->comment('아티스트 이름');
             $table->string('genre', 50)->nullable()->comment('장르 정보');
             $table->string('group_type', 50)->nullable()->comment('그룹 정보');
