@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\RecommendPlay;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -23,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // N+1 감지
+        Model::preventLazyLoading(!$this->app->isProduction());
+
         View::composer('layouts.app', function ($view) {
             $userId = session('user.id');
 
