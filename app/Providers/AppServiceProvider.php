@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // N+1 감지
-        Model::preventLazyLoading(!$this->app->isProduction());
+        Model::preventLazyLoading($this->app->isLocal());
 
         View::composer('layouts.app', function ($view) {
             $userId = session('user.id');
