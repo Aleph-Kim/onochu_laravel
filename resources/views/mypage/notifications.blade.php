@@ -22,10 +22,10 @@
                     <p class="text-[#8b8b9a] text-sm mb-4">추천한 아티스트의 신곡 알림을 개별적으로 켜고 끌 수 있어요.</p>
                 </div>
 
-                <label class="relative inline-block w-10 h-5">
+                <label class="relative inline-block w-[51px] h-[31px]">
                     <input type="checkbox" id="pushToggle" class="peer opacity-0 w-0 h-0" onchange="togglePush()">
                     <span
-                        class="absolute cursor-pointer inset-0 bg-[#d8d8e4] transition-all duration-300 rounded-[10px] peer-checked:bg-primary before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:transition-all before:duration-300 before:rounded-full before:shadow-[0_1px_3px_rgba(0,0,0,0.15)] peer-checked:before:translate-x-5"></span>
+                        class="absolute cursor-pointer inset-0 bg-fill-strong transition-colors duration-200 rounded-full peer-checked:bg-primary before:content-[''] before:absolute before:h-[27px] before:w-[27px] before:left-[2px] before:top-[2px] before:bg-white before:transition-transform before:duration-200 before:rounded-full before:shadow-knob peer-checked:before:translate-x-5"></span>
                 </label>
             </div>
 
@@ -58,13 +58,13 @@
                                    class="text-[#8b8b9a] text-sm hover:text-primary transition-colors">추천한
                                     노래 {{ $artist->count }}개</a>
                             </div>
-                            <label class="relative inline-block w-10 h-5 flex-none" onclick="event.stopPropagation()">
+                            <label class="relative inline-block w-[51px] h-[31px] flex-none" onclick="event.stopPropagation()">
                                 <input type="checkbox" class="artist-notification-toggle peer opacity-0 w-0 h-0"
                                        data-artist-id="{{ $artist->id }}"
                                        data-muted="{{ in_array($artist->id, $mutedArtistIds) ? '1' : '0' }}"
                                     {{ in_array($artist->id, $mutedArtistIds) ? '' : 'checked' }}>
                                 <span
-                                    class="absolute cursor-pointer inset-0 bg-[#d8d8e4] transition-all duration-300 rounded-[10px] peer-checked:bg-primary peer-disabled:opacity-40 peer-disabled:cursor-not-allowed before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:transition-all before:duration-300 before:rounded-full before:shadow-[0_1px_3px_rgba(0,0,0,0.15)] peer-checked:before:translate-x-5"></span>
+                                    class="absolute cursor-pointer inset-0 bg-fill-strong transition-colors duration-200 rounded-full peer-checked:bg-primary peer-disabled:opacity-40 peer-disabled:cursor-not-allowed before:content-[''] before:absolute before:h-[27px] before:w-[27px] before:left-[2px] before:top-[2px] before:bg-white before:transition-transform before:duration-200 before:rounded-full before:shadow-knob peer-checked:before:translate-x-5"></span>
                             </label>
                         </div>
                     @endforeach

@@ -30,13 +30,13 @@
                 </div>
             @endif
         </div>
-        <div class="toggle-buttons hidden justify-center gap-1 w-fit mx-auto mb-[15px] bg-[#f0f0f8] p-1 rounded-full">
+        <div class="toggle-buttons hidden justify-center gap-0.5 w-fit mx-auto mb-[15px] bg-fill p-0.5 rounded-[9px]">
             <button
-                class="toggle-btn cover-btn text-sm py-1.5 px-5 rounded-full font-medium cursor-pointer transition-all duration-200 bg-white text-[#333333] shadow-[0_1px_3px_rgba(0,0,0,0.1)]"
+                class="toggle-btn cover-btn text-footnote py-1.5 px-5 rounded-[7px] font-semibold cursor-pointer transition-colors duration-200 bg-segment text-label shadow-knob"
                 onclick="toggleView('cover')">커버보기
             </button>
             <button
-                class="toggle-btn lyrics-btn text-sm py-1.5 px-5 rounded-full font-medium cursor-pointer transition-all duration-200 text-[#8b8b9a]"
+                class="toggle-btn lyrics-btn text-footnote py-1.5 px-5 rounded-[7px] font-semibold cursor-pointer transition-colors duration-200 text-label-secondary"
                 onclick="toggleView('lyrics')">가사보기
             </button>
         </div>

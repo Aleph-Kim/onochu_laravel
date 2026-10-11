@@ -70,13 +70,13 @@
                         <div class="flex justify-evenly lg:justify-end items-center gap-5">
                             <div class="flex items-center gap-[10px]">
                                 <span
-                                    class="toggle-label latest text-sm text-primary font-semibold transition-colors duration-300">최신순</span>
-                                <label class="relative inline-block w-10 h-5">
+                                    class="toggle-label latest text-subheadline text-primary font-semibold transition-colors duration-200">최신순</span>
+                                <label class="relative inline-block w-[51px] h-[31px]">
                                     <input type="checkbox" id="sortToggle" class="peer opacity-0 w-0 h-0">
                                     <span
-                                        class="absolute cursor-pointer inset-0 bg-[#d8d8e4] transition-all duration-300 rounded-[10px] peer-checked:bg-primary before:content-[''] before:absolute before:h-4 before:w-4 before:left-0.5 before:bottom-0.5 before:bg-white before:transition-all before:duration-300 before:rounded-full before:shadow-[0_1px_3px_rgba(0,0,0,0.15)] peer-checked:before:translate-x-5"></span>
+                                        class="absolute cursor-pointer inset-0 bg-fill-strong transition-colors duration-200 rounded-full peer-checked:bg-primary before:content-[''] before:absolute before:h-[27px] before:w-[27px] before:left-[2px] before:top-[2px] before:bg-white before:transition-transform before:duration-200 before:rounded-full before:shadow-knob peer-checked:before:translate-x-5"></span>
                                 </label>
-                                <span class="toggle-label oldest text-sm text-[#8b8b9a] transition-colors duration-300">오래된순</span>
+                                <span class="toggle-label oldest text-subheadline text-label-secondary transition-colors duration-200">오래된순</span>
                             </div>
                             <div>
                                 <input type="text" id="songSearch" placeholder="노래 검색"

@@ -16,12 +16,12 @@ function renderNotifications(items) {
     notificationList.innerHTML = items.map(item => `
         <a href="${escapeHtml(item.url)}" data-notification-id="${escapeHtml(item.id)}"
            data-unread="${item.unread ? '1' : '0'}"
-           class="notification-item flex items-start gap-3 p-3 hover:bg-[#f7f7fb] transition-colors ${item.unread ? 'bg-[#f5f7ff]' : ''}">
+           class="notification-item flex items-start gap-3 px-4 py-3 hover:bg-fill transition-colors ${item.unread ? 'bg-primary/[0.08]' : ''}">
             <img src="${escapeHtml(item.img_url)}?/dims/resize/200x200/quality/90" alt="" loading="lazy"
-                 class="w-10 h-10 rounded-lg object-cover flex-none shadow-sm">
+                 class="w-11 h-11 rounded-md object-cover flex-none">
             <span class="min-w-0 flex flex-col gap-1.5">
-                ${item.label ? `<span class="self-start px-2 py-0.5 rounded-full bg-[#f0f0fa] text-primary text-[11px] font-semibold leading-none">${escapeHtml(item.label)}</span>` : ''}
-                <span class="block text-sm text-[#333] leading-snug line-clamp-2">${escapeHtml(item.title)}</span>
+                ${item.label ? `<span class="self-start text-caption-2 font-semibold text-primary">${escapeHtml(item.label)}</span>` : ''}
+                <span class="block text-subheadline text-label line-clamp-2">${escapeHtml(item.title)}</span>
             </span>
         </a>
     `).join('');
@@ -69,7 +69,7 @@ notificationList.addEventListener('click', (event) => {
     }
 
     item.dataset.unread = '0';
-    item.classList.remove('bg-[#f5f7ff]');
+    item.classList.remove('bg-primary/[0.08]');
     // 배지가 '99+'여도 parseInt는 99로 읽어 정확한 실제 개수는 아니지만 표시상 문제 없음
     setNotificationBadge(Math.max(0, (parseInt(notificationBadge.textContent, 10) || 0) - 1));
 
@@ -85,7 +85,7 @@ function markAllNotificationsRead() {
             }
             notificationList.querySelectorAll('.notification-item[data-unread="1"]').forEach(item => {
                 item.dataset.unread = '0';
-                item.classList.remove('bg-[#f5f7ff]');
+                item.classList.remove('bg-primary/[0.08]');
             });
             setNotificationBadge(0);
         })

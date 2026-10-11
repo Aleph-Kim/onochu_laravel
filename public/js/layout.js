@@ -57,11 +57,11 @@ function confirmBack() {
  */
 function setToggleLabelActive(label, isActive) {
     if (isActive) {
-        label.classList.remove('text-[#8b8b9a]');
+        label.classList.remove('text-label-secondary');
         label.classList.add('text-primary', 'font-semibold');
     } else {
         label.classList.remove('text-primary', 'font-semibold');
-        label.classList.add('text-[#8b8b9a]');
+        label.classList.add('text-label-secondary');
     }
 }
 
@@ -73,11 +73,11 @@ function setToggleLabelActive(label, isActive) {
  */
 function setToggleBtnActive(btn, isActive) {
     if (isActive) {
-        btn.classList.remove('text-[#8b8b9a]');
-        btn.classList.add('bg-white', 'text-[#333333]', 'shadow-[0_1px_3px_rgba(0,0,0,0.1)]');
+        btn.classList.remove('text-label-secondary');
+        btn.classList.add('bg-segment', 'text-label', 'shadow-knob');
     } else {
-        btn.classList.remove('bg-white', 'text-[#333333]', 'shadow-[0_1px_3px_rgba(0,0,0,0.1)]');
-        btn.classList.add('text-[#8b8b9a]');
+        btn.classList.remove('bg-segment', 'text-label', 'shadow-knob');
+        btn.classList.add('text-label-secondary');
     }
 }
 
