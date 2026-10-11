@@ -18,21 +18,23 @@ class PlatformService
         $isAndroid = $this->isAndroid();
         $artistsName = implode(' ', array_column($artists, 'name'));
         $keyword = "{$artistsName} {$song['title']}";
+        $query = urlencode($keyword);
+        $pathKeyword = rawurlencode($keyword);
         $floId = $song['flo_id'];
 
         return [
             'youtube' => [
                 'app' => !$isMobile ? null :
-                    ($isAndroid ? "vnd.youtube.music:/search?q={$keyword}" : "youtubemusic:/search?q={$keyword}"),
-                'web' => "https://music.youtube.com/search?q={$keyword}",
+                    ($isAndroid ? "vnd.youtube.music:/search?q={$query}" : "youtubemusic:/search?q={$query}"),
+                'web' => "https://music.youtube.com/search?q={$query}",
             ],
             'flo' => [
                 'app' => $isMobile ? "flomusic://view/content?type=TRACK&id={$floId}" : null,
                 'web' => "https://www.music-flo.com/detail/track/{$floId}/details",
             ],
             'spotify' => [
-                'app' => $isMobile ? "spotify:search:{$keyword}" : null,
-                'web' => "https://open.spotify.com/search/{$keyword}/tracks",
+                'app' => $isMobile ? "spotify:search:{$pathKeyword}" : null,
+                'web' => "https://open.spotify.com/search/{$pathKeyword}/tracks",
             ],
             'apple_music_keyword' => $keyword,
             'melon_keyword' => $keyword,
@@ -169,6 +171,8 @@ class PlatformService
 
     public function getYoutubeUrl(string $keyword): string
     {
+        $keyword = urlencode($keyword);
+
         if (!$this->isMobile()) {
             return "https://music.youtube.com/search?q={$keyword}";
         }

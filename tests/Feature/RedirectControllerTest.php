@@ -40,7 +40,15 @@ class RedirectControllerTest extends TestCase
     {
         $response = $this->get('/redirect/youtube?q=' . urlencode('아이유'));
 
-        $response->assertRedirect('https://music.youtube.com/search?q=아이유');
+        $response->assertRedirect('https://music.youtube.com/search?q=' . urlencode('아이유'));
+    }
+
+    #[TestDox('검색어의 특수문자는 인코딩되어 검색어 일부가 잘리지 않는다')]
+    public function test_youtube_keyword_with_special_characters_is_encoded(): void
+    {
+        $response = $this->get('/redirect/youtube?q=' . urlencode('Simon & Garfunkel #1'));
+
+        $response->assertRedirect('https://music.youtube.com/search?q=Simon+%26+Garfunkel+%231');
     }
 
     #[TestDox('키워드가 없으면 400을 반환한다')]
