@@ -63,7 +63,8 @@ class RedirectControllerTest extends TestCase
     public function test_apple_music_url_returns_json(): void
     {
         Http::fake([
-            'itunes.apple.com/*' => Http::response([
+            'itunes.apple.com/search*' => Http::response(['results' => [['trackId' => 2]]]),
+            'itunes.apple.com/lookup*' => Http::response([
                 'results' => [
                     ['trackViewUrl' => 'https://music.apple.com/kr/album/test/1?i=2'],
                 ],

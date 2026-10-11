@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 class PlatformService
 {
     private const APPLE_MUSIC_SEARCH_API = 'https://itunes.apple.com/search';
+    private const APPLE_MUSIC_LOOKUP_API = 'https://itunes.apple.com/lookup';
     private const MELON_SEARCH_URL = 'https://www.melon.com/search/song/index.htm';
     private const GENIE_SEARCH_URL = 'https://www.genie.co.kr/search/searchMain';
     private const MUSIC_CACHE_TTL = 604800; // 7일
@@ -43,12 +44,13 @@ class PlatformService
     }
 
     /**
-     * iTunes Search API로 실제 트랙/앨범 ID를 찾아 music:// 딥링크를 만든다.
-     * Apple Music은 search 경로용 앱 스킴을 지원하지 않아, 검색 결과로 얻은 album/song ID 기반 경로(공식 지원)로만 앱이 열린다.
+     * iTunes Search·Lookup API로 실제 트랙/앨범 ID를 찾아 music:// 딥링크를 만든다.
+     * Apple Music은 search 경로용 앱 스킴을 공식 지원하지 않아, 곡을 찾은 경우에만 album/song ID 기반 경로(공식 지원)로 앱이 열린다.
+     * 곡을 못 찾으면 앱 검색 탭 진입 (검색어 전달은 앱에서 미지원), 앱이 열리지 않으면 웹 검색 페이지로 폴백
      */
     public function resolveAppleMusicUrl(string $keyword): array
     {
-        $webFallback = "https://music.apple.com/kr/search?term=" . urlencode($keyword);
+        $searchTerm = urlencode($keyword);
         $cacheKey = 'apple-music:track:' . md5($keyword);
 
         $cached = Cache::get($cacheKey);
@@ -56,34 +58,53 @@ class PlatformService
             return $cached;
         }
 
-        $result = ['web' => $webFallback, 'app' => null];
+        $searchResult = [
+            'web' => "https://music.apple.com/kr/search?term={$searchTerm}",
+            'app' => 'music://search',
+        ];
 
         try {
-            $response = Http::timeout(5)->get(self::APPLE_MUSIC_SEARCH_API, [
+            // KR 스토어 검색 API의 결과 미반환(ID 조회는 정상)으로 인한 US 스토어 검색 후 KR 스토어 링크 조회
+            $searchResponse = Http::timeout(5)->get(self::APPLE_MUSIC_SEARCH_API, [
                 'term' => $keyword,
                 'media' => 'music',
                 'entity' => 'song',
-                'country' => 'KR',
+                'country' => 'US',
                 'limit' => 1,
             ]);
 
-            $track = $response->json('results.0');
-            if ($response->successful() && isset($track['trackViewUrl'])) {
-                $result = [
-                    'web' => $track['trackViewUrl'],
-                    'app' => preg_replace('#^https://#', 'music://', $track['trackViewUrl']),
-                ];
-            } elseif ($response->failed()) {
-                logger()->warning('Apple Music 검색 실패', ['keyword' => $keyword, 'status' => $response->status()]);
+            $trackId = $searchResponse->json('results.0.trackId');
+            if ($searchResponse->failed()) {
+                logger()->warning('Apple Music 검색 실패', ['keyword' => $keyword, 'status' => $searchResponse->status()]);
+            } elseif ($trackId) {
+                $lookupResponse = Http::timeout(5)->get(self::APPLE_MUSIC_LOOKUP_API, [
+                    'id' => $trackId,
+                    'country' => 'KR',
+                ]);
+
+                $trackViewUrl = $lookupResponse->json('results.0.trackViewUrl');
+                if ($lookupResponse->successful() && $trackViewUrl) {
+                    $result = [
+                        'web' => $trackViewUrl,
+                        'app' => preg_replace('#^https://#', 'music://', $trackViewUrl),
+                    ];
+
+                    // 일시적 실패가 7일간 고정되지 않도록 곡을 찾은 결과만 캐시
+                    Cache::put($cacheKey, $result, self::MUSIC_CACHE_TTL);
+
+                    return $result;
+                }
+
+                if ($lookupResponse->failed()) {
+                    logger()->warning('Apple Music 곡 조회 실패', ['keyword' => $keyword, 'track_id' => $trackId, 'status' => $lookupResponse->status()]);
+                }
             }
         } catch (\Throwable $e) {
             // iTunes API 실패 시 검색 링크로 폴백
             logger()->warning('Apple Music 검색 실패', ['keyword' => $keyword, 'error' => $e->getMessage()]);
         }
 
-        Cache::put($cacheKey, $result, self::MUSIC_CACHE_TTL);
-
-        return $result;
+        return $searchResult;
     }
 
     /**

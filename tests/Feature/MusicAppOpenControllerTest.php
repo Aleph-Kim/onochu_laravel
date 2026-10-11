@@ -62,7 +62,8 @@ class MusicAppOpenControllerTest extends TestCase
         $user = User::factory()->create(['preferred_music_app' => MusicApp::AppleMusic]);
 
         Http::fake([
-            'itunes.apple.com/*' => Http::response([
+            'itunes.apple.com/search*' => Http::response(['results' => [['trackId' => 2]]]),
+            'itunes.apple.com/lookup*' => Http::response([
                 'results' => [
                     ['trackViewUrl' => 'https://music.apple.com/kr/album/test/1?i=2'],
                 ],
@@ -79,6 +80,100 @@ class MusicAppOpenControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertViewIs('music-app.redirect');
+    }
+
+    #[TestDox('apple_music에서 곡을 찾지 못하면 앱 검색 탭을 열고 웹 검색 페이지로 폴백한다')]
+    public function test_apple_music_falls_back_to_search_when_track_not_found(): void
+    {
+        $user = User::factory()->create(['preferred_music_app' => MusicApp::AppleMusic]);
+
+        Http::fake(['itunes.apple.com/*' => Http::response(['results' => []])]);
+
+        $this->mock(FloApiService::class, function ($mock) {
+            $mock->shouldReceive('getSongByFloId')
+                ->with(123)
+                ->andReturn($this->fakeTrackInfo(['flo_id' => 123]));
+        });
+
+        $response = $this->withSession($this->loginSession($user))->get('/music-app/open?id=123');
+
+        $response->assertOk();
+        $response->assertViewIs('music-app.redirect');
+        $response->assertViewHas('appUrl', 'music://search');
+        $response->assertViewHas('webUrl', 'https://music.apple.com/kr/search?term=test');
+    }
+
+    #[TestDox('apple_music은 US 스토어에서 곡을 검색하고 KR 스토어 링크로 연결한다')]
+    public function test_apple_music_searches_us_store_and_links_kr_store(): void
+    {
+        $user = User::factory()->create(['preferred_music_app' => MusicApp::AppleMusic]);
+
+        Http::fake([
+            'itunes.apple.com/search*' => Http::response(['results' => [['trackId' => 1843521774]]]),
+            'itunes.apple.com/lookup*' => Http::response([
+                'results' => [['trackViewUrl' => 'https://music.apple.com/kr/album/%EC%9D%B4%EC%82%AC/1843521773?i=1843521774&uo=4']],
+            ]),
+        ]);
+
+        $this->mock(FloApiService::class, function ($mock) {
+            $mock->shouldReceive('getSongByFloId')
+                ->with(123)
+                ->andReturn($this->fakeTrackInfo(['flo_id' => 123]));
+        });
+
+        $response = $this->withSession($this->loginSession($user))->get('/music-app/open?id=123');
+
+        $response->assertViewHas('appUrl', 'music://music.apple.com/kr/album/%EC%9D%B4%EC%82%AC/1843521773?i=1843521774&uo=4');
+        Http::assertSent(fn ($request) => str_starts_with($request->url(), 'https://itunes.apple.com/search')
+            && $request['country'] === 'US');
+        Http::assertSent(fn ($request) => str_starts_with($request->url(), 'https://itunes.apple.com/lookup')
+            && $request['id'] == 1843521774 && $request['country'] === 'KR');
+    }
+
+    #[TestDox('apple_music 곡이 KR 스토어에 없으면 앱 검색 탭으로 폴백한다')]
+    public function test_apple_music_falls_back_when_track_not_in_kr_store(): void
+    {
+        $user = User::factory()->create(['preferred_music_app' => MusicApp::AppleMusic]);
+
+        Http::fake([
+            'itunes.apple.com/search*' => Http::response(['results' => [['trackId' => 2]]]),
+            'itunes.apple.com/lookup*' => Http::response(['resultCount' => 0, 'results' => []]),
+        ]);
+
+        $this->mock(FloApiService::class, function ($mock) {
+            $mock->shouldReceive('getSongByFloId')
+                ->with(123)
+                ->andReturn($this->fakeTrackInfo(['flo_id' => 123]));
+        });
+
+        $this->withSession($this->loginSession($user))->get('/music-app/open?id=123')
+            ->assertViewHas('appUrl', 'music://search');
+    }
+
+    #[TestDox('apple_music 곡 조회가 실패하면 결과를 캐시하지 않고 다음 요청에서 다시 조회한다')]
+    public function test_apple_music_lookup_failure_is_not_cached(): void
+    {
+        $user = User::factory()->create(['preferred_music_app' => MusicApp::AppleMusic]);
+
+        Http::fake([
+            'itunes.apple.com/search*' => Http::sequence()
+                ->push([], 503)
+                ->push(['results' => [['trackId' => 2]]]),
+            'itunes.apple.com/lookup*' => Http::response([
+                'results' => [['trackViewUrl' => 'https://music.apple.com/kr/album/test/1?i=2']],
+            ]),
+        ]);
+
+        $this->mock(FloApiService::class, function ($mock) {
+            $mock->shouldReceive('getSongByFloId')
+                ->with(123)
+                ->andReturn($this->fakeTrackInfo(['flo_id' => 123]));
+        });
+
+        $this->withSession($this->loginSession($user))->get('/music-app/open?id=123')
+            ->assertViewHas('appUrl', 'music://search');
+        $this->withSession($this->loginSession($user))->get('/music-app/open?id=123')
+            ->assertViewHas('appUrl', 'music://music.apple.com/kr/album/test/1?i=2');
     }
 
     #[TestDox('모바일에서 저장된 앱이 flo면 앱 스킴으로 이동하는 트랜지션 화면을 보여준다')]
