@@ -18,6 +18,7 @@ class AuthControllerTest extends TestCase
         $response = $this->get('/auth/login');
 
         $response->assertRedirectContains('https://kauth.kakao.com/oauth/authorize');
+        $response->assertRedirectContains('state=' . session('kakao_oauth_state'));
     }
 
     #[TestDox('이미 로그인한 상태면 메인으로 리다이렉트한다')]
@@ -39,6 +40,19 @@ class AuthControllerTest extends TestCase
         $response->assertStatus(400);
     }
 
+    #[TestDox('state가 세션과 다르면 토큰 발급 없이 400을 반환한다')]
+    public function test_callback_with_mismatched_state_returns_400(): void
+    {
+        Http::fake();
+
+        $response = $this->withSession(['kakao_oauth_state' => 'valid-state'])
+            ->get('/auth/callback?code=fake-code&state=attacker-state');
+
+        $response->assertStatus(400);
+        Http::assertNothingSent();
+        $this->assertNull(session('user'));
+    }
+
     #[TestDox('콜백 성공 시 유저를 생성하고 로그인 처리한다')]
     public function test_callback_creates_user_and_logs_in(): void
     {
@@ -50,7 +64,8 @@ class AuthControllerTest extends TestCase
             ]),
         ]);
 
-        $response = $this->get('/auth/callback?code=fake-code');
+        $response = $this->withSession(['kakao_oauth_state' => 'valid-state'])
+            ->get('/auth/callback?code=fake-code&state=valid-state');
 
         $response->assertRedirect(route('main'));
         $this->assertDatabaseHas('users', ['kakao_id' => 999888, 'nickname' => '테스트유저']);
@@ -68,8 +83,9 @@ class AuthControllerTest extends TestCase
             ]),
         ]);
 
-        $response = $this->withCookie('last_url', '/mypage')
-            ->get('/auth/callback?code=fake-code');
+        $response = $this->withSession(['kakao_oauth_state' => 'valid-state'])
+            ->withCookie('last_url', '/mypage')
+            ->get('/auth/callback?code=fake-code&state=valid-state');
 
         $response->assertRedirect('/mypage');
     }

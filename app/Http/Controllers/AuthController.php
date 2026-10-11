@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -17,11 +18,16 @@ class AuthController extends Controller
             return redirect()->route('main');
         }
 
+        // 타인의 인가 코드로 로그인시키는 Login CSRF 방지용 state
+        $state = Str::random(40);
+        $request->session()->put('kakao_oauth_state', $state);
+
         $params = [
             'client_id' => config('services.kakao.client_id'),
             'redirect_uri' => config('services.kakao.redirect_uri'),
             'response_type' => 'code',
             'scope' => 'profile_nickname',
+            'state' => $state,
         ];
 
         return redirect($this->kakaoAuthUrl . '/oauth/authorize?' . http_build_query($params));
@@ -30,6 +36,9 @@ class AuthController extends Controller
     public function callback(Request $request)
     {
         abort_unless($request->has('code'), 400, '인증 코드가 없음');
+
+        $state = $request->session()->pull('kakao_oauth_state');
+        abort_unless(is_string($state) && hash_equals($state, (string)$request->input('state')), 400, 'state 불일치');
 
         $token = $this->getAccessToken($request->input('code'));
         $userInfo = $this->getUserInfo($token);
