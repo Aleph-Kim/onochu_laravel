@@ -4,25 +4,25 @@
     <div class="w-full max-w-[900px] mx-auto p-5 md:py-[30px] md:px-[60px] flex flex-col">
         <div class="flex items-center justify-between mb-5">
             <div class="flex flex-col">
-                <h1 class="text-2xl font-bold mb-[10px] tracking-tight text-[#111]">{{ $songInfo['song']['title'] }}</h1>
+                <h1 class="text-title-1 mb-1 text-label">{{ $songInfo['song']['title'] }}</h1>
                 <div>
                     @foreach($songInfo['artists'] as $artist)
-                        <a class="text-[#8b8b9a] mb-[5px] hover:text-primary cursor-pointer transition-colors font-medium"
+                        <a class="text-primary text-title-3 font-normal cursor-pointer transition-opacity hover:opacity-70"
                            href="{{ route('artist.detail', ['id' => $artist['flo_id']]) }}">
                             {{ $artist['name'] }}
                         </a>
                         @if(!$loop->last)
-                            <span class="text-[#8b8b9a]">&</span>
+                            <span class="text-primary text-title-3">&</span>
                         @endif
                     @endforeach
                 </div>
-                <a class="text-[#b0b0c0] transition hover:text-primary cursor-pointer mt-1"
+                <a class="text-subheadline text-label-secondary transition-colors hover:text-primary cursor-pointer mt-1"
                    href="{{ route('album.detail', ['id' => $songInfo['album']['flo_id']]) }}">{{ $songInfo['album']['title'] }}</a>
             </div>
             @if($songInfo['artists'][0]['img_url'])
                 <div
-                    class="w-[60px] h-[60px] rounded-full overflow-hidden flex-none shadow-[0_4px_12px_rgba(0,0,20,0.12)]">
-                    <a class="block transition hover:opacity-80"
+                    class="w-[60px] h-[60px] rounded-full overflow-hidden flex-none shadow-artwork">
+                    <a class="block transition-opacity hover:opacity-80"
                        href="{{ route('artist.detail', ['id' => $songInfo['artists'][0]['flo_id']]) }}">
                         <img src="{{ $songInfo['artists'][0]['img_url'] }}?/dims/resize/200x200/quality/90"
                              alt="Artist Profile" class="w-full h-full object-cover">
@@ -40,54 +40,54 @@
                 onclick="toggleView('lyrics')">가사보기
             </button>
         </div>
-        <div class="album-container group w-full rounded-2xl overflow-hidden mb-[15px] relative max-w-[600px] mx-auto">
+        <div class="album-container group w-full rounded-2xl overflow-hidden mb-5 relative max-w-[600px] mx-auto shadow-artwork">
             <img src="{{ $songInfo['album']['img_url'] }}?/dims/resize/500x500/quality/90" alt="Album Cover"
                  class="w-full h-auto block aspect-square">
             @if($songInfo['song']['lyrics'])
                 <div
-                    class="lyrics-overlay absolute top-0 left-0 w-full h-full bg-[#0a0a1e]/75 text-white flex items-start justify-center text-center p-5 opacity-0 transition-opacity duration-300 ease-in-out rounded-2xl whitespace-pre-wrap leading-[22px] min-[1023px]:group-hover:opacity-100 min-[1023px]:group-hover:overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:h-0 [&::-webkit-scrollbar-track]:bg-[#171717] [&::-webkit-scrollbar-track]:rounded-lg [&::-webkit-scrollbar-thumb]:bg-[#646464] [&::-webkit-scrollbar-thumb]:rounded-lg [&::-webkit-scrollbar-thumb:hover]:bg-[#ababab]">{{ $songInfo['song']['lyrics'] }}</div>
+                    class="lyrics-overlay absolute top-0 left-0 w-full h-full bg-black/70 backdrop-blur-xl text-white text-callout flex items-start justify-center text-center p-5 opacity-0 transition-opacity duration-300 ease-in-out rounded-2xl whitespace-pre-wrap leading-[22px] min-[1023px]:group-hover:opacity-100 min-[1023px]:group-hover:overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:h-0 [&::-webkit-scrollbar-track]:bg-[#171717] [&::-webkit-scrollbar-track]:rounded-lg [&::-webkit-scrollbar-thumb]:bg-[#646464] [&::-webkit-scrollbar-thumb]:rounded-lg [&::-webkit-scrollbar-thumb:hover]:bg-[#ababab]">{{ $songInfo['song']['lyrics'] }}</div>
             @else
                 <div
-                    class="lyrics-overlay absolute top-0 left-0 w-full h-full bg-[#0a0a1e]/75 text-white flex items-center justify-center text-center p-5 opacity-0 transition-opacity duration-300 ease-in-out rounded-2xl whitespace-pre-wrap leading-[22px] min-[1023px]:group-hover:opacity-100 min-[1023px]:group-hover:overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:h-0 [&::-webkit-scrollbar-track]:bg-[#171717] [&::-webkit-scrollbar-track]:rounded-lg [&::-webkit-scrollbar-thumb]:bg-[#646464] [&::-webkit-scrollbar-thumb]:rounded-lg [&::-webkit-scrollbar-thumb:hover]:bg-[#ababab]">
+                    class="lyrics-overlay absolute top-0 left-0 w-full h-full bg-black/70 backdrop-blur-xl text-white text-callout flex items-center justify-center text-center p-5 opacity-0 transition-opacity duration-300 ease-in-out rounded-2xl whitespace-pre-wrap leading-[22px] min-[1023px]:group-hover:opacity-100 min-[1023px]:group-hover:overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar]:h-0 [&::-webkit-scrollbar-track]:bg-[#171717] [&::-webkit-scrollbar-track]:rounded-lg [&::-webkit-scrollbar-thumb]:bg-[#646464] [&::-webkit-scrollbar-thumb]:rounded-lg [&::-webkit-scrollbar-thumb:hover]:bg-[#ababab]">
                     가사가 제공되지 않는 곡입니다.
                 </div>
             @endif
         </div>
         <div class="flex justify-end w-full mx-auto mb-5 max-w-[600px]">
             <a href="{{ route('music-app.open', ['id' => $songInfo['song']['flo_id']]) }}" target="_blank"
-               class="inline-block py-[10px] px-[24px] rounded-full cursor-pointer transition-all text-white bg-primary hover:bg-primary-light font-semibold shadow-sm hover:shadow-md">내 뮤직앱에서 재생하기</a>
+               class="inline-flex items-center justify-center min-h-[44px] px-6 rounded-full cursor-pointer text-white bg-primary text-headline transition-opacity hover:opacity-90 active:opacity-70">내 뮤직앱에서 재생하기</a>
         </div>
-        <h3 class="text-[#333] font-bold mt-[30px] mb-[15px] text-lg tracking-tight border-b border-[#ebebf0] pb-3">곡
+        <h3 class="text-title-3 text-label mt-8 mb-3">곡
             정보</h3>
         <div class="mb-[30px]">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-[15px]">
-                <div class="mb-[10px]">
-                    <p class="text-sm font-medium text-[#8b8b9a] uppercase tracking-wider mb-2">발매일</p>
-                    <p class="text-[#333]">{{ $songInfo['album']['release_date'] ?? '발매일 미상' }}</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 p-4 bg-surface rounded-xl">
+                <div>
+                    <p class="text-footnote text-label-secondary mb-0.5">발매일</p>
+                    <p class="text-body text-label">{{ $songInfo['album']['release_date'] ?? '발매일 미상' }}</p>
                 </div>
-                <div class="mb-[10px]">
-                    <p class="text-sm font-medium text-[#8b8b9a] uppercase tracking-wider mb-2">장르</p>
-                    <p class="text-[#333]">{{ $songInfo['song']['genre'] }}</p>
+                <div>
+                    <p class="text-footnote text-label-secondary mb-0.5">장르</p>
+                    <p class="text-body text-label">{{ $songInfo['song']['genre'] }}</p>
                 </div>
                 @if($songInfo['song']['lyricist'])
-                    <div class="mb-[10px]">
-                        <p class="text-sm font-medium text-[#8b8b9a] uppercase tracking-wider mb-2">작사</p>
-                        <p class="text-[#333]">{{ $songInfo['song']['lyricist'] }}</p>
+                    <div>
+                        <p class="text-footnote text-label-secondary mb-0.5">작사</p>
+                        <p class="text-body text-label">{{ $songInfo['song']['lyricist'] }}</p>
                     </div>
                 @endif
-                <div class="mb-[10px]">
-                    <p class="text-sm font-medium text-[#8b8b9a] uppercase tracking-wider mb-2">작곡</p>
-                    <p class="text-[#333]">{{ $songInfo['song']['composer'] ?: '작곡가 미상' }}</p>
+                <div>
+                    <p class="text-footnote text-label-secondary mb-0.5">작곡</p>
+                    <p class="text-body text-label">{{ $songInfo['song']['composer'] ?: '작곡가 미상' }}</p>
                 </div>
                 @if($songInfo['song']['arranger'])
-                    <div class="mb-[10px]">
-                        <p class="text-sm font-medium text-[#8b8b9a] uppercase tracking-wider mb-2">편곡</p>
-                        <p class="text-[#333]">{{ $songInfo['song']['arranger'] }}</p>
+                    <div>
+                        <p class="text-footnote text-label-secondary mb-0.5">편곡</p>
+                        <p class="text-body text-label">{{ $songInfo['song']['arranger'] }}</p>
                     </div>
                 @endif
             </div>
-            <div class="flex justify-end my-[10px]">
-                <a class="inline-block py-[10px] px-[24px] rounded-full cursor-pointer transition-all text-white bg-primary hover:bg-primary-light font-semibold shadow-sm hover:shadow-md"
+            <div class="flex justify-end mt-5 mb-[10px]">
+                <a class="inline-flex items-center justify-center min-h-[44px] px-6 rounded-full cursor-pointer text-white bg-primary text-headline transition-opacity hover:opacity-90 active:opacity-70"
                    href="{{ route('recommends.create', ['id' => $songInfo['song']['flo_id']]) }}">추천하기</a>
             </div>
         </div>
