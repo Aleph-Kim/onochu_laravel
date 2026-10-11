@@ -25,6 +25,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath \
     && rm -rf /var/lib/apt/lists/*
 
+# 실서버 세션 저장소(Redis) 사용을 위한 확장 모듈 설치
+RUN pecl install redis && docker-php-ext-enable redis
+
 # mod_rewrite, mod_remoteip 모듈 활성화
 RUN a2enmod rewrite remoteip
 
