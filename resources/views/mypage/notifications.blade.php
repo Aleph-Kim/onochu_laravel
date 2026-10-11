@@ -75,6 +75,6 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/push.js') }}"></script>
-    <script src="{{ asset('js/mypage-notifications.js') }}"></script>
+    @vite('resources/js/push.js')
+    @vite('resources/js/mypage-notifications.js')
 @endpush

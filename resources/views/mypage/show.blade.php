@@ -154,9 +154,8 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/lib/echarts.min.js') }}"></script>
     <script>
         const genreList = {{ Js::from($genreList) }};
     </script>
-    <script src="{{ asset('js/mypage.js') }}"></script>
+    @vite('resources/js/mypage.js')
 @endpush

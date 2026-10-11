@@ -220,10 +220,9 @@
         {{ session('user') ? '마이페이지' : '로그인' }}
     </a>
 </nav>
-<script src="{{ asset('js/util.js') }}"></script>
-<script src="{{ asset('js/layout.js') }}"></script>
+@vite('resources/js/layout.js')
 @if(session('user'))
-    <script src="{{ asset('js/notifications.js') }}"></script>
+    @vite('resources/js/notifications.js')
 @endif
 @stack('scripts')
 </body>

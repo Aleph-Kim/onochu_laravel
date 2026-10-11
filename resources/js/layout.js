@@ -1,3 +1,5 @@
+import { hideLoader, showDialog, showLoader } from './util.js';
+
 const logo = document.getElementById("logo");
 const searchFormWrap = document.getElementById("searchFormWrap");
 const searchFormHideBtn = document.getElementById("searchFormHideBtn");
@@ -55,7 +57,7 @@ async function confirmBack() {
  * @param {HTMLElement} label - 대상 라벨 엘리먼트
  * @param {boolean} isActive - 활성 여부
  */
-function setToggleLabelActive(label, isActive) {
+export function setToggleLabelActive(label, isActive) {
     if (isActive) {
         label.classList.remove('text-label-secondary');
         label.classList.add('text-label', 'font-semibold');
@@ -71,7 +73,7 @@ function setToggleLabelActive(label, isActive) {
  * @param {HTMLElement} btn - 대상 버튼 엘리먼트
  * @param {boolean} isActive - 활성 여부
  */
-function setToggleBtnActive(btn, isActive) {
+export function setToggleBtnActive(btn, isActive) {
     if (isActive) {
         btn.classList.remove('text-label-secondary');
         btn.classList.add('bg-segment', 'text-label', 'shadow-knob');
@@ -87,7 +89,7 @@ function setToggleBtnActive(btn, isActive) {
  * @param {string} str - 변환할 문자열
  * @returns {string} - 초성, 중성, 종성이 분리된 문자열
  */
-function separateKoreanCharacters(str) {
+export function separateKoreanCharacters(str) {
     // 유니코드 한글 시작 코드: '가'의 유니코드 값
     const HANGUL_START = 0xAC00;
     // 유니코드 한글 끝 코드: '힣'의 유니코드 값 
@@ -140,3 +142,8 @@ function separateKoreanCharacters(str) {
 
     return result.join('');
 }
+
+// 뷰의 인라인 onclick 호출용 전역 노출
+window.showSearchForm = showSearchForm;
+window.hiddenSearchForm = hiddenSearchForm;
+window.confirmBack = confirmBack;

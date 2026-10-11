@@ -1,3 +1,6 @@
+import Flickity from 'flickity';
+import 'flickity-imagesloaded';
+
 document.addEventListener('DOMContentLoaded', function () {
     const musicSlider = document.querySelector('.music-slider');
     if (!musicSlider) return;

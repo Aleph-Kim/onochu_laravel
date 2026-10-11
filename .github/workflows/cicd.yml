@@ -40,7 +40,18 @@ jobs:
         cat > public/build/manifest.json << 'EOF'
         {
           "resources/css/app.css": { "file": "assets/app.css", "src": "resources/css/app.css", "isEntry": true },
-          "resources/js/app.js": { "file": "assets/app.js", "src": "resources/js/app.js", "isEntry": true }
+          "resources/js/app.js": { "file": "assets/app.js", "src": "resources/js/app.js", "isEntry": true },
+          "resources/js/layout.js": { "file": "assets/layout.js", "src": "resources/js/layout.js", "isEntry": true },
+          "resources/js/notifications.js": { "file": "assets/notifications.js", "src": "resources/js/notifications.js", "isEntry": true },
+          "resources/js/main.js": { "file": "assets/main.js", "src": "resources/js/main.js", "isEntry": true },
+          "resources/js/search.js": { "file": "assets/search.js", "src": "resources/js/search.js", "isEntry": true },
+          "resources/js/songDetail.js": { "file": "assets/songDetail.js", "src": "resources/js/songDetail.js", "isEntry": true },
+          "resources/js/artistDetail.js": { "file": "assets/artistDetail.js", "src": "resources/js/artistDetail.js", "isEntry": true },
+          "resources/js/recommends.js": { "file": "assets/recommends.js", "src": "resources/js/recommends.js", "isEntry": true },
+          "resources/js/mypage.js": { "file": "assets/mypage.js", "src": "resources/js/mypage.js", "isEntry": true },
+          "resources/js/mypage-music-app.js": { "file": "assets/mypage-music-app.js", "src": "resources/js/mypage-music-app.js", "isEntry": true },
+          "resources/js/mypage-notifications.js": { "file": "assets/mypage-notifications.js", "src": "resources/js/mypage-notifications.js", "isEntry": true },
+          "resources/js/push.js": { "file": "assets/push.js", "src": "resources/js/push.js", "isEntry": true }
         }
         EOF
 

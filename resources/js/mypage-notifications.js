@@ -1,3 +1,6 @@
+import { separateKoreanCharacters } from './layout.js';
+import { fetchApi, showToast } from './util.js';
+
 function bindArtistNotificationToggles() {
     document.querySelectorAll('.artist-notification-toggle').forEach(toggle => {
         toggle.addEventListener('change', () => {
@@ -26,7 +29,7 @@ function bindArtistNotificationToggles() {
 }
 
 // 신곡 알림(마스터 스위치) 상태에 맞춰 아티스트별 토글을 켜고 끔 - 실제 음소거 데이터는 건드리지 않음
-function notifyPushToggleChanged(enabled) {
+export function notifyPushToggleChanged(enabled) {
     document.querySelectorAll('.artist-notification-toggle').forEach(toggle => {
         toggle.disabled = !enabled;
         toggle.checked = enabled && toggle.dataset.muted !== '1';

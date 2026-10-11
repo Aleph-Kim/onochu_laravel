@@ -166,6 +166,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/lib/flickity.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
+    @vite('resources/js/main.js')
 @endpush

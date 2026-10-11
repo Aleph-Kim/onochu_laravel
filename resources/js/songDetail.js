@@ -1,3 +1,5 @@
+import { setToggleBtnActive } from './layout.js';
+
 // view는 'cover' 또는 'lyrics'
 function toggleView(view) {
     const overlay = document.querySelector('.lyrics-overlay');
@@ -16,3 +18,6 @@ function toggleView(view) {
         setToggleBtnActive(coverBtn, false);
     }
 }
+
+// 뷰의 인라인 onclick 호출용 전역 노출
+window.toggleView = toggleView;

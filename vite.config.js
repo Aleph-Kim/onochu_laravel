@@ -4,7 +4,21 @@ import laravel from 'laravel-vite-plugin';
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: [
+                'resources/css/app.css',
+                'resources/js/app.js',
+                'resources/js/layout.js',
+                'resources/js/notifications.js',
+                'resources/js/main.js',
+                'resources/js/search.js',
+                'resources/js/songDetail.js',
+                'resources/js/artistDetail.js',
+                'resources/js/recommends.js',
+                'resources/js/mypage.js',
+                'resources/js/mypage-music-app.js',
+                'resources/js/mypage-notifications.js',
+                'resources/js/push.js',
+            ],
             refresh: true,
         }),
     ],

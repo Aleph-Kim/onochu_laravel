@@ -95,5 +95,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/songDetail.js') }}"></script>
+    @vite('resources/js/songDetail.js')
 @endpush

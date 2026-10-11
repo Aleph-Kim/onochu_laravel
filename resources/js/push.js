@@ -1,3 +1,6 @@
+import { notifyPushToggleChanged } from './mypage-notifications.js';
+import { fetchApi, getMeta, showDialog, showToast } from './util.js';
+
 function pushSupported() {
     return 'serviceWorker' in navigator && 'PushManager' in window;
 }
@@ -74,10 +77,6 @@ function setButtonState(subscribed) {
     toggle.checked = subscribed;
 }
 
-// 다른 스크립트가 동명 함수로 재정의해 실제 동작을 채워 넣는 빈 훅
-function notifyPushToggleChanged(enabled) {
-}
-
 async function togglePush() {
     const toggle = document.getElementById('pushToggle');
     const wantSubscribe = toggle.checked;
@@ -117,3 +116,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     setButtonState(!!subscription);
     notifyPushToggleChanged(!!subscription);
 });
+
+// 뷰의 인라인 onclick 호출용 전역 노출
+window.togglePush = togglePush;

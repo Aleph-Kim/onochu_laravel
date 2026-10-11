@@ -88,5 +88,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/search.js') }}"></script>
+    @vite('resources/js/search.js')
 @endpush

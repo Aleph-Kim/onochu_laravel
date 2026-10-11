@@ -1,3 +1,12 @@
+import * as echarts from 'echarts/core';
+import { PieChart } from 'echarts/charts';
+import { LegendComponent, TooltipComponent } from 'echarts/components';
+import { CanvasRenderer } from 'echarts/renderers';
+import { separateKoreanCharacters, setToggleLabelActive } from './layout.js';
+import { fetchApi, showDialog, showToast } from './util.js';
+
+echarts.use([PieChart, LegendComponent, TooltipComponent, CanvasRenderer]);
+
 let genreChart;
 let songs = [];
 let currentSort = 'latest';
@@ -208,3 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
         genreChart.setOption(themeColorOption());
     });
 });
+
+// 뷰의 인라인 onclick 호출용 전역 노출
+window.setProfileAlbum = setProfileAlbum;
+window.deleteRecommend = deleteRecommend;

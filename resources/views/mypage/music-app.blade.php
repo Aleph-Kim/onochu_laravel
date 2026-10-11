@@ -44,5 +44,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/mypage-music-app.js') }}"></script>
+    @vite('resources/js/mypage-music-app.js')
 @endpush

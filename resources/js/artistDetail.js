@@ -1,3 +1,5 @@
+import { separateKoreanCharacters, setToggleLabelActive } from './layout.js';
+
 let albums = [];
 let currentType = 'all';
 let currentSort = 'latest';
@@ -122,3 +124,7 @@ function initialize() {
 
 // 페이지 로드 시 실행
 document.addEventListener('DOMContentLoaded', initialize);
+
+// 뷰의 인라인 onclick 호출용 전역 노출
+window.showAlbumSearch = showAlbumSearch;
+window.hideAlbumSearch = hideAlbumSearch;

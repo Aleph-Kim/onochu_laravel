@@ -1,5 +1,7 @@
 // 헤더 알림 탭 (신곡 알림 목록 조회, 개별/전체 읽음 처리, 읽은 알림 삭제)
 
+import { fetchApi, showDialog, showToast } from './util.js';
+
 const notificationBtn = document.getElementById('notificationBtn');
 const notificationDropdown = document.getElementById('notificationDropdown');
 const notificationBadge = document.getElementById('notificationBadge');
@@ -116,3 +118,8 @@ document.addEventListener('click', (event) => {
         notificationDropdown.classList.add('hidden');
     }
 });
+
+// 뷰의 인라인 onclick 호출용 전역 노출
+window.toggleNotificationDropdown = toggleNotificationDropdown;
+window.markAllNotificationsRead = markAllNotificationsRead;
+window.deleteReadNotifications = deleteReadNotifications;

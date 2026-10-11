@@ -101,5 +101,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/recommends.js') }}"></script>
+    @vite('resources/js/recommends.js')
 @endpush
