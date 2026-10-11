@@ -155,7 +155,7 @@ async function deleteReadNotifications() {
 
 document.addEventListener('click', (event) => {
     const notificationBox = document.getElementById('notificationBox');
-    // 삭제 확인 모달은 알림 탭 밖에 있으므로, 모달 클릭으로 알림 탭이 닫히지 않게 제외
+    // 알림 탭 밖 삭제 확인 모달 클릭 시 알림 탭 닫힘 방지
     if (notificationBox && !notificationBox.contains(event.target) && !event.target.closest('#dialog')) {
         notificationDropdown.classList.add('hidden');
     }

@@ -154,7 +154,9 @@ function createChartData() {
     return chartData;
 }
 
-// 다크 모드에서도 범례·조각 테두리가 배경과 맞도록 CSS 변수 색 사용
+/**
+ * 범례·조각 테두리의 배경 대비 유지용 CSS 변수 색 옵션 (다크 모드 포함)
+ */
 function themeColorOption() {
     const rootStyle = getComputedStyle(document.documentElement);
     return {
@@ -177,7 +179,7 @@ function initChart() {
         tooltip: {
             trigger: "item"
         },
-        // echarts 6부터 범례 기본 위치가 하단이라 기존 상단 배치 유지
+        // echarts 6 범례 기본 위치(하단) 변경에 따른 기존 상단 배치 유지
         legend: {
             top: 0
         },
@@ -216,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("resize", function () {
         genreChart.resize();
     });
-    // 페이지를 연 뒤 시스템 테마가 바뀌면 처음 읽은 색이 남아 범례가 배경에 묻히므로 다시 적용
+    // 페이지 로드 후 시스템 테마 변경 시 범례가 배경에 묻히는 문제 방지 (테마 색 재적용)
     window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () {
         genreChart.setOption(themeColorOption());
     });
