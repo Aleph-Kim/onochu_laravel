@@ -91,9 +91,14 @@
                              class="hidden absolute right-0 top-[48px] w-[340px] max-h-[440px] flex flex-col bg-raised rounded-[14px] border-[0.5px] border-separator shadow-popover overflow-hidden z-[1000] max-[360px]:w-[290px]">
                             <div class="flex items-center justify-between px-4 py-3 border-b-[0.5px] border-separator flex-none">
                                 <span class="text-headline text-label">알림</span>
-                                <button id="markAllReadBtn" type="button"
-                                        class="text-subheadline text-primary transition-opacity hover:opacity-70 active:opacity-50"
-                                        onclick="markAllNotificationsRead()">모두 읽음</button>
+                                <div class="flex items-center gap-4">
+                                    <button type="button"
+                                            class="text-subheadline text-danger transition-opacity hover:opacity-70 active:opacity-50"
+                                            onclick="deleteReadNotifications()">읽은 알림 삭제</button>
+                                    <button id="markAllReadBtn" type="button"
+                                            class="text-subheadline text-primary transition-opacity hover:opacity-70 active:opacity-50"
+                                            onclick="markAllNotificationsRead()">모두 읽음</button>
+                                </div>
                             </div>
                             <div class="overflow-y-auto">
                                 <div id="notificationList" class="flex flex-col divide-y-[0.5px] divide-separator"></div>

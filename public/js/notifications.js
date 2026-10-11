@@ -1,4 +1,4 @@
-// 헤더 알림 탭 (신곡 알림 목록 조회 및 개별/전체 읽음 처리)
+// 헤더 알림 탭 (신곡 알림 목록 조회, 개별/전체 읽음 처리, 읽은 알림 삭제)
 
 const notificationBtn = document.getElementById('notificationBtn');
 const notificationDropdown = document.getElementById('notificationDropdown');
@@ -92,9 +92,27 @@ function markAllNotificationsRead() {
         });
 }
 
+async function deleteReadNotifications() {
+    if (!await showDialog('읽은 알림을 모두 삭제하시겠습니까?', { confirmText: '삭제', cancelable: true })) return;
+
+    fetchApi('/api/notifications/read', null, 'DELETE')
+        .then(response => {
+            if (!response.success) {
+                showToast(response.message);
+                return;
+            }
+            notificationList.querySelectorAll('.notification-item[data-unread="0"]').forEach(item => item.remove());
+            notificationEmpty.classList.toggle('hidden', notificationList.children.length > 0);
+        })
+        .catch(() => {
+            showToast('알림 삭제 중 오류가 발생했습니다.');
+        });
+}
+
 document.addEventListener('click', (event) => {
     const notificationBox = document.getElementById('notificationBox');
-    if (notificationBox && !notificationBox.contains(event.target)) {
+    // 삭제 확인 모달은 알림 탭 밖에 있으므로, 모달 클릭으로 알림 탭이 닫히지 않게 제외
+    if (notificationBox && !notificationBox.contains(event.target) && !event.target.closest('#dialog')) {
         notificationDropdown.classList.add('hidden');
     }
 });

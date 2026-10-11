@@ -87,4 +87,23 @@ class NotificationControllerTest extends TestCase
         $this->assertSame(0, $user->unreadNotifications()->count());
         $this->assertSame(1, $otherUser->unreadNotifications()->count());
     }
+
+    #[TestDox('읽은 알림 삭제는 본인의 읽은 알림만 삭제한다')]
+    public function test_delete_read_only_deletes_own_read_notifications(): void
+    {
+        $user = User::factory()->create();
+        $otherUser = User::factory()->create();
+        $this->notifyNewAlbum($user);
+        $this->notifyNewAlbum($user, 1002);
+        $this->notifyNewAlbum($otherUser, 1003);
+        $user->notifications()->latest()->first()->markAsRead();
+        $otherUser->notifications()->first()->markAsRead();
+
+        $response = $this->withSession($this->loginSession($user))->deleteJson('/api/notifications/read');
+
+        $response->assertOk();
+        $this->assertSame(1, $user->notifications()->count());
+        $this->assertSame(1, $user->unreadNotifications()->count());
+        $this->assertSame(1, $otherUser->notifications()->count());
+    }
 }

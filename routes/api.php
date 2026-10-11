@@ -24,6 +24,7 @@ Route::middleware('check.login')->group(function () {
 
     Route::get('/notifications', [NotificationController::class, 'index']);
     Route::post('/notifications/read-all', [NotificationController::class, 'markAllRead']);
+    Route::delete('/notifications/read', [NotificationController::class, 'deleteRead']);
     Route::post('/notifications/{notification}/read', [NotificationController::class, 'markRead']);
 
     Route::post('/music-app-preference', [MusicAppPreferenceController::class, 'store']);

@@ -50,4 +50,14 @@ class NotificationController extends Controller
 
         return $this->successResponse('모두 읽음 처리되었습니다.');
     }
+
+    public function deleteRead()
+    {
+        DatabaseNotification::where('notifiable_type', User::class)
+            ->where('notifiable_id', session('user.id'))
+            ->whereNotNull('read_at')
+            ->delete();
+
+        return $this->successResponse('읽은 알림이 삭제되었습니다.');
+    }
 }
