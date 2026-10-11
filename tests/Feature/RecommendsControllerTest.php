@@ -43,8 +43,8 @@ class RecommendsControllerTest extends TestCase
         $response->assertStatus(400);
     }
 
-    #[TestDox('유효한 id면 뷰를 반환하고 세션에 곡 정보를 저장한다')]
-    public function test_create_valid_id_returns_view_and_stores_song_info_in_session(): void
+    #[TestDox('유효한 id면 곡 ID를 담은 작성 폼을 반환한다')]
+    public function test_create_valid_id_returns_view_with_song_id(): void
     {
         $user = User::factory()->create();
         $songInfo = $this->fakeTrackInfo(['flo_id' => 321]);
@@ -57,7 +57,7 @@ class RecommendsControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertViewIs('recommends.index');
-        $this->assertSame(321, session('song_info.song.flo_id'));
+        $response->assertSee('name="id" value="321"', false);
     }
 
     #[TestDox('로그인하지 않으면 로그인 페이지로 리다이렉트한다')]
@@ -74,10 +74,14 @@ class RecommendsControllerTest extends TestCase
         $user = User::factory()->create();
         $artist = Artist::factory()->create();
         $album = Album::factory()->create();
-        $songInfo = $this->fakeTrackInfo([], ['flo_id' => $artist->flo_id], ['flo_id' => $album->flo_id]);
+        $songInfo = $this->fakeTrackInfo(['flo_id' => 321], ['flo_id' => $artist->flo_id], ['flo_id' => $album->flo_id]);
 
-        $response = $this->withSession($this->loginSession($user, ['song_info' => $songInfo]))
-            ->post('/recommends', ['score' => 5, 'comment' => '최고예요']);
+        $this->mock(FloApiService::class, function ($mock) use ($songInfo) {
+            $mock->shouldReceive('getSongByFloId')->with(321)->andReturn($songInfo);
+        });
+
+        $response = $this->withSession($this->loginSession($user))
+            ->post('/recommends', ['id' => 321, 'score' => 5, 'comment' => '최고예요']);
 
         $recommend = Recommend::first();
         $response->assertRedirect(route('recommends.show', $recommend));
@@ -89,6 +93,18 @@ class RecommendsControllerTest extends TestCase
         $this->assertDatabaseHas('songs', ['flo_id' => $songInfo['song']['flo_id'], 'album_id' => $album->id]);
         $this->assertDatabaseCount('artists', 1);
         $this->assertDatabaseCount('albums', 1);
+    }
+
+    #[TestDox('곡 ID가 없으면 추천을 저장하지 않는다')]
+    public function test_store_without_song_id_fails_validation(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->withSession($this->loginSession($user))
+            ->post('/recommends', ['score' => 5]);
+
+        $response->assertSessionHasErrors('id');
+        $this->assertDatabaseCount('recommends', 0);
     }
 
     #[TestDox('추천 상세 정보를 반환한다')]

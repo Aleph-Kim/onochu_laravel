@@ -26,7 +26,6 @@ class RecommendsController extends Controller
         $songId = $request->validated('id');
 
         $songInfo = $this->floApi->getSongByFloId($songId);
-        session(['song_info' => $songInfo]);
 
         $song = Song::where('flo_id', $songInfo['song']['flo_id'])->first();
         $previousRecommends = $song
@@ -38,7 +37,7 @@ class RecommendsController extends Controller
 
     public function store(RecommendStoreRequest $request)
     {
-        $songInfo = session('song_info');
+        $songInfo = $this->floApi->getSongByFloId($request->validated('id'));
 
         // 가수 조회 및 저장 (이미지 업로드는 신규 생성 시에만)
         $artists = collect();

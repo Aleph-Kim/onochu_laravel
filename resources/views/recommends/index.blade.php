@@ -5,6 +5,7 @@
         <form class="recommends-form flex flex-col items-center" action="{{ route('recommends.store') }}" method="post"
               data-already-recommended="{{ $previousRecommends->isNotEmpty() ? 'true' : 'false' }}">
             @csrf
+            <input type="hidden" name="id" value="{{ $songInfo['song']['flo_id'] }}">
             @if($previousRecommends->isNotEmpty())
                 <div class="w-full rounded-2xl bg-[#f0f0f8] border-[1.5px] border-[#ebebf0] p-4 mb-4">
                     <p class="flex items-center gap-2 text-[#555] text-base font-semibold mb-3">
