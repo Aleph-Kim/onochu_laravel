@@ -16,13 +16,14 @@ function renderNotifications(items) {
     notificationList.innerHTML = items.map(item => `
         <a href="${escapeHtml(item.url)}" data-notification-id="${escapeHtml(item.id)}"
            data-unread="${item.unread ? '1' : '0'}"
-           class="notification-item flex items-start gap-3 px-4 py-3 hover:bg-fill transition-colors ${item.unread ? 'bg-primary/[0.08]' : ''}">
+           class="notification-item group flex items-start gap-3 px-4 py-3 hover:bg-fill transition-colors">
             <img src="${escapeHtml(item.img_url)}?/dims/resize/200x200/quality/90" alt="" loading="lazy"
-                 class="w-11 h-11 rounded-md object-cover flex-none">
-            <span class="min-w-0 flex flex-col gap-1.5">
-                ${item.label ? `<span class="self-start text-caption-2 font-semibold text-primary">${escapeHtml(item.label)}</span>` : ''}
-                <span class="block text-subheadline text-label line-clamp-2">${escapeHtml(item.title)}</span>
+                 class="w-11 h-11 rounded-md object-cover flex-none group-data-[unread=0]:opacity-50">
+            <span class="min-w-0 flex-1 flex flex-col gap-1.5">
+                ${item.label ? `<span class="self-start text-caption-2 font-semibold text-primary group-data-[unread=0]:opacity-50">${escapeHtml(item.label)}</span>` : ''}
+                <span class="block text-subheadline font-semibold text-label line-clamp-2 group-data-[unread=0]:font-normal group-data-[unread=0]:text-label-secondary">${escapeHtml(item.title)}</span>
             </span>
+            <span class="w-2 h-2 mt-1.5 rounded-full bg-primary flex-none group-data-[unread=0]:hidden"></span>
         </a>
     `).join('');
 
@@ -69,7 +70,6 @@ notificationList.addEventListener('click', (event) => {
     }
 
     item.dataset.unread = '0';
-    item.classList.remove('bg-primary/[0.08]');
     // 배지가 '99+'여도 parseInt는 99로 읽어 정확한 실제 개수는 아니지만 표시상 문제 없음
     setNotificationBadge(Math.max(0, (parseInt(notificationBadge.textContent, 10) || 0) - 1));
 
@@ -85,7 +85,6 @@ function markAllNotificationsRead() {
             }
             notificationList.querySelectorAll('.notification-item[data-unread="1"]').forEach(item => {
                 item.dataset.unread = '0';
-                item.classList.remove('bg-primary/[0.08]');
             });
             setNotificationBadge(0);
         })
