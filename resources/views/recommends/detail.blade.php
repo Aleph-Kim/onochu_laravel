@@ -4,12 +4,12 @@
     <div class="p-5 max-w-[500px] mx-auto flex flex-col items-center">
         <div class="flex w-full items-center gap-3 mb-5">
             <img src="{{ $recommend->song->artists->first()->img_url }}?size=200x200"
-                 class="w-10 h-10 rounded-full object-cover cursor-pointer transition hover:opacity-80 shadow-sm"
+                 class="w-10 h-10 rounded-full object-cover cursor-pointer transition-opacity hover:opacity-80"
                  onclick="window.location.href = '{{ route('artist.detail', ['id' => $recommend->song->artists->first()->flo_id]) }}'">
             <span>
             @foreach($recommend->song->artists as $artist)
                     <span
-                        class="text-sm text-[#333] font-medium cursor-pointer transition hover:text-primary artist-name"
+                        class="text-subheadline text-label font-medium cursor-pointer transition-colors hover:text-primary artist-name"
                         onclick="window.location.href = '{{ route('artist.detail', ['id' => $artist->flo_id]) }}'">
                     {{ $artist->name }}
                 </span>
@@ -22,18 +22,18 @@
         <div class="flex justify-end w-full mb-5 max-w-[600px]">
             <a href="{{ route('music-app.open', ['id' => $recommend->song->flo_id, 'recommend' => $recommend->id]) }}"
                target="_blank"
-               class="inline-block py-[10px] px-[24px] rounded-full cursor-pointer transition-all text-white bg-primary hover:bg-primary-light font-semibold shadow-sm hover:shadow-md">
+               class="inline-flex items-center justify-center min-h-[44px] px-6 rounded-full cursor-pointer text-white bg-primary text-headline transition-opacity hover:opacity-90 active:opacity-70">
                 내 뮤직앱에서 재생하기
             </a>
         </div>
-        <div class="w-full aspect-square mb-4 overflow-hidden relative rounded-2xl">
+        <div class="w-full aspect-square mb-4 overflow-hidden relative rounded-2xl shadow-artwork">
             <img src="{{ $recommend->song->album->img_url }}?size=500x500"
                  class="w-full h-full object-cover cursor-pointer"
                  onclick="window.location.href = '{{ route('song.detail', ['id' => $recommend->song->flo_id]) }}'">
             <span
-                class="share-btn group absolute top-0 right-0 bg-white rounded-full m-2.5 w-[50px] h-[50px] text-lg flex justify-center items-center flex-col shadow-[0_4px_16px_rgba(0,0,0,0.12)] cursor-pointer transition-all duration-200 ease-[cubic-bezier(0.68,-0.55,0.265,1.55)] hover:bg-kakao hover:text-kakao-text">
+                class="share-btn group absolute top-0 right-0 bg-raised/80 backdrop-blur-xl text-label rounded-full m-3 w-11 h-11 text-lg flex justify-center items-center flex-col shadow-popover cursor-pointer transition-colors duration-200 hover:bg-kakao hover:text-kakao-text">
             <span
-                class="absolute top-0 text-sm bg-white text-white py-[5px] px-2 rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.10)] opacity-0 pointer-events-none transition-all duration-300 ease-[cubic-bezier(0.68,-0.55,0.265,1.55)] group-hover:top-[58px] group-hover:opacity-100 group-hover:visible group-hover:pointer-events-auto group-hover:bg-kakao group-hover:text-kakao-text before:content-[''] before:absolute before:h-2 before:w-2 before:bg-white before:-top-[3px] before:left-1/2 before:-translate-x-1/2 before:rotate-45 before:transition-all before:duration-300 before:ease-[cubic-bezier(0.68,-0.55,0.265,1.55)] group-hover:before:bg-kakao">공유하기</span>
+                class="absolute top-[52px] whitespace-nowrap text-footnote font-semibold bg-kakao text-kakao-text py-[5px] px-2.5 rounded-lg shadow-popover opacity-0 pointer-events-none transition-opacity duration-200 group-hover:opacity-100 before:content-[''] before:absolute before:h-2 before:w-2 before:bg-kakao before:-top-[3px] before:left-1/2 before:-translate-x-1/2 before:rotate-45">공유하기</span>
             <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" fill="currentColor" viewBox="0 0 208 191.94">
                 <g><polygon class="cls-1" points="76.01 89.49 87.99 89.49 87.99 89.49 82 72.47 76.01 89.49"/><path
                         class="cls-1"
@@ -43,13 +43,13 @@
         </div>
         <div class="w-full text-left mb-4">
             <a href="{{ route('song.detail', ['id' => $recommend->song->flo_id]) }}">
-                <h2 class="text-[20px] font-bold mb-2 text-[#111] tracking-tight hover:text-primary transition-colors">{{ $recommend->song->title }}</h2>
+                <h2 class="text-title-2 mb-1 text-label hover:text-primary transition-colors">{{ $recommend->song->title }}</h2>
             </a>
-            <p class="text-[13px] text-[#8b8b9a] flex items-center gap-2">
+            <p class="text-footnote text-label-secondary flex items-center gap-2">
                 {{ $recommend->song->album->release_date ?? '발매일 미상' }}
-                <span class="inline-block w-px h-2.5 mx-1 my-0 bg-[#c8c8d8]"></span>
+                <span class="inline-block w-px h-2.5 mx-1 my-0 bg-label-tertiary"></span>
                 {{ $recommend->song->genre }}
-                <span class="inline-block w-px h-2.5 mx-1 my-0 bg-[#c8c8d8]"></span>
+                <span class="inline-block w-px h-2.5 mx-1 my-0 bg-label-tertiary"></span>
                 {{ $recommend->song->play_time }}
             </p>
         </div>
@@ -60,22 +60,22 @@
                         <input type="radio" id="star{{ $star }}" name="score" value="{{ $star }}"
                                {{ $recommend->score == $star ? 'checked' : '' }} disabled class="peer hidden">
                         <label for="star{{ $star }}"
-                               class="peer text-[#e0e0e0] cursor-default hover:text-amber-500 peer-checked:text-amber-500 peer-hover:text-amber-500">★</label>
+                               class="peer text-label-tertiary cursor-default hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
                     @endforeach
                 </div>
             @endif
             <textarea name="comment" disabled
-                      class="w-full h-[120px] p-4 border-0 rounded-2xl bg-[#f0f0f8] resize-none text-sm mb-4 placeholder:text-[#b0b0c0] focus:outline-none"
+                      class="w-full h-[120px] p-3 border-0 rounded-xl bg-surface text-label resize-none text-body mb-4 placeholder:text-label-secondary focus:outline-none"
                       placeholder="작성된 코멘트가 없습니다.">{{ $recommend->comment }}</textarea>
-            <div class="w-full flex items-center justify-between pt-3 mt-1 border-t border-[#eeeef2] text-sm">
+            <div class="w-full flex items-center justify-between pt-3 mt-1 border-t-[0.5px] border-separator text-footnote">
                 <a href="{{ route('mypage.user', $recommend->user) }}" class="flex items-center gap-2 group">
                     <div
-                        class="w-7 h-7 rounded-full bg-center bg-cover shrink-0 {{ !$recommend->user->profileAlbum ? 'bg-[#d8d8e8]' : '' }}"
+                        class="w-7 h-7 rounded-full bg-center bg-cover shrink-0 {{ !$recommend->user->profileAlbum ? 'bg-fill-strong' : '' }}"
                         @if($recommend->user->profileAlbum) style="background-image: url('{{ $recommend->user->profileAlbum->img_url }}?size=200x200');" @endif></div>
-                    <span class="text-[#8b8b9a]">추천인 <span
-                            class="text-[#333] font-semibold group-hover:text-primary transition-colors">{{ $recommend->user->nickname }}</span></span>
+                    <span class="text-label-secondary">추천인 <span
+                            class="text-label font-semibold group-hover:text-primary transition-colors">{{ $recommend->user->nickname }}</span></span>
                 </a>
-                <span class="text-[#8b8b9a]">{{ $recommend->created_at->format('Y년 m월 d일') }}</span>
+                <span class="text-label-secondary">{{ $recommend->created_at->format('Y년 m월 d일') }}</span>
             </div>
         </div>
     </div>
