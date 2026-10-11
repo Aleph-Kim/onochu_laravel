@@ -177,6 +177,10 @@ function initChart() {
         tooltip: {
             trigger: "item"
         },
+        // echarts 6부터 범례 기본 위치가 하단이라 기존 상단 배치 유지
+        legend: {
+            top: 0
+        },
         series: [{
             type: "pie",
             radius: ["40%", "70%"],
