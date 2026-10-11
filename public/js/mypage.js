@@ -2,7 +2,7 @@ let genreChart;
 let songs = [];
 let currentSort = 'latest';
 let searchQuery = '';
-let chartColors = ['#FF6347', '#FFD39B', '#FFEC8B', '#98FB98', '#87CEEB', '#DDA0DD', '#FFC0CB'];
+let chartColors = ['#FF3B30', '#FF9500', '#FFCC00', '#34C759', '#5AC8FA', '#AF52DE', '#FF2D55'];
 
 function setProfileAlbum(recommendId) {
     fetchApi(`/api/mypage/profile-album/${recommendId}`, null, 'POST')
@@ -43,7 +43,7 @@ function resetProfileBackground() {
     const profileBackground = document.querySelector('.profile-background');
     profileHeader.removeAttribute('href');
     profileBackground.style.backgroundImage = '';
-    profileBackground.classList.add('bg-[#d8d8e8]');
+    profileBackground.classList.add('bg-fill-strong');
 }
 
 function removeSongCard(recommendId) {
@@ -92,8 +92,8 @@ function renderSongs() {
 
     songList.innerHTML = filteredSongs.length === 0
         ? `<div class="no-results col-span-full flex flex-col items-center text-center py-16">
-            <svg viewBox="0 0 24 24" class="w-12 h-12 fill-[#d8d8e8] mb-4" aria-hidden="true"><g><path d="M20.87,20.17l-5.59-5.59C16.35,13.35,17,11.75,17,10c0-3.87-3.13-7-7-7s-7,3.13-7,7s3.13,7,7,7c1.75,0,3.35-0.65,4.58-1.71 l5.59,5.59L20.87,20.17z M10,16c-3.31,0-6-2.69-6-6s2.69-6,6-6s6,2.69,6,6S13.31,16,10,16z"></path></g></svg>
-            <p class="text-[#8b8b9a] text-sm">검색된 노래가 없습니다.</p>
+            <svg viewBox="0 0 24 24" class="w-12 h-12 fill-label-tertiary mb-4" aria-hidden="true"><g><path d="M20.87,20.17l-5.59-5.59C16.35,13.35,17,11.75,17,10c0-3.87-3.13-7-7-7s-7,3.13-7,7s3.13,7,7,7c1.75,0,3.35-0.65,4.58-1.71 l5.59,5.59L20.87,20.17z M10,16c-3.31,0-6-2.69-6-6s2.69-6,6-6s6,2.69,6,6S13.31,16,10,16z"></path></g></svg>
+            <p class="text-label-secondary text-subheadline">검색된 노래가 없습니다.</p>
         </div>`
         : '';
 
@@ -138,7 +138,7 @@ function createChartData() {
             name: '기타',
             value: genreList['기타'],
             itemStyle: {
-                color: '#afafaf'
+                color: '#8E8E93'
             }
         });
     }
@@ -147,17 +147,25 @@ function createChartData() {
 
 function initChart() {
     genreChart = echarts.init(document.getElementById("genreChart"));
+    // 다크 모드에서도 범례·조각 테두리가 배경과 맞도록 CSS 변수 색 사용
+    const rootStyle = getComputedStyle(document.documentElement);
+    const canvasColor = `rgb(${rootStyle.getPropertyValue('--canvas').trim()})`;
+    const labelColor = `rgb(${rootStyle.getPropertyValue('--label').trim()})`;
     const option = {
         tooltip: {
             trigger: "item"
         },
-        legend: {},
+        legend: {
+            textStyle: {
+                color: labelColor
+            }
+        },
         series: [{
             type: "pie",
             radius: ["40%", "70%"],
             itemStyle: {
                 borderRadius: 8,
-                borderColor: "#fff",
+                borderColor: canvasColor,
                 borderWidth: 2
             },
             label: {

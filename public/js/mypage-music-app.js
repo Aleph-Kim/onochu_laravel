@@ -22,13 +22,13 @@ function bindMusicAppOptions() {
                     document.querySelectorAll('.music-app-option').forEach(el => {
                         const selected = el.dataset.app === app;
                         el.classList.toggle('border-primary', selected);
-                        el.classList.toggle('bg-[#f5f5fc]', selected);
-                        el.classList.toggle('border-[#ebebf0]', !selected);
-                        el.classList.toggle('hover:bg-[#f8f8fc]', !selected);
+                        el.classList.toggle('bg-primary/10', selected);
+                        el.classList.toggle('border-transparent', !selected);
+                        el.classList.toggle('bg-surface', !selected);
 
                         const radio = el.querySelector('.music-app-radio');
                         radio.classList.toggle('border-primary', selected);
-                        radio.classList.toggle('border-[#d8d8e4]', !selected);
+                        radio.classList.toggle('border-label-tertiary', !selected);
                         radio.querySelector('.music-app-radio-dot').classList.toggle('hidden', !selected);
                     });
                 })
