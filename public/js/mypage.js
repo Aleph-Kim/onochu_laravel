@@ -145,27 +145,34 @@ function createChartData() {
     return chartData;
 }
 
+// 다크 모드에서도 범례·조각 테두리가 배경과 맞도록 CSS 변수 색 사용
+function themeColorOption() {
+    const rootStyle = getComputedStyle(document.documentElement);
+    return {
+        legend: {
+            textStyle: {
+                color: `rgb(${rootStyle.getPropertyValue('--label').trim()})`
+            }
+        },
+        series: [{
+            itemStyle: {
+                borderColor: `rgb(${rootStyle.getPropertyValue('--canvas').trim()})`
+            }
+        }]
+    };
+}
+
 function initChart() {
     genreChart = echarts.init(document.getElementById("genreChart"));
-    // 다크 모드에서도 범례·조각 테두리가 배경과 맞도록 CSS 변수 색 사용
-    const rootStyle = getComputedStyle(document.documentElement);
-    const canvasColor = `rgb(${rootStyle.getPropertyValue('--canvas').trim()})`;
-    const labelColor = `rgb(${rootStyle.getPropertyValue('--label').trim()})`;
     const option = {
         tooltip: {
             trigger: "item"
-        },
-        legend: {
-            textStyle: {
-                color: labelColor
-            }
         },
         series: [{
             type: "pie",
             radius: ["40%", "70%"],
             itemStyle: {
                 borderRadius: 8,
-                borderColor: canvasColor,
                 borderWidth: 2
             },
             label: {
@@ -179,6 +186,7 @@ function initChart() {
         }]
     };
     genreChart.setOption(option);
+    genreChart.setOption(themeColorOption());
 }
 
 function initialize() {
@@ -194,5 +202,9 @@ document.addEventListener("DOMContentLoaded", function () {
     initialize();
     window.addEventListener("resize", function () {
         genreChart.resize();
+    });
+    // 페이지를 연 뒤 시스템 테마가 바뀌면 처음 읽은 색이 남아 범례가 배경에 묻히므로 다시 적용
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () {
+        genreChart.setOption(themeColorOption());
     });
 });
