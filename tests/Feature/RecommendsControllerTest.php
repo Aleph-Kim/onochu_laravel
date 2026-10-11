@@ -138,8 +138,8 @@ class RecommendsControllerTest extends TestCase
         $response->assertJson(['success' => false]);
     }
 
-    #[TestDox('본인의 추천이 아니면 400을 반환한다')]
-    public function test_destroy_by_non_owner_returns_400(): void
+    #[TestDox('본인의 추천이 아니면 403을 반환한다')]
+    public function test_destroy_by_non_owner_returns_403(): void
     {
         $recommend = $this->createFullRecommend();
         $otherUser = User::factory()->create();
@@ -147,7 +147,7 @@ class RecommendsControllerTest extends TestCase
         $response = $this->withSession($this->loginSession($otherUser))
             ->deleteJson("/api/recommends/{$recommend->id}");
 
-        $response->assertStatus(400);
+        $response->assertStatus(403);
         $response->assertJson(['success' => false]);
         $this->assertModelExists($recommend);
     }

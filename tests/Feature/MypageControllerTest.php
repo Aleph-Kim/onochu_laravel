@@ -96,8 +96,8 @@ class MypageControllerTest extends TestCase
         $response->assertJson(['success' => false]);
     }
 
-    #[TestDox('본인의 추천이 아니면 400을 반환한다')]
-    public function test_set_profile_album_by_non_owner_returns_400(): void
+    #[TestDox('본인의 추천이 아니면 403을 반환한다')]
+    public function test_set_profile_album_by_non_owner_returns_403(): void
     {
         $recommend = $this->createFullRecommend(User::factory()->create());
         $otherUser = User::factory()->create();
@@ -105,7 +105,7 @@ class MypageControllerTest extends TestCase
         $response = $this->withSession($this->loginSession($otherUser))
             ->postJson("/api/mypage/profile-album/{$recommend->id}");
 
-        $response->assertStatus(400);
+        $response->assertStatus(403);
         $response->assertJson(['success' => false]);
     }
 

@@ -42,7 +42,7 @@ class MypageController extends Controller
     public function setProfileAlbum(Recommend $recommend)
     {
         if ($recommend->user_id !== session('user.id')) {
-            return $this->errorResponse('잘못된 요청입니다.', 400);
+            return $this->errorResponse('권한이 없습니다.', 403);
         }
 
         $album = $recommend->song->album;

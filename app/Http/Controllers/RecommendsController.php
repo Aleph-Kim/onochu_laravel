@@ -95,7 +95,7 @@ class RecommendsController extends Controller
     public function destroy(Recommend $recommend)
     {
         if ($recommend->user_id !== session('user.id')) {
-            return $this->errorResponse('잘못된 요청입니다.', 400);
+            return $this->errorResponse('권한이 없습니다.', 403);
         }
 
         $albumId = $recommend->song->album_id;
