@@ -64,10 +64,13 @@ class AuthControllerTest extends TestCase
             ]),
         ]);
 
-        $response = $this->withSession(['kakao_oauth_state' => 'valid-state'])
+        $guestSessionId = $this->persistSession(['kakao_oauth_state' => 'valid-state']);
+
+        $response = $this->withCookie(config('session.cookie'), $guestSessionId)
             ->get('/auth/callback?code=fake-code&state=valid-state');
 
         $response->assertRedirect(route('main'));
+        $this->assertNotSame($guestSessionId, $response->getCookie(config('session.cookie'))->getValue());
         $this->assertDatabaseHas('users', ['kakao_id' => 999888, 'nickname' => '테스트유저']);
         $this->assertEquals(User::where('kakao_id', 999888)->first()->id, session('user.id'));
     }
@@ -94,11 +97,24 @@ class AuthControllerTest extends TestCase
     public function test_logout_clears_session_and_redirects(): void
     {
         $user = User::factory()->create();
+        $loggedInSessionId = $this->persistSession(['user' => ['id' => $user->id, 'nickname' => $user->nickname]]);
 
-        $response = $this->withSession(['user' => ['id' => $user->id, 'nickname' => $user->nickname]])
+        $response = $this->withCookie(config('session.cookie'), $loggedInSessionId)
             ->get('/auth/logout');
 
         $response->assertRedirect(route('main'));
         $this->assertNull(session('user'));
+        $this->assertNotSame($loggedInSessionId, $response->getCookie(config('session.cookie'))->getValue());
+    }
+
+    /**
+     * 세션 쿠키로 같은 세션을 이어받도록 핸들러에 저장 후 세션 ID 반환
+     */
+    private function persistSession(array $data): string
+    {
+        $this->withSession($data);
+        session()->save();
+
+        return session()->getId();
     }
 }

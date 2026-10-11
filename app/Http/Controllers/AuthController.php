@@ -48,6 +48,7 @@ class AuthController extends Controller
             ['nickname' => $userInfo['properties']['nickname']]
         );
 
+        $request->session()->regenerate();
         session(['user' => ['id' => $user->id, 'nickname' => $user->nickname]]);
 
         if ($request->cookie('last_url')) {
@@ -57,9 +58,10 @@ class AuthController extends Controller
         return redirect()->route('main');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        session()->forget('user');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect()->route('main');
     }
 
