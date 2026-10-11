@@ -71,9 +71,12 @@ class PlatformService
                     'web' => $track['trackViewUrl'],
                     'app' => preg_replace('#^https://#', 'music://', $track['trackViewUrl']),
                 ];
+            } elseif ($response->failed()) {
+                logger()->warning('Apple Music 검색 실패', ['keyword' => $keyword, 'status' => $response->status()]);
             }
         } catch (\Throwable $e) {
             // iTunes API 실패 시 검색 링크로 폴백
+            logger()->warning('Apple Music 검색 실패', ['keyword' => $keyword, 'error' => $e->getMessage()]);
         }
 
         Cache::put($cacheKey, $result, self::MUSIC_CACHE_TTL);
@@ -106,9 +109,12 @@ class PlatformService
                     'web' => "https://www.melon.com/song/detail.htm?songId={$songId}",
                     'app' => "melonapp://play?ctype=1&menuid=0&cid={$songId}",
                 ];
+            } elseif ($response->failed()) {
+                logger()->warning('멜론 검색 실패', ['keyword' => $keyword, 'status' => $response->status()]);
             }
         } catch (\Throwable $e) {
             // 멜론 검색 실패 시 검색 링크로 폴백
+            logger()->warning('멜론 검색 실패', ['keyword' => $keyword, 'error' => $e->getMessage()]);
         }
 
         Cache::put($cacheKey, $result, self::MUSIC_CACHE_TTL);
@@ -141,9 +147,12 @@ class PlatformService
                     'web' => "https://www.genie.co.kr/detail/songInfo?xgnm={$songId}",
                     'app' => null,
                 ];
+            } elseif ($response->failed()) {
+                logger()->warning('지니 검색 실패', ['keyword' => $keyword, 'status' => $response->status()]);
             }
         } catch (\Throwable $e) {
             // 지니 검색 실패 시 검색 링크로 폴백
+            logger()->warning('지니 검색 실패', ['keyword' => $keyword, 'error' => $e->getMessage()]);
         }
 
         Cache::put($cacheKey, $result, self::MUSIC_CACHE_TTL);

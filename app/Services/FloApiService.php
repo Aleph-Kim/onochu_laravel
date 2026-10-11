@@ -95,6 +95,7 @@ class FloApiService
             ->get(self::FLO_API_BASE . $path);
 
         if ($response->failed()) {
+            logger()->error('FLO API 요청 실패', ['path' => $path, 'status' => $response->status()]);
             abort(500, 'FLO API 요청 실패');
         }
 

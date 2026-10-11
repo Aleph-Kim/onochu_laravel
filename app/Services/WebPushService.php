@@ -43,6 +43,8 @@ class WebPushService
         foreach ($this->client()->flush() as $report) {
             if ($report->isSubscriptionExpired()) {
                 PushSubscription::where('endpoint', $report->getEndpoint())->delete();
+            } elseif (!$report->isSuccess()) {
+                logger()->warning('웹 푸시 발송 실패', ['endpoint' => $report->getEndpoint(), 'reason' => $report->getReason()]);
             }
         }
     }

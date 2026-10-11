@@ -75,7 +75,10 @@ class AuthController extends Controller
             'code' => $code,
         ]);
 
-        abort_unless($response->successful(), 500, '액세스 토큰 발급 실패');
+        if ($response->failed()) {
+            logger()->error('카카오 액세스 토큰 발급 실패', ['status' => $response->status(), 'response' => $response->json()]);
+            abort(500, '액세스 토큰 발급 실패');
+        }
 
         return $response->json('access_token');
     }
@@ -85,7 +88,10 @@ class AuthController extends Controller
         $response = Http::withToken($accessToken)
             ->get($this->kakaoApiUrl . '/v2/user/me');
 
-        abort_unless($response->successful(), 500, '사용자 정보 조회 실패');
+        if ($response->failed()) {
+            logger()->error('카카오 사용자 정보 조회 실패', ['status' => $response->status(), 'response' => $response->json()]);
+            abort(500, '사용자 정보 조회 실패');
+        }
 
         return $response->json();
     }
