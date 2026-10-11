@@ -15,6 +15,7 @@ use App\Services\WebPushService;
 use App\WebPush\NewAlbumPayload;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class UpdateNewAlbums extends Command
 {
@@ -86,37 +87,44 @@ class UpdateNewAlbums extends Command
 
     private function saveNewAlbums(array $albums): void
     {
-        $savedCount = 0;
         $savedAlbums = [];
         foreach ($albums as $album) {
             if (NewAlbum::where('flo_id', $album['flo_id'])->exists()) {
                 continue;
             }
 
-            $newAlbum = NewAlbum::create([
-                'album_title' => $album['title'],
-                'album_img_url' => $album['img_url'],
-                'flo_id' => $album['flo_id'],
-            ]);
-
-            $savedCount++;
-            $album['new_album_id'] = $newAlbum->id;
-            $savedAlbums[] = $album;
-
-            foreach ($album['artist'] as $artist) {
-                NewAlbumArtist::create([
-                    'new_album_id' => $newAlbum->id,
-                    'artist_name' => $artist['name'],
-                    'flo_id' => $artist['flo_id'],
+            $newAlbum = DB::transaction(function () use ($album) {
+                $newAlbum = NewAlbum::create([
+                    'album_title' => $album['title'],
+                    'album_img_url' => $album['img_url'],
+                    'flo_id' => $album['flo_id'],
                 ]);
 
+                foreach ($album['artist'] as $artist) {
+                    NewAlbumArtist::create([
+                        'new_album_id' => $newAlbum->id,
+                        'artist_name' => $artist['name'],
+                        'flo_id' => $artist['flo_id'],
+                    ]);
+                }
+
+                return $newAlbum;
+            });
+
+            $album['new_album_id'] = $newAlbum->id;
+            $savedAlbums[] = $album;
+        }
+
+        $this->info('저장된 새 앨범 수: ' . count($savedAlbums));
+
+        $this->notifyRecommenders($savedAlbums);
+
+        // 저장된 앨범은 다음 실행에서 건너뛰므로 실패 가능한 이미지 갱신은 알림 발송 이후 처리
+        foreach ($savedAlbums as $album) {
+            foreach ($album['artist'] as $artist) {
                 $this->updateArtistImgUrl($artist['flo_id']);
             }
         }
-
-        $this->info("저장된 새 앨범 수: {$savedCount}");
-
-        $this->notifyRecommenders($savedAlbums);
     }
 
     // 새 앨범을 추천 아티스트로 둔 유저에게 알림 생성 및 웹 푸시 발송 (유저당 1회로 묶음)
