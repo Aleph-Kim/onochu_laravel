@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container">
-        <h1 class="text-center text-[2.5em] my-[30px] mx-[15px] max-[480px]:text-[2em]">500 Error</h1>
-        <p class="max-w-[490px] mx-auto my-[30px] text-[1.3em] text-center max-[480px]:text-[1em]">에러가 발생했습니다!</p>
+        <h1 class="text-center text-large-title text-label mt-10 mb-2 mx-[15px] max-[480px]:text-title-1">500 Error</h1>
+        <p class="max-w-[490px] mx-auto mb-[30px] px-[15px] text-body text-label-secondary text-center max-[480px]:text-callout">에러가 발생했습니다!</p>
         <section class="text-center text-[180px] font-extrabold my-[20px] mx-[15px] max-[480px]:text-[5.3em]">
             <span
                 class="inline-block leading-[0.7] relative text-primary [perspective:1000px] [perspective-origin:500%_50%]">
@@ -19,7 +19,7 @@
         </section>
         <div class="text-center">
             <a href="{{ route('main') }}"
-               class="uppercase text-[13px] bg-primary py-[10px] px-[20px] rounded-full text-white inline-block mr-[5px] mb-[5px] leading-[1.5] no-underline mt-[50px] tracking-[1px] font-medium hover:bg-primary-light transition-colors">Home</a>
+               class="inline-flex items-center min-h-[44px] px-6 mt-[50px] rounded-full bg-primary text-white text-headline no-underline transition-opacity hover:opacity-90 active:opacity-70">Home</a>
         </div>
     </div>
 @endsection

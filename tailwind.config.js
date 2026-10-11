@@ -12,8 +12,6 @@ export default {
             },
             colors: {
                 primary: 'rgb(var(--tint) / <alpha-value>)',
-                'primary-light': '#7c7ce8',
-                'primary-dark': '#4747b8',
                 youtube: '#FF0000',
                 flo: '#8B00FF',
                 genie: '#0F7EFF',
@@ -39,7 +37,6 @@ export default {
                 separator: 'var(--separator)',
                 danger: 'rgb(var(--danger) / <alpha-value>)',
                 star: 'rgb(var(--star) / <alpha-value>)',
-                bg: '#f8f8fc',
             },
             fontFamily: {
                 sans: ['-apple-system', 'BlinkMacSystemFont', '"Apple SD Gothic Neo"', '"Pretendard Variable"', 'Pretendard', 'system-ui', 'sans-serif'],
