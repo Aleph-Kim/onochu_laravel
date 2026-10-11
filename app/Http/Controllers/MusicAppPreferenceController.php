@@ -13,8 +13,10 @@ class MusicAppPreferenceController extends Controller
         $user = User::findOrFail(session('user.id'));
 
         // 오픈 리다이렉트 방지: 내부 경로만 허용 (//로 시작하면 외부 URL로 취급되어 제외)
+        // 백슬래시의 / 변환, 탭,개행 제거 등 브라우저 URL 정규화를 이용한 외부 경로 우회(/\evil.com) 차단
         $redirect = $request->query('redirect');
-        $redirectUrl = (is_string($redirect) && str_starts_with($redirect, '/') && !str_starts_with($redirect, '//'))
+        $redirectUrl = (is_string($redirect) && str_starts_with($redirect, '/') && !str_starts_with($redirect, '//')
+            && !preg_match('/[\\\\\x00-\x1F\x7F]/', $redirect))
             ? $redirect
             : null;
 

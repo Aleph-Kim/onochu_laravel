@@ -80,6 +80,20 @@ class MusicAppPreferenceControllerTest extends TestCase
         $response->assertDontSee('data-redirect-url', false);
     }
 
+    #[TestDox('브라우저가 외부 URL로 해석하는 백슬래시·제어문자 우회 redirect는 무시한다')]
+    public function test_backslash_or_control_char_redirect_is_ignored(): void
+    {
+        $user = User::factory()->create();
+
+        foreach (['/\\evil.com', "/\t/evil.com", "/\n/evil.com"] as $redirect) {
+            $response = $this->withSession($this->loginSession($user))
+                ->get('/mypage/music-app?redirect=' . urlencode($redirect));
+
+            $response->assertOk();
+            $response->assertDontSee('data-redirect-url', false);
+        }
+    }
+
     #[TestDox('스포티파이도 저장할 수 있다')]
     public function test_spotify_is_a_valid_app_value(): void
     {
