@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,12 +28,8 @@ class RecommendPlay extends Model
     /**
      * 아직 모달로 노출하지 않은 재생 기록
      */
-    public static function pendingFor(int $userId): Collection
+    public static function pendingFor(int $userId): Builder
     {
-        return static::where('user_id', $userId)
-            ->whereNull('notified_at')
-            ->with(['recommend.song.album', 'recommend.song.artists', 'recommend.user.profileAlbum'])
-            ->latest()
-            ->get();
+        return static::where('user_id', $userId)->whereNull('notified_at');
     }
 }

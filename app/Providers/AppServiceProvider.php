@@ -47,12 +47,17 @@ class AppServiceProvider extends ServiceProvider
             $recommendToRate = null;
 
             if (!request()->routeIs('music-app.open')) {
-                $pendingPlays = RecommendPlay::pendingFor($userId);
+                // 모달은 최신 1건만 노출하고 나머지 미노출 기록은 함께 노출 처리
+                $pendingPlay = RecommendPlay::pendingFor($userId)
+                    ->with(['recommend.song.album', 'recommend.song.artists', 'recommend.user.profileAlbum'])
+                    ->latest('id')
+                    ->first();
 
-                if ($pendingPlays->isNotEmpty()) {
-                    $recommendToRate = $pendingPlays->first()->recommend;
+                if ($pendingPlay) {
+                    $recommendToRate = $pendingPlay->recommend;
 
-                    RecommendPlay::whereIn('id', $pendingPlays->pluck('id'))
+                    RecommendPlay::pendingFor($userId)
+                        ->where('id', '<=', $pendingPlay->id)
                         ->update(['notified_at' => now()]);
                 }
             }

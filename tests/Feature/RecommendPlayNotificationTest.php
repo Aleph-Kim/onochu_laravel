@@ -37,6 +37,22 @@ class RecommendPlayNotificationTest extends TestCase
         $response->assertSee('테스트곡');
     }
 
+    #[TestDox('미노출 재생 기록이 여러 건이면 최신 1건만 모달로 보이고 모두 노출 처리된다')]
+    public function test_multiple_pending_plays_show_latest_and_mark_all_notified(): void
+    {
+        $listener = User::factory()->create();
+        $oldRecommend = Recommend::factory()->create(['song_id' => Song::factory()->create(['title' => '이전곡'])->id]);
+        $newRecommend = Recommend::factory()->create(['song_id' => Song::factory()->create(['title' => '최신곡'])->id]);
+        RecommendPlay::factory()->create(['user_id' => $listener->id, 'recommend_id' => $oldRecommend->id]);
+        RecommendPlay::factory()->create(['user_id' => $listener->id, 'recommend_id' => $newRecommend->id]);
+
+        $response = $this->withSession($this->loginSession($listener))->get(route('mypage.music-app'));
+
+        $response->assertSee('최신곡');
+        $response->assertDontSee('이전곡');
+        $this->assertSame(0, RecommendPlay::whereNull('notified_at')->count());
+    }
+
     #[TestDox('모달은 한 번 노출되면 다시 뜨지 않는다')]
     public function test_modal_not_shown_again_after_first_view(): void
     {
