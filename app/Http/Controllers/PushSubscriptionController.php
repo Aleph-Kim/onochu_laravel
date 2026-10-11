@@ -13,10 +13,6 @@ class PushSubscriptionController extends Controller
 {
     public function subscribe(PushSubscribeRequest $request)
     {
-        if (!session('user')) {
-            return $this->errorResponse('로그인이 필요합니다.', 401);
-        }
-
         PushSubscription::updateOrCreate(
             ['endpoint' => $request->validated('endpoint')],
             [
@@ -31,10 +27,6 @@ class PushSubscriptionController extends Controller
 
     public function unsubscribe(PushUnsubscribeRequest $request)
     {
-        if (!session('user')) {
-            return $this->errorResponse('로그인이 필요합니다.', 401);
-        }
-
         PushSubscription::where('user_id', session('user.id'))
             ->where('endpoint', $request->validated('endpoint'))
             ->delete();

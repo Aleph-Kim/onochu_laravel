@@ -28,10 +28,6 @@ class MusicAppPreferenceController extends Controller
 
     public function store(MusicAppPreferenceRequest $request)
     {
-        if (!session('user')) {
-            return $this->errorResponse('로그인이 필요합니다.', 401);
-        }
-
         User::where('id', session('user.id'))
             ->update(['preferred_music_app' => $request->validated('app')]);
 

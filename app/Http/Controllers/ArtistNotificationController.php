@@ -19,10 +19,6 @@ class ArtistNotificationController extends Controller
 
     public function toggle(Artist $artist)
     {
-        if (!session('user')) {
-            return $this->errorResponse('로그인이 필요합니다.', 401);
-        }
-
         $userId = session('user.id');
 
         $mute = ArtistNotificationMute::where('user_id', $userId)->where('artist_id', $artist->id)->first();

@@ -94,10 +94,6 @@ class RecommendsController extends Controller
 
     public function destroy(Recommend $recommend)
     {
-        if (!session('user')) {
-            return $this->errorResponse('로그인이 필요합니다.', 401);
-        }
-
         if ($recommend->user_id !== session('user.id')) {
             return $this->errorResponse('잘못된 요청입니다.', 400);
         }

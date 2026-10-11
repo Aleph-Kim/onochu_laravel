@@ -11,6 +11,14 @@ class CheckLogin
     public function handle(Request $request, Closure $next): Response
     {
         if (!session('user')) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'status_code' => 401,
+                    'success' => false,
+                    'message' => '로그인이 필요합니다.',
+                ], 401);
+            }
+
             return redirect()->route('login')
                 ->cookie('last_url', $request->getRequestUri(), 60);
         }

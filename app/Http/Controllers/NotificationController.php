@@ -9,10 +9,6 @@ class NotificationController extends Controller
 {
     public function index()
     {
-        if (!session('user')) {
-            return $this->errorResponse('로그인이 필요합니다.', 401);
-        }
-
         $user = User::findOrFail(session('user.id'));
 
         $notifications = $user->notifications()->latest()->limit(20)->get();
@@ -35,8 +31,7 @@ class NotificationController extends Controller
     public function markRead(DatabaseNotification $notification)
     {
         // 타 유저의 알림을 읽음 처리하지 못하도록 소유자 검증
-        if (!session('user')
-            || $notification->notifiable_type !== User::class
+        if ($notification->notifiable_type !== User::class
             || $notification->notifiable_id != session('user.id')) {
             return $this->errorResponse('권한이 없습니다.', 403);
         }
@@ -48,10 +43,6 @@ class NotificationController extends Controller
 
     public function markAllRead()
     {
-        if (!session('user')) {
-            return $this->errorResponse('로그인이 필요합니다.', 401);
-        }
-
         DatabaseNotification::where('notifiable_type', User::class)
             ->where('notifiable_id', session('user.id'))
             ->whereNull('read_at')
