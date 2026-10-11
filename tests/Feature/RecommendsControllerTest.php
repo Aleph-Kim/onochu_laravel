@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Album;
 use App\Models\Artist;
 use App\Models\Recommend;
+use App\Models\RecommendPlay;
 use App\Models\Song;
 use App\Models\User;
 use App\Services\FloApiService;
@@ -149,6 +150,20 @@ class RecommendsControllerTest extends TestCase
         $response->assertJson(['success' => true, 'data' => ['profile_reset' => true]]);
         $this->assertModelMissing($recommend);
         $this->assertDatabaseHas('users', ['id' => $owner->id, 'profile_album_id' => null]);
+    }
+
+    #[TestDox('다른 유저가 재생한 추천도 재생 기록과 함께 삭제한다')]
+    public function test_destroy_deletes_recommend_with_plays(): void
+    {
+        $recommend = $this->createFullRecommend();
+        $play = RecommendPlay::factory()->create(['recommend_id' => $recommend->id]);
+
+        $response = $this->withSession($this->loginSession($recommend->user))
+            ->deleteJson("/api/recommends/{$recommend->id}");
+
+        $response->assertOk();
+        $this->assertModelMissing($recommend);
+        $this->assertModelMissing($play);
     }
 
     private function createFullRecommend(): Recommend
