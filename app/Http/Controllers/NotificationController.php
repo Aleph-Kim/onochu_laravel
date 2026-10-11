@@ -11,9 +11,10 @@ class NotificationController extends Controller
     {
         $user = User::findOrFail(session('user.id'));
 
-        $notifications = $user->notifications()->latest()->limit(20)->get();
+        // 같은 시각에 생성된 알림의 커서 순서 중복 방지용 id 정렬
+        $notifications = $user->notifications()->orderByDesc('id')->cursorPaginate(20);
 
-        $items = $notifications->map(fn($notification) => [
+        $items = $notifications->getCollection()->map(fn($notification) => [
             'id' => $notification->id,
             'label' => $notification->data['label'] ?? null,
             'title' => $notification->data['title'] ?? '',
@@ -24,6 +25,7 @@ class NotificationController extends Controller
 
         return $this->successResponse('알림 목록', [
             'notifications' => $items,
+            'next_cursor' => $notifications->nextCursor()?->encode(),
             'unread_count' => $user->unreadNotifications()->count(),
         ]);
     }

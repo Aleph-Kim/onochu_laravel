@@ -45,6 +45,30 @@ class NotificationControllerTest extends TestCase
         $response->assertJsonPath('data.notifications.0.unread', true);
     }
 
+    #[TestDox('알림 목록은 20개씩 나뉘고 커서로 다음 목록을 이어서 조회한다')]
+    public function test_index_paginates_with_cursor(): void
+    {
+        $user = User::factory()->create();
+        for ($i = 0; $i < 25; $i++) {
+            $this->notifyNewAlbum($user, 2000 + $i);
+        }
+
+        $first = $this->withSession($this->loginSession($user))->getJson('/api/notifications');
+        $first->assertJsonCount(20, 'data.notifications');
+        $nextCursor = $first->json('data.next_cursor');
+        $this->assertNotNull($nextCursor);
+
+        $second = $this->withSession($this->loginSession($user))->getJson('/api/notifications?cursor=' . urlencode($nextCursor));
+        $second->assertJsonCount(5, 'data.notifications');
+        $second->assertJsonPath('data.next_cursor', null);
+
+        $ids = array_merge(
+            array_column($first->json('data.notifications'), 'id'),
+            array_column($second->json('data.notifications'), 'id'),
+        );
+        $this->assertCount(25, array_unique($ids));
+    }
+
     #[TestDox('다른 유저의 알림은 읽음 처리할 수 없다')]
     public function test_mark_read_rejects_other_users_notification(): void
     {

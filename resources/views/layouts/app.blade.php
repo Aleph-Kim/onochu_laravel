@@ -100,7 +100,7 @@
                                             onclick="markAllNotificationsRead()">모두 읽음</button>
                                 </div>
                             </div>
-                            <div class="overflow-y-auto">
+                            <div id="notificationScroll" class="overflow-y-auto">
                                 <div id="notificationList" class="flex flex-col divide-y-[0.5px] divide-separator"></div>
                                 <div id="notificationEmpty" class="hidden py-10 text-center text-label-secondary text-subheadline">
                                     모든 알림을 확인했습니다!

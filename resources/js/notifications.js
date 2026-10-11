@@ -1,4 +1,4 @@
-// 헤더 알림 탭 (신곡 알림 목록 조회, 개별/전체 읽음 처리, 읽은 알림 삭제)
+// 헤더 알림 탭 (신곡 알림 목록 조회 및 무한 스크롤, 개별/전체 읽음 처리, 읽은 알림 삭제)
 
 import { fetchApi, showDialog, showToast } from './util.js';
 
@@ -7,6 +7,12 @@ const notificationDropdown = document.getElementById('notificationDropdown');
 const notificationBadge = document.getElementById('notificationBadge');
 const notificationList = document.getElementById('notificationList');
 const notificationEmpty = document.getElementById('notificationEmpty');
+const notificationScroll = document.getElementById('notificationScroll');
+
+let nextCursor = null;
+let loadingMore = false;
+// 알림 탭 재오픈 후 이전 목록의 추가 조회 응답 혼입 방지
+let listVersion = 0;
 
 function escapeHtml(value) {
     const div = document.createElement('div');
@@ -14,8 +20,8 @@ function escapeHtml(value) {
     return div.innerHTML;
 }
 
-function renderNotifications(items) {
-    notificationList.innerHTML = items.map(item => `
+function renderNotifications(items, append = false) {
+    const html = items.map(item => `
         <a href="${escapeHtml(item.url)}" data-notification-id="${escapeHtml(item.id)}"
            data-unread="${item.unread ? '1' : '0'}"
            class="notification-item group flex items-start gap-3 px-4 py-3 hover:bg-fill transition-colors">
@@ -29,7 +35,13 @@ function renderNotifications(items) {
         </a>
     `).join('');
 
-    notificationEmpty.classList.toggle('hidden', items.length > 0);
+    if (append) {
+        notificationList.insertAdjacentHTML('beforeend', html);
+    } else {
+        notificationList.innerHTML = html;
+        notificationScroll.scrollTop = 0;
+    }
+    notificationEmpty.classList.toggle('hidden', notificationList.children.length > 0);
 }
 
 function setNotificationBadge(count) {
@@ -43,17 +55,47 @@ function setNotificationBadge(count) {
 
 // 알림 탭을 열면 최신 목록을 불러옴 (읽음 처리는 개별 클릭 또는 '모두 읽음' 버튼으로만 발생)
 function loadNotifications() {
+    const version = ++listVersion;
     fetchApi('/api/notifications', null, 'GET')
         .then(response => {
-            if (!response.success) {
+            if (!response.success || version !== listVersion) {
                 return;
             }
             renderNotifications(response.data.notifications);
+            nextCursor = response.data.next_cursor;
             setNotificationBadge(response.data.unread_count);
         })
         .catch(() => {
         });
 }
+
+function loadMoreNotifications() {
+    if (!nextCursor || loadingMore) {
+        return;
+    }
+
+    const version = listVersion;
+    loadingMore = true;
+    fetchApi(`/api/notifications?cursor=${encodeURIComponent(nextCursor)}`, null, 'GET')
+        .then(response => {
+            if (!response.success || version !== listVersion) {
+                return;
+            }
+            renderNotifications(response.data.notifications, true);
+            nextCursor = response.data.next_cursor;
+        })
+        .catch(() => {
+        })
+        .finally(() => {
+            loadingMore = false;
+        });
+}
+
+notificationScroll.addEventListener('scroll', () => {
+    if (notificationScroll.scrollTop + notificationScroll.clientHeight >= notificationScroll.scrollHeight - 80) {
+        loadMoreNotifications();
+    }
+});
 
 function toggleNotificationDropdown() {
     const willOpen = notificationDropdown.classList.contains('hidden');
@@ -103,8 +145,8 @@ async function deleteReadNotifications() {
                 showToast(response.message);
                 return;
             }
-            notificationList.querySelectorAll('.notification-item[data-unread="0"]').forEach(item => item.remove());
-            notificationEmpty.classList.toggle('hidden', notificationList.children.length > 0);
+            // 화면에서만 지울 때 목록이 짧아져 추가 조회가 막히는 문제 방지 (첫 목록부터 재조회)
+            loadNotifications();
         })
         .catch(() => {
             showToast('알림 삭제 중 오류가 발생했습니다.');
