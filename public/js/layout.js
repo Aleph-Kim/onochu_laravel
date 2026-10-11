@@ -43,8 +43,8 @@ window.addEventListener('pageshow', (event) => {
     }
 });
 
-function confirmBack() {
-    if (confirm("페이지를 나가시겠습니까?")) {
+async function confirmBack() {
+    if (await showDialog("페이지를 나가시겠습니까?", { confirmText: "나가기", cancelable: true })) {
         window.history.go(-1);
     }
 }

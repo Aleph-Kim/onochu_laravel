@@ -8,24 +8,24 @@ function setProfileAlbum(recommendId) {
     fetchApi(`/api/mypage/profile-album/${recommendId}`, null, 'POST')
         .then(response => {
             if (!response.success) {
-                alert(response.message);
+                showToast(response.message);
                 return;
             }
             editProfile(response.data.album_flo_id, response.data.album_img_url);
-            alert("프로필 앨범이 변경되었습니다.");
+            showToast("프로필 앨범이 변경되었습니다.");
         })
         .catch(() => {
-            alert("프로필 앨범 변경 중 오류가 발생했습니다.");
+            showToast("프로필 앨범 변경 중 오류가 발생했습니다.");
         })
 }
 
-function deleteRecommend(recommendId) {
-    if (!confirm("이 추천을 삭제하시겠습니까?")) return;
+async function deleteRecommend(recommendId) {
+    if (!await showDialog("이 추천을 삭제하시겠습니까?", { confirmText: "삭제", cancelable: true })) return;
 
     fetchApi(`/api/recommends/${recommendId}`, null, 'DELETE')
         .then(response => {
             if (!response.success) {
-                alert(response.message);
+                showToast(response.message);
                 return;
             }
             removeSongCard(recommendId);
@@ -34,7 +34,7 @@ function deleteRecommend(recommendId) {
             }
         })
         .catch(() => {
-            alert("추천 삭제 중 오류가 발생했습니다.");
+            showToast("추천 삭제 중 오류가 발생했습니다.");
         });
 }
 

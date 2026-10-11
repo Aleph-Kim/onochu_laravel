@@ -1,10 +1,10 @@
-document.querySelector('.recommends-form').addEventListener('submit', function (event) {
+document.querySelector('.recommends-form').addEventListener('submit', async function (event) {
     event.preventDefault();
 
     const form = event.target;
     const submitBtn = document.querySelector('.btn-submit');
 
-    if (form.dataset.alreadyRecommended === 'true' && !confirm('이미 추천한 노래입니다. 다시 추천하시겠습니까?')) {
+    if (form.dataset.alreadyRecommended === 'true' && !await showDialog('이미 추천한 노래입니다. 다시 추천하시겠습니까?', { confirmText: '다시 추천', cancelable: true })) {
         return;
     }
 
@@ -23,7 +23,7 @@ document.querySelector('.recommends-form').addEventListener('submit', function (
             hideLoader();
             submitBtn.disabled = false;
             submitBtn.textContent = '추천';
-            alert('추천 등록에 실패했습니다. 다시 시도해주세요.');
+            showToast('추천 등록에 실패했습니다. 다시 시도해주세요.');
         });
 });
 

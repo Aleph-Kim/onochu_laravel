@@ -7,7 +7,7 @@ function bindArtistNotificationToggles() {
             fetchApi(`/api/artists/${artistId}/notification-toggle`, null, 'POST')
                 .then(response => {
                     if (!response.success) {
-                        alert(response.message);
+                        showToast(response.message);
                         toggle.checked = !toggle.checked;
                         return;
                     }
@@ -15,7 +15,7 @@ function bindArtistNotificationToggles() {
                     toggle.dataset.muted = response.data.muted ? '1' : '0';
                 })
                 .catch(() => {
-                    alert('알림 설정 중 오류가 발생했습니다.');
+                    showToast('알림 설정 중 오류가 발생했습니다.');
                     toggle.checked = !toggle.checked;
                 })
                 .finally(() => {

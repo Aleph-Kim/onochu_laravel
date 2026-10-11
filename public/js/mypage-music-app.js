@@ -10,7 +10,7 @@ function bindMusicAppOptions() {
             fetchApi('/api/music-app-preference', {app}, 'POST')
                 .then(response => {
                     if (!response.success) {
-                        alert(response.message);
+                        showToast(response.message);
                         return;
                     }
 
@@ -31,8 +31,9 @@ function bindMusicAppOptions() {
                         radio.classList.toggle('border-label-tertiary', !selected);
                         radio.querySelector('.music-app-radio-dot').classList.toggle('hidden', !selected);
                     });
+                    showToast('뮤직앱 설정이 완료되었습니다.');
                 })
-                .catch(() => alert('저장 중 오류가 발생했습니다.'));
+                .catch(() => showToast('저장 중 오류가 발생했습니다.'));
         });
     });
 }

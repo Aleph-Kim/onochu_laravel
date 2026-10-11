@@ -170,6 +170,24 @@
         </div>
     </div>
 @endif
+<div id="toast" role="status" aria-live="polite" onclick="hideToast()"
+     class="fixed left-1/2 bottom-[calc(66px+env(safe-area-inset-bottom))] z-[1002] w-max max-w-[calc(100vw-32px)] px-4 py-3 -translate-x-1/2 translate-y-2 text-subheadline text-label text-center bg-raised/90 backdrop-blur-xl border-[0.5px] border-separator rounded-2xl shadow-popover cursor-pointer opacity-0 pointer-events-none transition-[opacity,transform] duration-200 md:bottom-8 motion-reduce:translate-y-0"></div>
+<dialog id="dialog" onclick="if (event.target === this) this.close()"
+        class="w-[calc(100%-32px)] max-w-[340px] text-label bg-raised rounded-[20px] shadow-popover backdrop:bg-black/40 backdrop:backdrop-blur-sm">
+    <form method="dialog" class="p-5">
+        <p id="dialogMessage" class="mb-5 text-body text-center"></p>
+        <div class="flex gap-3">
+            <button id="dialogCancel" value="cancel"
+                    class="flex-1 min-h-[44px] text-headline text-label bg-fill rounded-full transition-opacity hover:opacity-80 active:opacity-60">
+                취소
+            </button>
+            <button id="dialogConfirm" value="confirm"
+                    class="flex-1 min-h-[44px] text-headline text-white bg-accent rounded-full transition-opacity hover:opacity-90 active:opacity-70">
+                확인
+            </button>
+        </div>
+    </form>
+</dialog>
 {{-- 모바일 하단 탭 바 --}}
 <nav aria-label="탭 바"
      class="md:hidden fixed bottom-0 inset-x-0 z-[998] flex bg-bar backdrop-blur-xl backdrop-saturate-150 border-t-[0.5px] border-separator pb-[env(safe-area-inset-bottom)]">

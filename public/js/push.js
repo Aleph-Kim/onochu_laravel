@@ -40,7 +40,7 @@ async function getSubscription() {
 async function subscribePush() {
     const permission = await Notification.requestPermission();
     if (permission !== 'granted') {
-        alert('알림 권한이 거부되었습니다. 브라우저 설정에서 허용해 주세요.');
+        showDialog('알림 권한이 거부되었습니다. 브라우저 설정에서 허용해 주세요.');
         return false;
     }
 
@@ -84,7 +84,7 @@ async function togglePush() {
 
     if (!pushSupported()) {
         toggle.checked = !wantSubscribe;
-        alert(unsupportedReason());
+        showDialog(unsupportedReason());
         return;
     }
 
@@ -99,7 +99,7 @@ async function togglePush() {
         }
     } catch (e) {
         console.error(e);
-        alert('알림 설정 중 오류가 발생했습니다.');
+        showToast('알림 설정 중 오류가 발생했습니다.');
         toggle.checked = !wantSubscribe;
         notifyPushToggleChanged(toggle.checked);
     } finally {
