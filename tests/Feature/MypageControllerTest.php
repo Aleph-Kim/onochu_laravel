@@ -53,6 +53,19 @@ class MypageControllerTest extends TestCase
         $response->assertViewHas('user', fn ($viewUser) => $viewUser->is($user));
     }
 
+    #[TestDox('장르 통계에 HTML 주석·태그 문자가 있어도 스크립트 블록 구조를 깨지 않는다')]
+    public function test_genre_list_does_not_break_script_block(): void
+    {
+        $user = User::factory()->create();
+        $recommend = $this->createFullRecommend($user);
+        $recommend->song->update(['genre' => '<!--<script>']);
+
+        $response = $this->withSession($this->loginSession($user))->get('/mypage');
+
+        $response->assertOk();
+        $response->assertDontSee('<!--<script>', false);
+    }
+
     #[TestDox('다른 유저의 마이페이지를 보여준다')]
     public function test_user_shows_other_users_page(): void
     {

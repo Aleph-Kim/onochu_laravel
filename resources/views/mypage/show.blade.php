@@ -156,7 +156,7 @@
 @push('scripts')
     <script src="{{ asset('js/lib/echarts.min.js') }}"></script>
     <script>
-        const genreList = {!! json_encode($genreList) !!};
+        const genreList = {{ Js::from($genreList) }};
     </script>
     <script src="{{ asset('js/mypage.js') }}"></script>
 @endpush
