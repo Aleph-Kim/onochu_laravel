@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="w-full max-w-[900px] mx-auto p-5 md:py-[30px] md:px-[60px] flex flex-col">
-        <div class="flex items-center justify-between mb-5">
+        <div class="w-full max-w-[600px] mx-auto flex items-center justify-between mb-5">
             <div class="flex flex-col">
                 <h1 class="text-title-1 mb-1 text-label">{{ $songInfo['song']['title'] }}</h1>
                 <div>
@@ -55,11 +55,11 @@
         </div>
         <div class="flex justify-end w-full mx-auto mb-5 max-w-[600px]">
             <a href="{{ route('music-app.open', ['id' => $songInfo['song']['flo_id']]) }}" target="_blank"
-               class="inline-flex items-center justify-center min-h-[44px] px-6 rounded-full cursor-pointer text-white bg-primary text-headline transition-opacity hover:opacity-90 active:opacity-70">내 뮤직앱에서 재생하기</a>
+               class="inline-flex items-center justify-center min-h-[44px] px-6 rounded-full cursor-pointer text-white bg-accent text-headline transition-opacity hover:opacity-90 active:opacity-70">내 뮤직앱에서 재생하기</a>
         </div>
-        <h3 class="text-title-3 text-label mt-8 mb-3">곡
+        <h3 class="w-full max-w-[600px] mx-auto text-title-3 text-label mt-8 mb-3">곡
             정보</h3>
-        <div class="mb-[30px]">
+        <div class="w-full max-w-[600px] mx-auto mb-[30px]">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 p-4 bg-surface rounded-xl">
                 <div>
                     <p class="text-footnote text-label-secondary mb-0.5">발매일</p>
@@ -87,7 +87,7 @@
                 @endif
             </div>
             <div class="flex justify-end mt-5 mb-[10px]">
-                <a class="inline-flex items-center justify-center min-h-[44px] px-6 rounded-full cursor-pointer text-white bg-primary text-headline transition-opacity hover:opacity-90 active:opacity-70"
+                <a class="inline-flex items-center justify-center min-h-[44px] px-6 rounded-full cursor-pointer text-white bg-accent text-headline transition-opacity hover:opacity-90 active:opacity-70"
                    href="{{ route('recommends.create', ['id' => $songInfo['song']['flo_id']]) }}">추천하기</a>
             </div>
         </div>

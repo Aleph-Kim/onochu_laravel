@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="pt-10 px-[30px] pb-[60px]">
-        <div class="flex items-center mb-[60px] flex-wrap max-lg:flex-col max-lg:text-center max-lg:gap-5">
+    <div class="p-5 pb-[60px] md:pt-10 md:px-[30px]">
+        <div class="flex items-center mb-10 flex-wrap max-lg:flex-col max-lg:items-start max-lg:gap-5">
             <img src="{{ $artistInfo['img_url'] }}?/dims/resize/500x500/quality/90"
                  class="w-[250px] h-[250px] rounded-full object-cover mr-6 max-lg:mr-0 max-sm:w-[200px] max-sm:h-[200px] shadow-artwork">
             <div>
@@ -44,11 +44,11 @@
             </div>
             <div class="flex items-center gap-[10px]" id="albumSortToggle">
                 <span
-                    class="toggle-label latest text-subheadline text-primary font-semibold transition-colors duration-200">최신순</span>
-                <label class="relative inline-block w-[51px] h-[31px]">
+                    class="toggle-label latest text-subheadline text-label font-semibold transition-colors duration-200">최신순</span>
+                <label class="relative inline-block w-10 h-6 flex-none">
                     <input type="checkbox" id="sortToggle" class="peer opacity-0 w-0 h-0">
                     <span
-                        class="absolute cursor-pointer inset-0 bg-fill-strong transition-colors duration-200 rounded-full peer-checked:bg-primary before:content-[''] before:absolute before:h-[27px] before:w-[27px] before:left-[2px] before:top-[2px] before:bg-white before:transition-transform before:duration-200 before:rounded-full before:shadow-knob peer-checked:before:translate-x-5"></span>
+                        class="absolute cursor-pointer inset-0 bg-track rounded-full before:content-[''] before:absolute before:h-5 before:w-5 before:left-0.5 before:top-0.5 before:bg-white before:transition-transform before:duration-200 before:rounded-full before:shadow-knob peer-checked:before:translate-x-4"></span>
                 </label>
                 <span class="toggle-label oldest text-subheadline text-label-secondary transition-colors duration-200">오래된순</span>
             </div>
@@ -82,9 +82,9 @@
                     onclick="window.location.href = '{{ route('album.detail', ['id' => $album['flo_id']]) }}'">
                     <img src="{{ $album['img_url'] }}?/dims/resize/350x350/quality/90"
                          class="max-w-[200px] rounded-lg shadow-artwork max-sm:w-full max-sm:h-auto max-sm:max-w-[150px] aspect-square object-cover">
-                    <div class="flex flex-col justify-center flex-1">
+                    <div class="flex flex-col justify-center flex-1 min-w-0 max-sm:justify-start">
                         <div class="album-title text-headline mb-0.5 text-label">{{ $album['title'] }}</div>
-                        <div class="text-subheadline text-label-secondary">
+                        <div class="text-subheadline text-label-secondary line-clamp-2">
                             @foreach($album['artists'] as $artist)
                                 <span class="cursor-pointer hover:text-primary transition-colors"
                                       onclick="event.stopPropagation(); window.location.href = '{{ route('artist.detail', ['id' => $artist['flo_id']]) }}'">{{ $artist['name'] }}</span>

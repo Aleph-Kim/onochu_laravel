@@ -12,6 +12,8 @@ export default {
             },
             colors: {
                 primary: 'rgb(var(--tint) / <alpha-value>)',
+                accent: 'rgb(var(--accent) / <alpha-value>)',
+                'system-gray': '#8E8E93',
                 youtube: '#FF0000',
                 flo: '#8B00FF',
                 genie: '#0F7EFF',
@@ -35,6 +37,11 @@ export default {
                     tertiary: 'var(--label-tertiary)',
                 },
                 separator: 'var(--separator)',
+                track: 'rgb(var(--track) / <alpha-value>)',
+                skeleton: {
+                    DEFAULT: 'rgb(var(--skeleton) / <alpha-value>)',
+                    highlight: 'rgb(var(--skeleton-highlight) / <alpha-value>)',
+                },
                 danger: 'rgb(var(--danger) / <alpha-value>)',
                 star: 'rgb(var(--star) / <alpha-value>)',
             },

@@ -16,7 +16,7 @@
                 창 닫기
             </button>
             <a id="open-app-btn" href="{{ $appUrl }}"
-               class="inline-flex items-center min-h-[44px] px-6 rounded-full text-headline cursor-pointer bg-primary text-white transition-opacity hover:opacity-90 active:opacity-70">
+               class="inline-flex items-center min-h-[44px] px-6 rounded-full text-headline cursor-pointer bg-accent text-white transition-opacity hover:opacity-90 active:opacity-70">
                 지금 앱 열기
             </a>
         </div>

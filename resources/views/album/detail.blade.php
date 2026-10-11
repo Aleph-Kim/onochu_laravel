@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="p-5 md:py-10 md:px-[30px]">
-        <div class="flex items-center mb-[60px] flex-wrap max-lg:flex-col max-lg:text-center max-lg:gap-5">
+        <div class="flex items-center mb-10 flex-wrap max-lg:flex-col max-lg:items-start max-lg:gap-5">
             <img src="{{ $albumInfo['img_url'] }}?/dims/resize/500x500/quality/90"
                  class="w-[250px] h-[250px] rounded-xl object-cover mr-6 max-lg:mr-0 max-sm:w-[200px] max-sm:h-[200px] shadow-artwork">
             <div>
@@ -10,13 +10,13 @@
                     class="text-large-title text-label max-sm:text-title-1">{{ $albumInfo['title'] }}</div>
                 <div class="mt-2 text-subheadline text-label-secondary">
                     <span>{{ $albumInfo['type'] }}</span>
-                    <span class="inline-block w-px h-2.5 mx-1 my-0 bg-label-tertiary"></span>
+                    <span class="inline-block w-px h-2.5 mx-1 my-0 bg-label-secondary"></span>
                     <span>{{ $albumInfo['genre'] }}</span>
                 </div>
             </div>
         </div>
         <div class="text-title-2 mb-2 text-label">수록곡</div>
-        <div class="ml-[10px] max-sm:ml-0">
+        <div class="-mx-3">
             @foreach($songsInfo as $song)
                 <div
                     class="song-box group flex justify-between h-[72px] w-full px-3 py-2 rounded-xl transition-colors hover:bg-fill active:bg-fill-strong cursor-pointer"
@@ -26,8 +26,8 @@
                         <img src="{{ $albumInfo['img_url'] }}?/dims/resize/350x350/quality/90" alt=""
                              class="h-full rounded-md shadow-artwork">
                     </span>
-                        <div class="max-w-[75%] px-[10px] flex flex-col justify-center gap-0.5 border-b-[0.5px] border-separator flex-1 min-w-0 group-hover:border-transparent">
-                            <div class="text-label overflow-hidden text-ellipsis whitespace-nowrap text-callout">
+                        <div class="px-[10px] flex flex-col justify-center gap-0.5 border-b-[0.5px] border-separator flex-1 min-w-0 group-hover:border-transparent">
+                            <div class="text-label overflow-hidden text-ellipsis whitespace-nowrap text-body">
                                 @if($song['song']['title_yn'] == 'Y')
                                     <span
                                         class="text-caption-2 font-semibold text-primary bg-primary/10 py-[2px] px-[6px] mr-[6px] inline-block rounded align-[2px]">title</span>
@@ -44,10 +44,10 @@
                                     @endif
                                 @endforeach
                             </span>
-                                <span class="inline-block w-px h-2.5 mx-1 my-0 bg-label-tertiary"></span>
+                                <span class="inline-block w-px h-2.5 mx-1 my-0 bg-label-secondary"></span>
                                 <span class="cursor-pointer hover:text-primary transition-colors"
                                       onclick="event.stopPropagation(); window.location.href = '{{ route('album.detail', ['id' => $song['album']['flo_id']]) }}'">{{ $song['album']['title'] }}</span>
-                                <span class="inline-block w-px h-2.5 mx-1 my-0 bg-label-tertiary"></span>
+                                <span class="inline-block w-px h-2.5 mx-1 my-0 bg-label-secondary"></span>
                                 <span>{{ $song['song']['play_time'] }}</span>
                             </div>
                         </div>

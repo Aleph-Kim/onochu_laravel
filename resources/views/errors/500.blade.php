@@ -19,7 +19,7 @@
         </section>
         <div class="text-center">
             <a href="{{ route('main') }}"
-               class="inline-flex items-center min-h-[44px] px-6 mt-[50px] rounded-full bg-primary text-white text-headline no-underline transition-opacity hover:opacity-90 active:opacity-70">Home</a>
+               class="inline-flex items-center min-h-[44px] px-6 mt-[50px] rounded-full bg-accent text-white text-headline no-underline transition-opacity hover:opacity-90 active:opacity-70">Home</a>
         </div>
     </div>
 @endsection

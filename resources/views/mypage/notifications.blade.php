@@ -16,16 +16,16 @@
         </div>
 
         @if($artistList->isNotEmpty())
-            <div class="max-w-[1200px] mx-auto px-6 pb-4 w-full flex items-center justify-between">
+            <div class="max-w-[1200px] mx-auto px-6 pb-4 w-full flex items-center justify-between gap-4">
                 <div>
                     <h2 class="text-headline text-label mb-1">신곡 알림</h2>
                     <p class="text-label-secondary text-subheadline mb-4">추천한 아티스트의 신곡 알림을 개별적으로 켜고 끌 수 있어요.</p>
                 </div>
 
-                <label class="relative inline-block w-[51px] h-[31px]">
+                <label class="relative inline-block w-[51px] h-[31px] flex-none">
                     <input type="checkbox" id="pushToggle" class="peer opacity-0 w-0 h-0" onchange="togglePush()">
                     <span
-                        class="absolute cursor-pointer inset-0 bg-fill-strong transition-colors duration-200 rounded-full peer-checked:bg-primary before:content-[''] before:absolute before:h-[27px] before:w-[27px] before:left-[2px] before:top-[2px] before:bg-white before:transition-transform before:duration-200 before:rounded-full before:shadow-knob peer-checked:before:translate-x-5"></span>
+                        class="absolute cursor-pointer inset-0 bg-track transition-colors duration-200 rounded-full peer-checked:bg-primary before:content-[''] before:absolute before:h-[27px] before:w-[27px] before:left-[2px] before:top-[2px] before:bg-white before:transition-transform before:duration-200 before:rounded-full before:shadow-knob peer-checked:before:translate-x-5"></span>
                 </label>
             </div>
 
@@ -64,7 +64,7 @@
                                        data-muted="{{ in_array($artist->id, $mutedArtistIds) ? '1' : '0' }}"
                                     {{ in_array($artist->id, $mutedArtistIds) ? '' : 'checked' }}>
                                 <span
-                                    class="absolute cursor-pointer inset-0 bg-fill-strong transition-colors duration-200 rounded-full peer-checked:bg-primary peer-disabled:opacity-40 peer-disabled:cursor-not-allowed before:content-[''] before:absolute before:h-[27px] before:w-[27px] before:left-[2px] before:top-[2px] before:bg-white before:transition-transform before:duration-200 before:rounded-full before:shadow-knob peer-checked:before:translate-x-5"></span>
+                                    class="absolute cursor-pointer inset-0 bg-track transition-colors duration-200 rounded-full peer-checked:bg-primary peer-disabled:opacity-40 peer-disabled:cursor-not-allowed before:content-[''] before:absolute before:h-[27px] before:w-[27px] before:left-[2px] before:top-[2px] before:bg-white before:transition-transform before:duration-200 before:rounded-full before:shadow-knob peer-checked:before:translate-x-5"></span>
                             </label>
                         </div>
                     @endforeach

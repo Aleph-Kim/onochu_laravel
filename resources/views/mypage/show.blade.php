@@ -70,11 +70,11 @@
                         <div class="flex justify-evenly lg:justify-end items-center gap-5">
                             <div class="flex items-center gap-[10px]">
                                 <span
-                                    class="toggle-label latest text-subheadline text-primary font-semibold transition-colors duration-200">최신순</span>
-                                <label class="relative inline-block w-[51px] h-[31px]">
+                                    class="toggle-label latest text-subheadline text-label font-semibold transition-colors duration-200">최신순</span>
+                                <label class="relative inline-block w-10 h-6 flex-none">
                                     <input type="checkbox" id="sortToggle" class="peer opacity-0 w-0 h-0">
                                     <span
-                                        class="absolute cursor-pointer inset-0 bg-fill-strong transition-colors duration-200 rounded-full peer-checked:bg-primary before:content-[''] before:absolute before:h-[27px] before:w-[27px] before:left-[2px] before:top-[2px] before:bg-white before:transition-transform before:duration-200 before:rounded-full before:shadow-knob peer-checked:before:translate-x-5"></span>
+                                        class="absolute cursor-pointer inset-0 bg-track rounded-full before:content-[''] before:absolute before:h-5 before:w-5 before:left-0.5 before:top-0.5 before:bg-white before:transition-transform before:duration-200 before:rounded-full before:shadow-knob peer-checked:before:translate-x-4"></span>
                                 </label>
                                 <span class="toggle-label oldest text-subheadline text-label-secondary transition-colors duration-200">오래된순</span>
                             </div>
@@ -85,7 +85,7 @@
                         </div>
                     </div>
                     <div
-                        class="songs-grid grid gap-2 [grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr))]">
+                        class="songs-grid grid gap-2 [grid-template-columns:repeat(auto-fill,minmax(min(420px,100%),1fr))]">
                         @foreach($songList as $recommend)
                             <div
                                 class="song-card relative flex items-center p-3 rounded-xl bg-surface cursor-pointer"
@@ -122,7 +122,7 @@
                                 @if($isOwner)
                                     <div class="flex-none" onclick="setProfileAlbum('{{ $recommend->id }}')">
                                         <button
-                                            class="py-1.5 px-3.5 rounded-full text-footnote font-semibold cursor-pointer bg-primary/10 text-primary transition-colors hover:bg-primary/20">
+                                            class="py-1.5 px-3.5 rounded-full text-footnote font-semibold cursor-pointer bg-canvas text-primary transition-opacity hover:opacity-80">
                                             프로필 설정
                                         </button>
                                     </div>
@@ -142,7 +142,7 @@
                     @if($isOwner)
                         <p class="text-label-secondary mb-8">마음에 드는 노래를 추천하면 이 곳에 모아서 보여드릴게요.</p>
                         <a href="{{ route('main') }}"
-                           class="inline-flex items-center min-h-[44px] px-6 rounded-full text-headline bg-primary text-white transition-opacity hover:opacity-90 active:opacity-70">노래
+                           class="inline-flex items-center min-h-[44px] px-6 rounded-full text-headline bg-accent text-white transition-opacity hover:opacity-90 active:opacity-70">노래
                             둘러보기</a>
                     @else
                         <p class="text-label-secondary">이 사용자가 노래를 추천하면 이 곳에 표시됩니다.</p>

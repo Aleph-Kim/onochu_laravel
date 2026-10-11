@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const musicSlider = document.querySelector('.music-slider');
+    if (!musicSlider) return;
+
     const flkty = new Flickity(musicSlider, {
         autoPlay: true,
         imagesLoaded: true,

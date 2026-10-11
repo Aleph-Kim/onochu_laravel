@@ -6,7 +6,7 @@
             <div class="text-title-2 p-5 pb-3">
                 <span class="text-primary">{{ $keyword }}</span> <span class="text-label">검색 결과</span>
             </div>
-            <div class="ml-[10px] max-sm:ml-0">
+            <div class="px-2">
                 @foreach($songs as $song)
                     <div
                         class="song-box group flex justify-between h-[72px] w-full px-3 py-2 rounded-xl transition-colors hover:bg-fill active:bg-fill-strong cursor-pointer"
@@ -16,9 +16,9 @@
                             <img src="{{ $song['album']['img_url'] }}?/dims/resize/350x350/quality/90" alt=""
                                  class="h-full rounded-md shadow-artwork">
                         </span>
-                            <div class="max-w-[75%] px-[10px] flex flex-col justify-center gap-0.5 border-b-[0.5px] border-separator flex-1 min-w-0 group-hover:border-transparent">
+                            <div class="px-[10px] flex flex-col justify-center gap-0.5 border-b-[0.5px] border-separator flex-1 min-w-0 group-hover:border-transparent">
                                 <div
-                                    class="text-label overflow-hidden text-ellipsis whitespace-nowrap text-callout">{{ $song['song']['title'] }}</div>
+                                    class="text-label overflow-hidden text-ellipsis whitespace-nowrap text-body">{{ $song['song']['title'] }}</div>
                                 <div class="overflow-hidden text-ellipsis whitespace-nowrap text-subheadline text-label-secondary">
                                 <span>
                                     @foreach($song['artists'] as $artist)
@@ -26,10 +26,10 @@
                                               onclick="event.stopPropagation(); window.location.href = '{{ route('artist.detail', ['id' => $artist['flo_id']]) }}'">{{ $artist['name'] }}</span>
                                     @endforeach
                                 </span>
-                                    <span class="inline-block w-px h-2.5 mx-1 my-0 bg-label-tertiary"></span>
+                                    <span class="inline-block w-px h-2.5 mx-1 my-0 bg-label-secondary"></span>
                                     <span class="cursor-pointer hover:text-primary transition-colors"
                                           onclick="event.stopPropagation(); window.location.href = '{{ route('album.detail', ['id' => $song['album']['flo_id']]) }}'">{{ $song['album']['title'] }}</span>
-                                    <span class="inline-block w-px h-2.5 mx-1 my-0 bg-label-tertiary"></span>
+                                    <span class="inline-block w-px h-2.5 mx-1 my-0 bg-label-secondary"></span>
                                     <span>{{ $song['song']['play_time'] }}</span>
                                 </div>
                             </div>

@@ -10,7 +10,7 @@ function showSearchForm() {
     searchForm.style.display = "block";
     searchFormHideBtn.style.display = "block";
     searchFormWrap.style.width = "100%";
-
+    searchForm.querySelector('input[name="q"]').focus();
 }
 
 function hiddenSearchForm() {
@@ -58,9 +58,9 @@ function confirmBack() {
 function setToggleLabelActive(label, isActive) {
     if (isActive) {
         label.classList.remove('text-label-secondary');
-        label.classList.add('text-primary', 'font-semibold');
+        label.classList.add('text-label', 'font-semibold');
     } else {
-        label.classList.remove('text-primary', 'font-semibold');
+        label.classList.remove('text-label', 'font-semibold');
         label.classList.add('text-label-secondary');
     }
 }

@@ -189,6 +189,8 @@ function initialize() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+    if (!document.getElementById("genreChart")) return;
+
     initialize();
     window.addEventListener("resize", function () {
         genreChart.resize();

@@ -66,7 +66,7 @@
                 </svg>
             </button>
 
-            <div class="flex ml-[30px] max-sm:ml-0">
+            <div class="flex items-center ml-[30px] max-sm:ml-0">
                 @if(session('user'))
                     @if(request()->is('mypage'))
                         <a href="{{ route('logout') }}" type="button"
@@ -148,7 +148,7 @@
             <a href="{{ route('mypage.user', $recommendToRate->user) }}"
                class="flex items-center justify-end gap-2 group mb-5 pb-4 border-b-[0.5px] border-separator">
                 <div
-                    class="w-6 h-6 rounded-full bg-center bg-cover shrink-0 {{ !$recommendToRate->user->profileAlbum ? 'bg-fill-strong' : '' }}"
+                    class="w-6 h-6 rounded-full bg-center bg-cover shrink-0 {{ !$recommendToRate->user->profileAlbum ? 'hidden' : '' }}"
                     @if($recommendToRate->user->profileAlbum) style="background-image: url('{{ $recommendToRate->user->profileAlbum->img_url }}?size=200x200');" @endif></div>
                 <span class="text-footnote text-label-secondary">
                     추천인
@@ -163,7 +163,7 @@
                     닫기
                 </button>
                 <a href="{{ route('recommends.create', ['id' => $recommendToRate->song->flo_id]) }}"
-                   class="flex-1 min-h-[44px] flex items-center justify-center rounded-full cursor-pointer text-white bg-primary text-headline transition-opacity hover:opacity-90 active:opacity-70">
+                   class="flex-1 min-h-[44px] flex items-center justify-center rounded-full cursor-pointer text-white bg-accent text-headline transition-opacity hover:opacity-90 active:opacity-70">
                     추천하기
                 </a>
             </div>
@@ -174,14 +174,14 @@
 <nav aria-label="탭 바"
      class="md:hidden fixed bottom-0 inset-x-0 z-[998] flex bg-bar backdrop-blur-xl backdrop-saturate-150 border-t-[0.5px] border-separator pb-[env(safe-area-inset-bottom)]">
     <a href="{{ route('main') }}"
-       class="flex-1 h-[50px] flex flex-col items-center justify-center gap-[2px] text-[10px] font-medium {{ request()->routeIs('main') ? 'text-primary' : 'text-label-secondary' }}">
+       class="flex-1 h-[50px] flex flex-col items-center justify-center gap-[2px] text-[11px] font-medium {{ request()->routeIs('main') ? 'text-primary' : 'text-label-secondary' }}">
         <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current" aria-hidden="true">
             <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
         </svg>
         홈
     </a>
     <button type="button" onclick="window.scrollTo(0, 0); showSearchForm()"
-            class="flex-1 h-[50px] flex flex-col items-center justify-center gap-[2px] text-[10px] font-medium {{ request()->routeIs('search') ? 'text-primary' : 'text-label-secondary' }}">
+            class="flex-1 h-[50px] flex flex-col items-center justify-center gap-[2px] text-[11px] font-medium {{ request()->routeIs('search') ? 'text-primary' : 'text-label-secondary' }}">
         <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current" aria-hidden="true">
             <path
                 d="M20.87,20.17l-5.59-5.59C16.35,13.35,17,11.75,17,10c0-3.87-3.13-7-7-7s-7,3.13-7,7s3.13,7,7,7c1.75,0,3.35-0.65,4.58-1.71 l5.59,5.59L20.87,20.17z M10,16c-3.31,0-6-2.69-6-6s2.69-6,6-6s6,2.69,6,6S13.31,16,10,16z"></path>
@@ -189,7 +189,7 @@
         검색
     </button>
     <a href="{{ session('user') ? route('mypage.index') : route('login') }}"
-       class="flex-1 h-[50px] flex flex-col items-center justify-center gap-[2px] text-[10px] font-medium {{ request()->is('mypage*') ? 'text-primary' : 'text-label-secondary' }}">
+       class="flex-1 h-[50px] flex flex-col items-center justify-center gap-[2px] text-[11px] font-medium {{ request()->is('mypage*') ? 'text-primary' : 'text-label-secondary' }}">
         <svg viewBox="0 0 24 24" class="w-6 h-6 fill-current" aria-hidden="true">
             <path
                 d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>

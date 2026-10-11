@@ -22,7 +22,7 @@
         <div class="flex justify-end w-full mb-5 max-w-[600px]">
             <a href="{{ route('music-app.open', ['id' => $recommend->song->flo_id, 'recommend' => $recommend->id]) }}"
                target="_blank"
-               class="inline-flex items-center justify-center min-h-[44px] px-6 rounded-full cursor-pointer text-white bg-primary text-headline transition-opacity hover:opacity-90 active:opacity-70">
+               class="inline-flex items-center justify-center min-h-[44px] px-6 rounded-full cursor-pointer text-white bg-accent text-headline transition-opacity hover:opacity-90 active:opacity-70">
                 내 뮤직앱에서 재생하기
             </a>
         </div>
@@ -31,9 +31,9 @@
                  class="w-full h-full object-cover cursor-pointer"
                  onclick="window.location.href = '{{ route('song.detail', ['id' => $recommend->song->flo_id]) }}'">
             <span
-                class="share-btn group absolute top-0 right-0 bg-raised/80 backdrop-blur-xl text-label rounded-full m-3 w-11 h-11 text-lg flex justify-center items-center flex-col shadow-popover cursor-pointer transition-colors duration-200 hover:bg-kakao hover:text-kakao-text">
+                class="share-btn group absolute top-0 right-0 bg-raised/80 backdrop-blur-xl text-label rounded-full m-3 w-10 h-10 text-base flex justify-center items-center shadow-popover cursor-pointer transition-colors duration-200 hover:bg-kakao hover:text-kakao-text">
             <span
-                class="absolute top-[52px] whitespace-nowrap text-footnote font-semibold bg-kakao text-kakao-text py-[5px] px-2.5 rounded-lg shadow-popover opacity-0 pointer-events-none transition-opacity duration-200 group-hover:opacity-100 before:content-[''] before:absolute before:h-2 before:w-2 before:bg-kakao before:-top-[3px] before:left-1/2 before:-translate-x-1/2 before:rotate-45">공유하기</span>
+                class="absolute right-full top-1/2 -translate-y-1/2 mr-2 whitespace-nowrap text-caption font-semibold bg-kakao text-kakao-text py-1 px-2 rounded-md shadow-popover opacity-0 pointer-events-none transition-opacity duration-200 group-hover:opacity-100 before:content-[''] before:absolute before:h-2 before:w-2 before:bg-kakao before:-right-[3px] before:top-1/2 before:-translate-y-1/2 before:rotate-45">공유하기</span>
             <svg xmlns="http://www.w3.org/2000/svg" height="1.5em" fill="currentColor" viewBox="0 0 208 191.94">
                 <g><polygon class="cls-1" points="76.01 89.49 87.99 89.49 87.99 89.49 82 72.47 76.01 89.49"/><path
                         class="cls-1"
@@ -60,7 +60,7 @@
                         <input type="radio" id="star{{ $star }}" name="score" value="{{ $star }}"
                                {{ $recommend->score == $star ? 'checked' : '' }} disabled class="peer hidden">
                         <label for="star{{ $star }}"
-                               class="peer text-label-tertiary cursor-default hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
+                               class="peer text-system-gray cursor-default hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
                     @endforeach
                 </div>
             @endif
@@ -70,7 +70,7 @@
             <div class="w-full flex items-center justify-between pt-3 mt-1 border-t-[0.5px] border-separator text-footnote">
                 <a href="{{ route('mypage.user', $recommend->user) }}" class="flex items-center gap-2 group">
                     <div
-                        class="w-7 h-7 rounded-full bg-center bg-cover shrink-0 {{ !$recommend->user->profileAlbum ? 'bg-fill-strong' : '' }}"
+                        class="w-7 h-7 rounded-full bg-center bg-cover shrink-0 {{ !$recommend->user->profileAlbum ? 'hidden' : '' }}"
                         @if($recommend->user->profileAlbum) style="background-image: url('{{ $recommend->user->profileAlbum->img_url }}?size=200x200');" @endif></div>
                     <span class="text-label-secondary">추천인 <span
                             class="text-label font-semibold group-hover:text-primary transition-colors">{{ $recommend->user->nickname }}</span></span>

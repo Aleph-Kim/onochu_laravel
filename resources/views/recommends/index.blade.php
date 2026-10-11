@@ -70,19 +70,19 @@
             <div class="[direction:rtl] text-[40px] my-4 mx-0">
                 <input type="radio" id="star5" name="score" value="5" class="peer hidden">
                 <label for="star5"
-                       class="peer text-label-tertiary cursor-pointer hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
+                       class="peer text-system-gray cursor-pointer hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
                 <input type="radio" id="star4" name="score" value="4" class="peer hidden">
                 <label for="star4"
-                       class="peer text-label-tertiary cursor-pointer hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
+                       class="peer text-system-gray cursor-pointer hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
                 <input type="radio" id="star3" name="score" value="3" class="peer hidden">
                 <label for="star3"
-                       class="peer text-label-tertiary cursor-pointer hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
+                       class="peer text-system-gray cursor-pointer hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
                 <input type="radio" id="star2" name="score" value="2" class="peer hidden">
                 <label for="star2"
-                       class="peer text-label-tertiary cursor-pointer hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
+                       class="peer text-system-gray cursor-pointer hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
                 <input type="radio" id="star1" name="score" value="1" class="peer hidden">
                 <label for="star1"
-                       class="peer text-label-tertiary cursor-pointer hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
+                       class="peer text-system-gray cursor-pointer hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
             </div>
             <textarea name="comment" placeholder="코멘트를 남겨주세요!"
                       class="w-full h-[120px] p-3 rounded-xl resize-none text-body text-label mb-4 border-0 bg-fill placeholder:text-label-secondary focus:outline-none focus:shadow-[0_0_0_3px_rgb(var(--tint)/0.35)]"></textarea>
@@ -92,7 +92,7 @@
                         onclick="confirmBack()">뒤로가기
                 </button>
                 <button type="submit"
-                        class="btn-submit min-h-[44px] px-6 rounded-full text-headline cursor-pointer bg-primary text-white transition-opacity hover:opacity-90 active:opacity-70">
+                        class="btn-submit min-h-[44px] px-6 rounded-full text-headline cursor-pointer bg-accent text-white transition-opacity hover:opacity-90 active:opacity-70">
                     추천
                 </button>
             </div>

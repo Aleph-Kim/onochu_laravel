@@ -26,7 +26,7 @@
         @else
             <div class="max-w-[1200px] mx-auto px-6 pb-12 w-full">
                 <div
-                    class="songs-grid grid gap-2 [grid-template-columns:repeat(auto-fit,minmax(min(420px,100%),1fr))]">
+                    class="songs-grid grid gap-2 [grid-template-columns:repeat(auto-fill,minmax(min(420px,100%),1fr))]">
                     @foreach($songList as $recommend)
                         <div class="flex items-center p-3 rounded-xl bg-surface transition-opacity hover:opacity-80 active:opacity-60 cursor-pointer"
                              onclick="window.location.href='{{ route('recommends.show', $recommend) }}'">

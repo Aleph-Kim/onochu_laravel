@@ -14,7 +14,7 @@
                         <div
                             class="p-[15px] transition-transform duration-300 group-[&.is-selected]:scale-[1.3] max-[480px]:group-[&.is-selected]:scale-110">
                             <div
-                                class="w-[300px] overflow-hidden shadow-artwork rounded-2xl transition-shadow duration-[400ms] bg-raised">
+                                class="w-[300px] overflow-hidden shadow-artwork rounded-2xl transition-shadow duration-[400ms] bg-surface">
                                 <div
                                     class="group/body block h-[300px] w-[300px] bg-center bg-cover overflow-hidden transition-all duration-[400ms] relative cursor-pointer">
                                 <span
@@ -26,7 +26,7 @@
                                         class="h-full w-full bg-cover absolute top-0 transition-all duration-200 group-[&.is-selected]:group-hover/body:brightness-50"
                                         style="background-image: url({{ $recommend->song->album->img_url }}?size=500x500);"></div>
                                 </div>
-                                <div class="pt-3 px-4 pb-3.5 border-0 bg-raised relative flex">
+                                <div class="pt-3 px-4 pb-3.5 border-0 bg-surface relative flex">
                                     <div>
                                         <span
                                             class="block text-subheadline font-semibold text-label">{{ $recommend->song->title }}</span>
@@ -48,19 +48,19 @@
             </div>
         @else
             <div
-                class="flex gap-4 p-2.5 overflow-hidden relative before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-black/40 before:text-white before:text-title-3 before:absolute before:top-0 before:left-0 before:z-10 before:text-center"
+                class="flex gap-4 p-2.5 overflow-hidden relative before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-canvas/60 before:text-label before:text-title-3 before:px-6 before:absolute before:top-0 before:left-0 before:z-10 before:text-center"
                 data-text="다른 유저들의 추천 노래를 이 곳에서 보여드릴게요!">
                 <div class="flex animate-[scroll_10s_linear_infinite] gap-4 mb-2.5">
                     @for($i = 0; $i < 10; $i++)
                         <div class="w-[330px] p-[15px] shrink-0">
-                            <div class="rounded-2xl overflow-hidden shadow-artwork bg-raised">
+                            <div class="rounded-2xl overflow-hidden shadow-artwork bg-surface">
                                 <div
-                                    class="w-full h-[300px] animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-fill from-[25%] via-fill-strong via-[50%] to-fill to-[75%] bg-[length:200%_100%]"></div>
-                                <div class="pt-3 px-4 pb-3.5 bg-raised">
+                                    class="w-full h-[300px] animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-skeleton from-[25%] via-skeleton-highlight via-[50%] to-skeleton to-[75%] bg-[length:200%_100%]"></div>
+                                <div class="pt-3 px-4 pb-3.5 bg-surface">
                                     <div
-                                        class="h-4 mb-2 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-fill from-[25%] via-fill-strong via-[50%] to-fill to-[75%] bg-[length:200%_100%]"></div>
+                                        class="h-4 mb-2 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-skeleton from-[25%] via-skeleton-highlight via-[50%] to-skeleton to-[75%] bg-[length:200%_100%]"></div>
                                     <div
-                                        class="h-[0.8rem] rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-fill from-[25%] via-fill-strong via-[50%] to-fill to-[75%] bg-[length:200%_100%]"></div>
+                                        class="h-[0.8rem] rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-skeleton from-[25%] via-skeleton-highlight via-[50%] to-skeleton to-[75%] bg-[length:200%_100%]"></div>
                                 </div>
                             </div>
                         </div>
@@ -96,18 +96,18 @@
                 </div>
             @else
                 <div
-                    class="flex gap-4 p-2.5 overflow-hidden relative pl-[15px] md:pl-0 before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-black/40 before:text-white before:text-title-3 before:absolute before:top-0 before:left-0 before:z-10 before:text-center"
+                    class="flex gap-4 p-2.5 overflow-hidden relative pl-[15px] md:pl-0 before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-canvas/60 before:text-label before:text-title-3 before:px-6 before:absolute before:top-0 before:left-0 before:z-10 before:text-center"
                     data-text="새로 나온 앨범이 있다면 이 곳에서 알려드릴게요!">
                     <div class="flex animate-[scroll_10s_linear_infinite] gap-4 mb-2.5">
                         @for($i = 0; $i < 10; $i++)
                             <div>
                                 <div
-                                    class="w-48 h-48 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-fill from-[25%] via-fill-strong via-[50%] to-fill to-[75%] bg-[length:200%_100%]"></div>
+                                    class="w-48 h-48 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-skeleton from-[25%] via-skeleton-highlight via-[50%] to-skeleton to-[75%] bg-[length:200%_100%]"></div>
                                 <div class="pt-2">
                                     <div
-                                        class="h-4 mb-2 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-fill from-[25%] via-fill-strong via-[50%] to-fill to-[75%] bg-[length:200%_100%]"></div>
+                                        class="h-4 mb-2 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-skeleton from-[25%] via-skeleton-highlight via-[50%] to-skeleton to-[75%] bg-[length:200%_100%]"></div>
                                     <div
-                                        class="h-[0.8rem] rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-fill from-[25%] via-fill-strong via-[50%] to-fill to-[75%] bg-[length:200%_100%]"></div>
+                                        class="h-[0.8rem] rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-skeleton from-[25%] via-skeleton-highlight via-[50%] to-skeleton to-[75%] bg-[length:200%_100%]"></div>
                                 </div>
                             </div>
                         @endfor
@@ -143,18 +143,18 @@
                 </div>
             @else
                 <div
-                    class="flex gap-4 p-2.5 overflow-hidden relative pl-[15px] md:pl-0 before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-black/40 before:text-white before:text-title-3 before:absolute before:top-0 before:left-0 before:z-10 before:text-center"
+                    class="flex gap-4 p-2.5 overflow-hidden relative pl-[15px] md:pl-0 before:content-[attr(data-text)] before:whitespace-pre-wrap before:flex before:items-center before:justify-center before:w-full before:h-full before:bg-canvas/60 before:text-label before:text-title-3 before:px-6 before:absolute before:top-0 before:left-0 before:z-10 before:text-center"
                     data-text="아직 추천 아티스트가 없네요!&#10;나만의 노래를 추천해주세요!">
                     <div class="flex animate-[scroll_10s_linear_infinite] gap-4 mb-2.5">
                         @for($i = 0; $i < 10; $i++)
                             <div>
                                 <div
-                                    class="w-48 h-48 rounded-full mx-auto my-0 animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-fill from-[25%] via-fill-strong via-[50%] to-fill to-[75%] bg-[length:200%_100%]"></div>
+                                    class="w-48 h-48 rounded-full mx-auto my-0 animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-skeleton from-[25%] via-skeleton-highlight via-[50%] to-skeleton to-[75%] bg-[length:200%_100%]"></div>
                                 <div class="p-2">
                                     <div
-                                        class="h-4 w-[70%] mx-auto mt-0 mb-2 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-fill from-[25%] via-fill-strong via-[50%] to-fill to-[75%] bg-[length:200%_100%]"></div>
+                                        class="h-4 w-[70%] mx-auto mt-0 mb-2 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-skeleton from-[25%] via-skeleton-highlight via-[50%] to-skeleton to-[75%] bg-[length:200%_100%]"></div>
                                     <div
-                                        class="h-[0.8rem] w-[40%] mx-auto my-0 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-fill from-[25%] via-fill-strong via-[50%] to-fill to-[75%] bg-[length:200%_100%]"></div>
+                                        class="h-[0.8rem] w-[40%] mx-auto my-0 rounded-lg animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-skeleton from-[25%] via-skeleton-highlight via-[50%] to-skeleton to-[75%] bg-[length:200%_100%]"></div>
                                 </div>
                             </div>
                         @endfor
