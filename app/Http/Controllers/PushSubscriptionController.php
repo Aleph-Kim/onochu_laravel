@@ -35,7 +35,9 @@ class PushSubscriptionController extends Controller
             return $this->errorResponse('로그인이 필요합니다.', 401);
         }
 
-        PushSubscription::where('endpoint', $request->validated('endpoint'))->delete();
+        PushSubscription::where('user_id', session('user.id'))
+            ->where('endpoint', $request->validated('endpoint'))
+            ->delete();
 
         return $this->successResponse('알림 구독 해제 완료');
     }

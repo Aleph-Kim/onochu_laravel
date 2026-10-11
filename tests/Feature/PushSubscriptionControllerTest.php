@@ -105,6 +105,19 @@ class PushSubscriptionControllerTest extends TestCase
         $response->assertStatus(422);
     }
 
+    #[TestDox('다른 유저의 구독은 삭제하지 않는다')]
+    public function test_unsubscribe_does_not_delete_other_users_subscription(): void
+    {
+        $user = User::factory()->create();
+        $otherSubscription = PushSubscription::factory()->create();
+
+        $response = $this->withSession($this->loginSession($user))
+            ->postJson('/api/push/unsubscribe', ['endpoint' => $otherSubscription->endpoint]);
+
+        $response->assertOk();
+        $this->assertModelExists($otherSubscription);
+    }
+
     #[TestDox('구독 정보를 삭제한다')]
     public function test_unsubscribe_deletes_subscription(): void
     {
