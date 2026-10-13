@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Services\FloApiService;
 use App\Services\ImageService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\TestDox;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\Traits\FakesFloApi;
@@ -95,6 +96,46 @@ class RecommendsControllerTest extends TestCase
         $this->assertDatabaseHas('songs', ['flo_id' => $songInfo['song']['flo_id'], 'album_id' => $album->id]);
         $this->assertDatabaseCount('artists', 1);
         $this->assertDatabaseCount('albums', 1);
+    }
+
+    #[TestDox('별점을 0.5점 단위로 저장한다')]
+    public function test_store_saves_half_point_score(): void
+    {
+        $user = User::factory()->create();
+        $artist = Artist::factory()->create();
+        $album = Album::factory()->create();
+        $songInfo = $this->fakeTrackInfo(['flo_id' => 321], ['flo_id' => $artist->flo_id], ['flo_id' => $album->flo_id]);
+
+        $this->mock(FloApiService::class, function ($mock) use ($songInfo) {
+            $mock->shouldReceive('getSongByFloId')->with(321)->andReturn($songInfo);
+        });
+
+        $this->withSession($this->loginSession($user))
+            ->post('/recommends', ['id' => 321, 'score' => 4.5]);
+
+        $this->assertDatabaseHas('recommends', ['user_id' => $user->id, 'score' => 4.5]);
+    }
+
+    #[TestDox('별점이 0.5~5 범위의 0.5점 단위가 아니면 저장하지 않는다')]
+    #[DataProvider('invalidScoreProvider')]
+    public function test_store_rejects_invalid_score(mixed $score): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->withSession($this->loginSession($user))
+            ->post('/recommends', ['id' => 321, 'score' => $score]);
+
+        $response->assertSessionHasErrors('score');
+        $this->assertDatabaseCount('recommends', 0);
+    }
+
+    public static function invalidScoreProvider(): array
+    {
+        return [
+            '0점' => [0],
+            '0.5 단위가 아닌 값' => [4.3],
+            '5점 초과' => [5.5],
+        ];
     }
 
     #[TestDox('트랙 응답에 아티스트 이미지가 없으면 아티스트 API 이미지로 업로드한다')]

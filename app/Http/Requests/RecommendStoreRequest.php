@@ -11,8 +11,8 @@ class RecommendStoreRequest extends FormRequest
         return [
             // 추천할 곡의 FLO ID
             'id' => ['required', 'integer'],
-            // 별점 (1~5)
-            'score' => ['nullable', 'integer', 'between:1,5'],
+            // 별점 (0.5~5, 0.5 단위)
+            'score' => ['nullable', 'numeric', 'between:0.5,5', 'multiple_of:0.5'],
             // 코멘트
             'comment' => ['nullable', 'string'],
         ];

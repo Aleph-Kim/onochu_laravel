@@ -55,12 +55,13 @@
         </div>
         <div class="w-full flex flex-col items-center">
             @if($recommend->score)
-                <div class="[direction:rtl] text-[40px] my-4 mx-0">
-                    @foreach([5,4,3,2,1] as $star)
-                        <input type="radio" id="star{{ $star }}" name="score" value="{{ $star }}"
-                               {{ $recommend->score == $star ? 'checked' : '' }} disabled class="peer hidden">
-                        <label for="star{{ $star }}"
-                               class="peer text-system-gray cursor-default hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
+                <div class="flex [direction:rtl] text-[40px] my-4 mx-0">
+                    @foreach(range(5, 0.5, -0.5) as $value)
+                        <input type="radio" id="star{{ $value }}" name="score" value="{{ $value }}"
+                               {{ $recommend->score == $value ? 'checked' : '' }} disabled class="peer hidden">
+                        <label for="star{{ $value }}"
+                               class="peer w-[0.5em] overflow-hidden [direction:ltr] text-system-gray cursor-default hover:text-star peer-checked:text-star peer-hover:text-star {{ fmod($value, 1) ? 'ml-[0.25em] last:ml-0' : '' }}"><span
+                                class="block w-[1em] text-center {{ fmod($value, 1) ? '' : '-ml-[0.5em]' }}">★</span></label>
                     @endforeach
                 </div>
             @endif

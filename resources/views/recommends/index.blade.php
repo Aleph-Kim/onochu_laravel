@@ -22,8 +22,14 @@
                                 <div class="min-w-0">
                                     <div class="flex items-center gap-2 mb-1">
                                         @if($previous->score)
-                                            <span
-                                                class="text-star text-callout tracking-tight">{{ str_repeat('★', $previous->score) }}{{ str_repeat('☆', 5 - $previous->score) }}</span>
+                                            <span class="flex text-callout tracking-tight" role="img"
+                                                  aria-label="별점 {{ (float) $previous->score }}점">
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    <span
+                                                        class="relative {{ $previous->score >= $i ? 'text-star' : 'text-system-gray' }}">★@if($previous->score == $i - 0.5)<span
+                                                            class="absolute inset-y-0 left-0 w-1/2 overflow-hidden text-star">★</span>@endif</span>
+                                                @endfor
+                                            </span>
                                         @endif
                                         <span
                                             class="text-label-secondary text-footnote tabular-nums">{{ $previous->created_at->format('Y.m.d') }}</span>
@@ -67,22 +73,14 @@
                     {{ $songInfo['song']['play_time'] }}
                 </p>
             </div>
-            <div class="[direction:rtl] text-[40px] my-4 mx-0">
-                <input type="radio" id="star5" name="score" value="5" class="peer hidden">
-                <label for="star5"
-                       class="peer text-system-gray cursor-pointer hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
-                <input type="radio" id="star4" name="score" value="4" class="peer hidden">
-                <label for="star4"
-                       class="peer text-system-gray cursor-pointer hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
-                <input type="radio" id="star3" name="score" value="3" class="peer hidden">
-                <label for="star3"
-                       class="peer text-system-gray cursor-pointer hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
-                <input type="radio" id="star2" name="score" value="2" class="peer hidden">
-                <label for="star2"
-                       class="peer text-system-gray cursor-pointer hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
-                <input type="radio" id="star1" name="score" value="1" class="peer hidden">
-                <label for="star1"
-                       class="peer text-system-gray cursor-pointer hover:text-star peer-checked:text-star peer-hover:text-star">★</label>
+            <div class="flex [direction:rtl] text-[40px] my-4 mx-0">
+                {{-- 별 하나를 좌우 반쪽 라벨로 나눠 0.5점 단위 선택 --}}
+                @foreach(range(5, 0.5, -0.5) as $value)
+                    <input type="radio" id="star{{ $value }}" name="score" value="{{ $value }}" class="peer hidden">
+                    <label for="star{{ $value }}"
+                           class="peer w-[0.5em] overflow-hidden [direction:ltr] text-system-gray cursor-pointer hover:text-star peer-checked:text-star peer-hover:text-star {{ fmod($value, 1) ? 'ml-[0.25em] last:ml-0' : '' }}"><span
+                            class="block w-[1em] text-center {{ fmod($value, 1) ? '' : '-ml-[0.5em]' }}">★</span></label>
+                @endforeach
             </div>
             <textarea name="comment" placeholder="코멘트를 남겨주세요!"
                       class="w-full h-[120px] p-3 rounded-xl resize-none text-body text-label mb-4 border-0 bg-fill placeholder:text-label-secondary focus:outline-none focus:shadow-[0_0_0_3px_rgb(var(--tint)/0.35)]"></textarea>
