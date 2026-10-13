@@ -128,5 +128,8 @@ jobs:
           docker exec ${{ secrets.PROJECT_NAME }} php artisan route:cache
           docker exec ${{ secrets.PROJECT_NAME }} php artisan view:cache
 
+          # 로그 폴더 www-data 소유권 부여 (바인드 마운트로 인한 Dockerfile 권한 설정 누락, root 실행 artisan의 로그 파일 생성 대비)
+          docker exec ${{ secrets.PROJECT_NAME }} chown -R www-data:www-data /var/www/html/storage/logs
+
           # 미사용 이미지 정리
           docker image prune -f
