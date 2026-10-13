@@ -9,8 +9,10 @@ use App\Models\RecommendPlay;
 use App\Models\Song;
 use App\Models\User;
 use App\Services\FloApiService;
+use App\Services\ImageService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\TestDox;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\Traits\FakesFloApi;
 use Tests\TestCase;
 
@@ -93,6 +95,57 @@ class RecommendsControllerTest extends TestCase
         $this->assertDatabaseHas('songs', ['flo_id' => $songInfo['song']['flo_id'], 'album_id' => $album->id]);
         $this->assertDatabaseCount('artists', 1);
         $this->assertDatabaseCount('albums', 1);
+    }
+
+    #[TestDox('트랙 응답에 아티스트 이미지가 없으면 아티스트 API 이미지로 업로드한다')]
+    public function test_store_falls_back_to_artist_api_when_track_has_no_artist_image(): void
+    {
+        $user = User::factory()->create();
+        $album = Album::factory()->create();
+        $songInfo = $this->fakeTrackInfo(['flo_id' => 321], ['flo_id' => 49, 'img_url' => false], ['flo_id' => $album->flo_id]);
+        $floImgUrl = 'https://cdn.music-flo.com/image/v2/artist/017/000/00/04/400000017_6555662a_o.jpg';
+
+        $this->mock(FloApiService::class, function ($mock) use ($songInfo, $floImgUrl) {
+            $mock->shouldReceive('getSongByFloId')->with(321)->andReturn($songInfo);
+            $mock->shouldReceive('getArtistByFloId')->with(49)->andReturn(['img_url' => $floImgUrl]);
+        });
+        $this->mock(ImageService::class, function ($mock) use ($floImgUrl) {
+            $mock->shouldReceive('uploadImage')
+                ->with($floImgUrl . '?/dims/resize/1000x1000/quality/90', 'artist')
+                ->once()
+                ->andReturn('https://img.aleph.kr/files/test/artist-1.jpg');
+        });
+
+        $this->withSession($this->loginSession($user))
+            ->post('/recommends', ['id' => 321, 'score' => 5]);
+
+        $this->assertDatabaseHas('artists', [
+            'flo_id'      => 49,
+            'img_url'     => 'https://img.aleph.kr/files/test/artist-1.jpg',
+            'flo_img_url' => $floImgUrl,
+        ]);
+    }
+
+    #[TestDox('아티스트 API 폴백이 실패해도 이미지 없이 추천을 저장한다')]
+    public function test_store_saves_recommend_without_image_when_artist_api_fails(): void
+    {
+        $user = User::factory()->create();
+        $album = Album::factory()->create();
+        $songInfo = $this->fakeTrackInfo(['flo_id' => 321], ['flo_id' => 49, 'img_url' => false], ['flo_id' => $album->flo_id]);
+
+        $this->mock(FloApiService::class, function ($mock) use ($songInfo) {
+            $mock->shouldReceive('getSongByFloId')->with(321)->andReturn($songInfo);
+            $mock->shouldReceive('getArtistByFloId')->with(49)->andThrow(new HttpException(500));
+        });
+        $this->mock(ImageService::class, function ($mock) {
+            $mock->shouldNotReceive('uploadImage');
+        });
+
+        $response = $this->withSession($this->loginSession($user))
+            ->post('/recommends', ['id' => 321, 'score' => 5]);
+
+        $response->assertRedirect(route('recommends.show', Recommend::first()));
+        $this->assertDatabaseHas('artists', ['flo_id' => 49, 'img_url' => null]);
     }
 
     #[TestDox('곡 ID가 없으면 추천을 저장하지 않는다')]

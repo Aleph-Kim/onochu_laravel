@@ -44,12 +44,15 @@ class RecommendsController extends Controller
         foreach ($songInfo['artists'] as $artistInfo) {
             $artist = Artist::where('flo_id', $artistInfo['flo_id'])->first();
             if (!$artist) {
-                $imgUrl = $this->imageService->uploadImage(
-                    $artistInfo['img_url'] . '?/dims/resize/1000x1000/quality/90', 'artist'
-                );
+                // 트랙 상세 API의 아티스트 이미지 누락 대비 아티스트 API 폴백 (조회 실패 시 null 저장 후 images:retry-missing 재처리)
+                $sourceUrl = $artistInfo['img_url']
+                    ?: rescue(fn () => $this->floApi->getArtistByFloId($artistInfo['flo_id'])['img_url'] ?? null);
+                $imgUrl = $sourceUrl
+                    ? $this->imageService->uploadImage($sourceUrl . '?/dims/resize/1000x1000/quality/90', 'artist')
+                    : null;
                 $artist = Artist::create(array_merge($artistInfo, [
                     'img_url' => $imgUrl,
-                    'flo_img_url' => $artistInfo['img_url'],
+                    'flo_img_url' => $sourceUrl,
                 ]));
             }
             $artists->push($artist);
