@@ -1,4 +1,4 @@
-import { hideLoader, showDialog, showLoader, showToast } from './util.js';
+import { hideLoader, showDialog, showLoader } from './util.js';
 
 document.querySelector('.recommends-form').addEventListener('submit', async function (event) {
     event.preventDefault();
@@ -14,19 +14,7 @@ document.querySelector('.recommends-form').addEventListener('submit', async func
     submitBtn.disabled = true;
     submitBtn.textContent = '처리 중';
 
-    fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-    })
-        .then(function (response) {
-            window.location.href = response.url;
-        })
-        .catch(function () {
-            hideLoader();
-            submitBtn.disabled = false;
-            submitBtn.textContent = '추천';
-            showToast('추천 등록에 실패했습니다. 다시 시도해주세요.');
-        });
+    form.submit();
 });
 
 window.addEventListener('pageshow', function (event) {
